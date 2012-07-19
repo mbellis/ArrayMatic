@@ -74,7 +74,7 @@ P=[];
 %% PROJECT INFO
 %Select the chip set & eventually the chip if several chips exists in the
 %same chip set model
-[P.chip.chipSetRank,P.chip.chipRank,ChipType,ProbeSetNb,CompName,Chromosomes,Success] =select_chipset(1);
+[P.chip.chipRank,P.chip.chipPos,ChipType,Gpl,ProbeSetNb,CompName,Chromosomes,Success] =select_chipset;
 if Success==0
     h=warndlg('chip set no selected , process canceled');
     waitfor(h)
@@ -279,7 +279,7 @@ else
     Continue=1;
     Loop=1;
     while Continue
-        if P.chip.chipSetRank==0
+        if P.chip.chipRank==0
             [ProbeName,ProbeDir]=uigetfile('*.*','Select the file containing probe descriptions');
             cd(ProbeDir)
             [P.probeSet.name,P.probeSet.description]=textread(ProbeName,'%q%q','delimiter','\t');
@@ -642,7 +642,7 @@ else
                         if size(DataSignals,1)~=ProbeSetNb
                             fclose(RankFid)
                             fclose(SignalFid)
-                            h=errordlg(sprintf('imported table has %u lines and chip %s is supposed to have %u lines',size(DataSignals,1),K.chipSet.name{P.chip.chipRank},ProbeSetNb));
+                            h=errordlg(sprintf('imported table has %u lines and chip %s is supposed to have %u lines',size(DataSignals,1),K.chipSet.name{P.chip.chipPos},ProbeSetNb));
                             waitfor(h);
                             error('process canceled')
                         else
@@ -783,7 +783,7 @@ else
             if P.flag.loadData==0
                 %VERIFY GLOBAL SIZE
                 if size(DataSignals,1)~=ProbeSetNb
-                    h=warndlg(sprintf('imported table has %u lines and chip %s is supposed to have %u lines',size(DataSignals,1),K.chipSet.name{P.chip.chipRank},ProbeSetNb));
+                    h=warndlg(sprintf('imported table has %u lines and chip %s is supposed to have %u lines',size(DataSignals,1),K.chipSet.name{P.chip.chipPos},ProbeSetNb));
                     waitfor(h);
                 end
                 %COUNT THE NB OF > VALUES

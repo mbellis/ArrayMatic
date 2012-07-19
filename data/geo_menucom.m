@@ -95,10 +95,10 @@ switch Action
 
     case 'do RDN analysis'
 %% DO RDN ANALYSIS     
-        [ChipSetRank,ChipRank,Type,ProbeSetNb,Gpl,CompName,Chromosomes,Success] =select_chipset(0);
-        ChipName=regexp(K.chipSet.shortName{ChipSetRank},'(?<=^\w+-)\w+','match');
+        [ChipRank,ChipPos,Type,ProbeSetNb,Gpl,CompName,Chromosomes,Success] =select_chipset();
+        ChipName=regexp(K.chipSet.shortName{ChipPos},'(?<=^\w+-)\w+','match');
         ChipName=ChipName{1};
-        MyChipName=sprintf('m%uc%u',ChipSetRank,ChipRank);
+        MyChipName=sprintf('m%u',ChipRank);
         cd(K.dir.geoMetadata)
         [FileName,FileDir]=uigetfile(sprintf('GPL%u.mat',Gpl),'select a GPL');
         if isnumeric(FileName)
@@ -231,11 +231,7 @@ switch Action
         end
 
     case 'do RMA analysis'
-%% DO RMA ANALYSIS        
-        [ChipSetRank,ChipRank,Type,ProbeSetNb,Gpl,CompName,Chromosomes,Success] =select_chipset(0);
-        ChipName=regexp(K.chipSet.shortName{ChipSetRank},'(?<=^\w+-)\w+','match');
-        ChipName=ChipName{1};
-        MyChipName=sprintf('m%uc%u',ChipSetRank,ChipRank);
+%% DO RMA ANALYSIS            
         cd(K.dir.geoMetadata)
         [FileName,FileDir]=uigetfile(sprintf('GPL%u.mat',Gpl),'select a GPL');
         if isnumeric(FileName)
@@ -263,8 +259,8 @@ switch Action
                 cd(GPL);
                 GplDir=cd;
                 ScriptRank=0;
+                %process each GSE individually, but no more than 60 GSM at the same time
                 for RoundL=1:3
-                %for RoundL=1
                     switch RoundL
                         case 1
                             Limit1=1;
@@ -282,7 +278,6 @@ switch Action
                     %create list of Gse to be processed in the current round
                     GseList=[];
                     for GseL=1:length(GsePos)
-                    %for GseL=1:30
                         cd(GplDir)
                         %create a directory and decompress files
                         GSE=Gse.gse{GsePos(GseL)};
