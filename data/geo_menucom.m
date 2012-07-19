@@ -57,27 +57,40 @@ switch Action
             load(FileName)
             FileName=regexp(FileName,'(?=.)^GPL\d+','match');
             FileName=FileName{1};
-            %load data
-            cd(K.dir.geoExperiments)
+            %load data            
+            try
+                cd(K.dir.geoExperiments)
+            catch
+                mkdir(K.dir.geoExperiments)
+            end
             GPL=regexp(FileName,'GPL\d+','match');
             GPL=GPL{1};
             if ~exist(GPL,'dir')
                 mkdir(GPL)
             end
             cd(GPL)
-            for GseL=1:length(Gse.gse)
-                if ~isempty(Gse.supplementaryFile{GseL}&Gse.isBiol(GseL))
-                    %import data
-                    %fprintf(fid,sprintf('ncftpget ftp://ftp.ncbi.nih.gov/pub/geo/DATA/supplementary/series/%s/%s_RAW.tar\n',Gse.gse{GseL},Gse.gse{GseL}));
-                    %if success
-                    if ~isfield(Gse,'imported')
-                        Gse.imported=zeros(length(Gse.gse),1);
+            %select GSE to be imported
+            [GseSel,GseOK] = listdlg('ListString',Gse.gse,'SelectionMode','multiple','ListSize',[600,600],'Name','FTP load of GSE','PromptString','Select GSE(s)');
+            if GseOK
+                for GseL=1:length(GseSel)
+                    Ftp=ftp('ftp.ncbi.nih.gov');                
+                    CurrGse=GseSel(GseL);
+                    %if ~isempty(Gse.supplementaryFile{CurrGse})&Gse.isBiol(CurrGse)
+                    if ~isempty(Gse.supplementaryFile{CurrGse})
+                        cd(Ftp,sprintf('pub/geo/DATA/supplementary/series/%s',Gse.gse{CurrGse}))
+                        MGet=mget(Ftp,sprintf('%s_RAW.tar',Gse.gse{CurrGse}));
+                        if ~isempty(findstr(Gse.gse{CurrGse},MGet{1}))
+                            if ~isfield(Gse,'imported')
+                                Gse.imported=zeros(length(Gse.gse),1);
+                            end
+                            Gse.imported(CurrGse)=1;
+                        end
                     end
-                    Gse.imported(GseL)=1;
+                    close(Ftp)
                 end
+                cd(K.dir.geoMetadata)
+                eval(sprintf('save %s Gsm Gse Gds Contributor',FileName))
             end
-            cd(K.dir.geoMetadata)
-            eval(sprintf('save %s Gsm Gse Gds Contributor',FileName))
         end
 
     case 'do RDN analysis'
