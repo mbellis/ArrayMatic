@@ -20,7 +20,7 @@ if ~isequal(SelType,'unique')&&~isequal(SelType,'multiple')
     error('process canceled')
 end
 if nargin==1
-[ModelRank,Ok]=listdlg('liststring',K.chipSet.name,'selectionmode','single','listsize',[400 300],'promptstring','Select chip model','name','COM_RAY');
+[ModelRank,Ok]=listdlg('liststring',K.chip.name,'selectionmode','single','listsize',[400 300],'promptstring','Select chip model','name','COM_RAY');
 else
     ModelRank=varargin{1};
     Ok=1;

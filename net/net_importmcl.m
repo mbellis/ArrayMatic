@@ -1,7 +1,7 @@
 function net_importmcl(ModelRank,NetRank)
 global K
 
-PsNb=K.chipSet.probeSetNbs{ModelRank}(1);
+PsNb=K.chip.probeSetNbs{ModelRank}(1);
 CmlDir=fullfile(K.dir.net,sprintf('m%03u',ModelRank),sprintf('n%05u',NetRank),'mcl');
 cd(CmlDir)
 Dir=dir;

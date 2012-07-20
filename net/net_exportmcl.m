@@ -52,8 +52,8 @@ for ModelL=1:2
 %load data
 NetDir=fullfile(K.dir.net,sprintf('m%03u',ModelRank(ModelL)),sprintf('n%05u',NetRank(ModelL)));
 cd(NetDir)
-Corr=load_data(sprintf('c_m%u_n%u.4mat',ModelRank(ModelL),NetRank(ModelL)),'./',K.chipSet.probeSetNbs{ModelRank(ModelL)}(1),K.chipSet.probeSetNbs{ModelRank(ModelL)}(1),'uint8','ieee-le',PsRank{ModelL},PsRank{ModelL});
-Anti=load_data(sprintf('a_m%u_n%u.4mat',ModelRank(ModelL),NetRank(ModelL)),'./',K.chipSet.probeSetNbs{ModelRank(ModelL)}(1),K.chipSet.probeSetNbs{ModelRank(ModelL)}(1),'uint8','ieee-le',PsRank{ModelL},PsRank{ModelL});
+Corr=load_data(sprintf('c_m%u_n%u.4mat',ModelRank(ModelL),NetRank(ModelL)),'./',K.chip.probeSetNbs{ModelRank(ModelL)}(1),K.chip.probeSetNbs{ModelRank(ModelL)}(1),'uint8','ieee-le',PsRank{ModelL},PsRank{ModelL});
+Anti=load_data(sprintf('a_m%u_n%u.4mat',ModelRank(ModelL),NetRank(ModelL)),'./',K.chip.probeSetNbs{ModelRank(ModelL)}(1),K.chip.probeSetNbs{ModelRank(ModelL)}(1),'uint8','ieee-le',PsRank{ModelL},PsRank{ModelL});
 'stop'
 
 %output fot GAP

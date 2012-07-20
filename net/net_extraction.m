@@ -28,7 +28,7 @@ else
     error('process canceled')
 end
 
-PsNb(1)=K.chipSet.probeSetNbs{ModelRank(1)}(1);
+PsNb(1)=K.chip.probeSetNbs{ModelRank(1)}(1);
 PsNb(2)=length(ColRanks);
 BlocNb=ceil(PsNb(2)/1000);
 NetDir{1}=fullfile(K.dir.net,sprintf('m%03u',ModelRank(1)),sprintf('n%05u',NetRank(1)));

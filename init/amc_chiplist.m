@@ -723,5 +723,5 @@ Tempo.ref.signal=[0,1,2,3,4,5,6,7,8,8.5,9,10,11,12,12.5,13,14,16,17,18,20,21,22,
 cd(K.dir.common)
 save chiplist Tempo
 K.chip=Tempo;
-K.chipSet=Tempo;
+K.chip=Tempo;
 clear Tempo

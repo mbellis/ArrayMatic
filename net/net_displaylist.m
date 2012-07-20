@@ -89,7 +89,7 @@ cd(K.dir.gene)
 %     ensGeneRank: [31x1 double]
 
 NetNb=length(NetRanks2);
-PsNb=K.chipSet.probesetNb(ChipRank);
+PsNb=K.chip.probesetNb(ChipRank);
 if CorrType==1|CorrType==3
     %C or raw(C)
     if QLimitFlag

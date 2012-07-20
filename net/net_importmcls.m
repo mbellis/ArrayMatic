@@ -47,7 +47,7 @@ function net_importmcls(ChipRank,NetRanks,Inflation,ListRank,DiffFlag,RawFlag,Di
 global K
 
 ListNb=length(ListRank);
-PsNb=K.chipSet.probesetNb(ChipRank);
+PsNb=K.chip.probesetNb(ChipRank);
 CmlDir=fullfile(K.dir.net,sprintf('m%u',ChipRank),'mcl');
 cd(CmlDir)
 

@@ -26,7 +26,7 @@
 %net_compcorr(27,[25:45],1250)
 function net_comprank(ChipRank,NetRanks,PsRank)
 global K
-PsNb=K.chipSet.probesetNb(ChipRank);
+PsNb=K.chip.probesetNb(ChipRank);
 NetNb=length(NetRanks);
 Corr=zeros(NetNb,PsNb);
 Anti=zeros(NetNb,PsNb);

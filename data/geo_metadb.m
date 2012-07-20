@@ -42,9 +42,9 @@
 %geo_metadb('GSE dictionary',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'([Tt]h[12])|([Tt]h17)|([Tt]hreg)|([Tt][Cc][Rr])','th')
 %geo_metadb('GSE dictionary',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'[Aa]xotomy|DRG\w*|(([Aa]xon\w* ?|[Nn]eur\w* ?|[Nn]erv\w* ?)([Oo]utgrowth ?|[Rr]egeneration ?|[Rr]egrowth ?))','nerve_regeneration')
 %geo_metadb('GSE dictionary',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'DRG','drg')
-%geo_metadb('GSE special symbols',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'[\|\$\[\]\)(}{_''"#`~&^%*§<>°@=£¤²]',1,1,30,30)
-%geo_metadb('GSE special symbols',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'–',1,1,30,30)
-%geo_metadb('GSE special symbols',[339],'–',1,1,30,30)
+%geo_metadb('GSE special symbols',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'[\|\$\[\]\)(}{_''"#`~&^%*ï¿½<>ï¿½@=ï¿½ï¿½ï¿½]',1,1,30,30)
+%geo_metadb('GSE special symbols',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'ï¿½',1,1,30,30)
+%geo_metadb('GSE special symbols',[339],'ï¿½',1,1,30,30)
 %geo_metadb('GSE special symbols',[339],sprintf('%c',char(65533)),1,1,30,30)
 %geo_metadb('GSE special symbols',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'\S\.\S|\S;\S|\S:\S|\S,\S|\S!\S|\S\?\S|',3,2,30,30)
 %geo_metadb('print GSEs',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'([Tt]h[12])|([Tt]h17)|([Tt]hreg)|([Tt][Cc][Rr])','Th_cells')
@@ -853,8 +853,8 @@ switch Action
         %recover all occurences of the symbol with text on both side
         WordList='';
         for GplL=1:length(GPLs)
-            %search if current GPL exists in K.chipSet
-            ChipRank=strmatch(sprintf('GPL%u',GPLs(GplL)),K.chipSet.geoName,'exact');
+            %search if current GPL exists in K.chip
+            ChipRank=strmatch(sprintf('GPL%u',GPLs(GplL)),K.chip.geoName,'exact');
             if isempty(ChipRank)
                 h=warndlg(sprintf('GPL%u does not exists',GPLs(GPL)));
                 waitfor(h)
@@ -870,7 +870,7 @@ switch Action
                         %for GseL=1:20
                         String=Gse.summary{GseL};
                         if ~isempty(String)
-                            %[Match,Index]=regexp(String,'[\|\$\[\]\)(}{_''"#`~&^%*§<>°@=£¤²]','match','start');
+                            %[Match,Index]=regexp(String,'[\|\$\[\]\)(}{_''"#`~&^%*ï¿½<>ï¿½@=ï¿½ï¿½ï¿½]','match','start');
                             %[Match,Index]=regexp(String,'\S\.\S|\S;\S|\S:\S|\S,\S|\S!\S|\S\?\S|','match','start');                            
                             [Match,Index]=regexp(String,Exp,'match','start');                            
                             if ~isempty(Index)
@@ -1164,8 +1164,8 @@ switch Action
         
         %process each GPL
         for GplL=1:length(GPLs)
-            %search if current GPL exists in K.chipSet
-            ChipRank=strmatch(sprintf('GPL%u',GPLs(GplL)),K.chipSet.geoName,'exact');
+            %search if current GPL exists in K.chip
+            ChipRank=strmatch(sprintf('GPL%u',GPLs(GplL)),K.chip.geoName,'exact');
             if isempty(ChipRank)
                 h=warndlg(sprintf('GPL%u does not exists',GPLs(GPL)));
                 waitfor(h)
@@ -1333,13 +1333,13 @@ switch Action
         fprintf(fid,'%s\n',Exp);
         fprintf(fid,'\n\n\n');
         for GplL=1:length(GPLs)
-            ChipRank=strmatch(sprintf('GPL%u',GPLs(GplL)),K.chipSet.geoName,'exact');
+            ChipRank=strmatch(sprintf('GPL%u',GPLs(GplL)),K.chip.geoName,'exact');
             if isempty(ChipRank)
                 h=warndlg(sprintf('GPL%u does not exists',GPLs(GplL)));
                 waitfor(h)
             else
                 %information on current GPL
-                fprintf(fid,'GPL%u: %s (m%u)\n\n',GPLs(GplL),K.chipSet.name{ChipRank},ChipRank);
+                fprintf(fid,'GPL%u: %s (m%u)\n\n',GPLs(GplL),K.chip.name{ChipRank},ChipRank);
                 GPL=sprintf('GPL%u.mat',GPLs(GplL));
                 cd(K.dir.geoMetadata)
                 if ~exist(GPL,'file')

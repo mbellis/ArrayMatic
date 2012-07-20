@@ -46,7 +46,7 @@ for NetL=1:length(NetRanks)
     end
 
     %BlocSize=K.net{ModelRank}.blocSize(NetPos);
-    PsNb=K.chipSet.probesetNb(ModelRank);
+    PsNb=K.chip.probesetNb(ModelRank);
     BlocSize=5000;
     BlocNb=ceil(PsNb/BlocSize);
     %LastBlocSize=mod(PsNb,BlocSize);

@@ -93,7 +93,7 @@ else
     UsedNb=length(Positions);
 end
 
-PsNb=K.chipSet.probeSetNbs{ModelRank}(1);
+PsNb=K.chip.probeSetNbs{ModelRank}(1);
 BlocNb=K.net{ModelRank}.blocNb(NetRank);
 BlocSize=K.net{ModelRank}.blocSize(NetRank);
 

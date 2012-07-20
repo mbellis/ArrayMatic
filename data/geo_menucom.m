@@ -95,41 +95,196 @@ switch Action
 
     case 'do RDN analysis'
 %% DO RDN ANALYSIS     
-        [ChipRank,ChipPos,Type,ProbeSetNb,Gpl,CompName,Chromosomes,Success] =select_chipset();
-        ChipName=regexp(K.chipSet.shortName{ChipPos},'(?<=^\w+-)\w+','match');
-        ChipName=ChipName{1};
-        MyChipName=sprintf('m%u',ChipRank);
-        cd(K.dir.geoMetadata)
-        [FileName,FileDir]=uigetfile(sprintf('GPL%u.mat',Gpl),'select a GPL');
-        if isnumeric(FileName)
-            h=warndlg('use ''display a GPL'' to create the GPL you want to use');
+[ChipRank,ChipPos,Type,ProbeSetNb,Gpl,CompName,Chromosomes,Success] =select_chip();
+if Success==0
+    h=warndlg('RDN analysis canceled');
+    waitfor(h)
+else
+    ChipName=K.chip.shortName{ChipPos};
+    MyChipName=sprintf('m%u',ChipRank);
+    cd(K.dir.geoMetadata)
+    [FileName,FileDir]=uigetfile(sprintf('%s.mat',Gpl),'select a Gpl');
+    if isnumeric(FileName)
+        h=warndlg('use ''display a GPL'' to create the GPL you want to use');
+        waitfor(h)
+    else
+        %import chip set informationif necessary
+        cd(K.dir.affyMetadata)
+        if ~exist(sprintf('%s_cdf.mat',MyChipName),'file')|~exist(sprintf('%s_gin.mat',MyChipName),'file')|~exist(sprintf('%s_seq.mat',MyChipName),'file')|~exist(sprintf('%s_pa.mat',MyChipName),'file')
+            affy_rdn('recover chip info','','', ChipName, MyChipName,K.dir.affyMetadata,fullfile(K.dir.affyChipData,MyChipName,'libfiles'));
+        end
+
+        cd(FileDir)
+        load(FileName)
+        %load data
+        cd(K.dir.geoExperiments)
+        if ~exist(Gpl,'dir')
+            h=warndlg(sprintf('%s does not exist in %s',Gpl,K.dir.data));
             waitfor(h)
         else
-            %import chip set informationif necessary
-            cd(K.dir.affyMetadata)
-            if ~exist(sprintf('%s_cdf.mat',MyChipName),'file')|~exist(sprintf('%s_gin.mat',MyChipName),'file')|~exist(sprintf('%s_seq.mat',MyChipName),'file')|~exist(sprintf('%s_pa.mat',MyChipName),'file')
-                affy_rdn('recover chip info','','', ChipName, MyChipName,K.dir.affyMetadata,fullfile(K.dir.affyChipData,ChipName,'LibFiles'));
-            end
-
-            cd(FileDir)
-            load(FileName)
-            GPL=regexp(FileName,'(?=.)^GPL\d+','match');
-            GPL=GPL{1};
-            %load data
-            cd(K.dir.geoExperiments)
-            if ~exist(GPL,'dir')
-                h=warndlg(sprintf('%s does not exist in %s',GPL,K.dir.data));
-                waitfor(h)
+            UpdateFlag=questdlg('Do you want to overwrite existing analysis','','no','yes','no');
+            if isequal(UpdateFlag,'yes')
+                UpdateFlag=1;
             else
-                UpdateFlag=questdlg('Do you want to overwrite existing analysis','','no','yes','no');
-                if isequal(UpdateFlag,'yes')
-                    UpdateFlag=1;
+                UpdateFlag=0;
+            end
+            cd(Gpl);
+            GplDir=cd;
+            GsePos=find(Gse.imported);
+            for GseL=1:length(GsePos)
+                cd(GplDir)
+                %create a directory and decompress files
+                GSE=Gse.gse{GsePos(GseL)};
+                GseRank=Gse.gseRank(GsePos(GseL));
+                TarFile=sprintf('%s_RAW.tar',GSE);
+                if ~exist(TarFile,'file')
+                    h=warndlg(sprintf('%s does not exist in %s',TarFile,Gpl));
+                    waitfor(h)
                 else
-                    UpdateFlag=0;
+                    if ~exist(GSE,'dir')
+                        mkdir(GSE)
+                    end
+                    cd(GSE)
+                    GseDir=cd;
+                    if ~exist(sprintf('rdn_%s.txt',GSE),'file')|UpdateFlag
+                        cd(GplDir)
+                        %decompress
+                        untar(TarFile,GSE)
+                        cd(GseDir)
+                        %delete EXP files
+                        delete('*.EXP.gz')
+                        %eliminate GSM that does not belong to the current
+                        %Gpl
+                        GsmPos=find(Gsm.gseRank==GseRank);
+                        DoIt=1;
+                        BiolNames={};
+                        AllBiolNames={};
+                        Replicates=[];
+                        CelNames={};
+                        for GsmL=1:length(GsmPos)
+                            if ~isequal(Gsm.gpl{GsmPos(GsmL)},Gpl)
+                                delete(sprintf('%s.CEL.gz',Gsm.gsm{GsmPos(GsmL)}))
+                            else
+                                %verify it exists
+                                if ~exist(sprintf('%s.CEL.gz',Gsm.gsm{GsmPos(GsmL)}),'file')&~exist(sprintf('%s.cel.gz',Gsm.gsm{GsmPos(GsmL)}),'file')
+                                    h=warndlg(sprintf('%s does not exist - process canceled',Gsm.gsm{GsmPos(GsmL)}));
+                                    waitfor(h)
+                                    DoIt=0;
+                                    break
+                                else
+
+                                    if isempty(strmatch(Gsm.biolName{GsmPos(GsmL)},BiolNames))
+                                        BiolNames{end+1,1}=Gsm.biolName{GsmPos(GsmL)};
+                                    end
+                                    AllBiolNames{end+1,1}=Gsm.biolName{GsmPos(GsmL)};
+                                    Replicates=[Replicates;Gsm.replicate(GsmPos(GsmL))];
+                                    CelNames{end+1,1}=sprintf('%s.CEL',Gsm.gsm{GsmPos(GsmL)});
+                                    if exist(sprintf('%s.CEL.gz',Gsm.gsm{GsmPos(GsmL)}),'file')
+                                        gunzip(sprintf('%s.CEL.gz',Gsm.gsm{GsmPos(GsmL)}));
+                                    else
+                                        gunzip(sprintf('%s.cel.gz',Gsm.gsm{GsmPos(GsmL)}));
+                                    end
+                                end
+                            end
+                        end
+                        %delete gz files
+                        delete *.gz
+                        if DoIt
+                            %construct sample name list and order list
+                            SampleNames={};
+                            PrintOrder=[];
+                            [CelNames CelOrder]=sort(CelNames);
+                            AllBiolNames=AllBiolNames(CelOrder);
+                            Replicates=Replicates(CelOrder);
+                            for BiolL=1:length(BiolNames)
+                                RepPos=strmatch(BiolNames{BiolL},AllBiolNames,'exact');
+                                [temp RepOrder]=sort(Replicates(RepPos));
+                                for RepL=1:length(RepOrder)
+                                    SampleNames{end+1,1}=sprintf('%s_r%u',BiolNames{BiolL},RepL);
+                                    PrintOrder=[PrintOrder,RepPos(RepOrder(RepL))];
+                                end
+                            end
+                            %write a description file used by
+                            %simpleaffy
+                            fid=fopen(sprintf('%s_description.txt',GSE),'w');
+                            fprintf(fid,' CEL_FILE BIOL_COND\n')
+                            for CelL=1:length(CelNames)
+                                if exist(CelNames{CelL},'file')
+                                    fprintf(fid,'%s %s_%u\n',CelNames{CelL},AllBiolNames{CelL},Replicates(CelL));
+                                elseif exist(strrep(CelNames{CelL},'CEL','cel'),'file')
+                                    fprintf(fid,'%s %s_%u\n',strrep(CelNames{CelL},'CEL','cel'),AllBiolNames{CelL},Replicates(CelL));
+                                end
+                            end
+                            fclose(fid)
+
+                            sprintf('doing %s (%u upon %u)',GSE,GseL,length(GsePos))
+                            %analyze RDN
+                            if ~exist(sprintf('%s_cel.mat',GSE),'file')
+                                affy_rdn('import cel files',GSE,GseDir);
+                            end
+                            affy_rdn('do rdn analysis',GSE,GseDir,ChipName,MyChipName,K.dir.affyMetadata,fullfile(K.dir.affyChipData,ChipName,'LibFiles'));
+                            affy_rdn('print rdn signals',GSE,GseDir,ChipName,MyChipName,K.dir.affyMetadata,fullfile(K.dir.affyChipData,ChipName,'LibFiles'),SampleNames,PrintOrder);
+                        end
+                    end
                 end
-                cd(GPL);
-                GplDir=cd;
+            end
+        end
+    end
+end
+
+
+    case 'do RMA analysis'
+%% DO RMA ANALYSIS            
+[ChipRank,ChipPos,Type,ProbeSetNb,Gpl,CompName,Chromosomes,Success] =select_chip();
+if Success==0
+    h=warndlg('RMA analysis canceled');
+    waitfor(h)
+else
+    cd(K.dir.geoMetadata)
+    [FileName,FileDir]=uigetfile(sprintf('%s.mat',Gpl),'select a GPL');
+    if isnumeric(FileName)
+        h=warndlg('use ''display a GPL'' to create the GPL you want to use');
+        waitfor(h)
+    else
+        cd(FileDir)
+        load(FileName)
+        %GPL=regexp(FileName,'(?=.)^GPL\d+','match');
+        %GPL=GPL{1};
+        %load data
+        cd(K.dir.geoExperiments)
+        if ~exist(Gpl,'dir')
+            h=warndlg(sprintf('%s does not exist in %s',Gpl,K.dir.geoExperiments));
+            waitfor(h)
+        else
+            UpdateFlag=questdlg('Do you want to overwrite existing analysis','','no','yes','no');
+            if isequal(UpdateFlag,'yes')
+                UpdateFlag=1;
                 GsePos=find(Gse.imported);
+            else
+                UpdateFlag=0;
+                GsePos=find(Gse.imported&Gse.analyzed==0);
+            end
+            cd(Gpl);
+            GplDir=cd;
+            ListRank=0;
+            %process each GSE individually, but no more than 60 GSM at the same time
+            for RoundL=1:3
+                switch RoundL
+                    case 1
+                        Limit1=1;
+                        Limit2=20;
+                        GseNb=3;
+                    case 2
+                        Limit1=20;
+                        Limit2=30;
+                        GseNb=2;
+                    case 3
+                        Limit1=30;
+                        Limit2=[];
+                        GseNb=1;
+                end
+                %create list of Gse to be processed in the current round
+                GseList=[];
                 for GseL=1:length(GsePos)
                     cd(GplDir)
                     %create a directory and decompress files
@@ -137,252 +292,105 @@ switch Action
                     GseRank=Gse.gseRank(GsePos(GseL));
                     TarFile=sprintf('%s_RAW.tar',GSE);
                     if ~exist(TarFile,'file')
-                        h=warndlg(sprintf('%s does not exist in %s',TarFile,GPL));
+                        h=warndlg(sprintf('%s does not exist in %s',TarFile,Gpl));
                         waitfor(h)
+                        Gse.imported(GsePos(GseL))=0;
                     else
-                        if ~exist(GSE,'dir')
-                            mkdir(GSE)
-                        end
-                        cd(GSE)
-                        GseDir=cd;
-                        if ~exist(sprintf('rdn_%s.txt',GSE),'file')|UpdateFlag
-                            cd(GplDir)
-                            %decompress
-                            untar(TarFile,GSE)
-                            cd(GseDir)
-                            %delete EXP files
-                            delete('*.EXP.gz')
-                            %eliminate GSM that does not belong to the current
-                            %GPL
-                            GsmPos=find(Gsm.gseRank==GseRank);
-                            DoIt=1;
-                            BiolNames={};
-                            AllBiolNames={};
-                            Replicates=[];
-                            CelNames={};
-                            for GsmL=1:length(GsmPos)
-                                if ~isequal(Gsm.gpl{GsmPos(GsmL)},GPL)
-                                    delete(sprintf('%s.CEL.gz',Gsm.gsm{GsmPos(GsmL)}))
-                                else
-                                    %verify it exists
-                                    if ~exist(sprintf('%s.CEL.gz',Gsm.gsm{GsmPos(GsmL)}),'file')&~exist(sprintf('%s.cel.gz',Gsm.gsm{GsmPos(GsmL)}),'file')
-                                        h=warndlg(sprintf('%s does not exist - process canceled',Gsm.gsm{GsmPos(GsmL)}));
-                                        waitfor(h)
-                                        DoIt=0;
-                                        break
-                                    else
-
-                                        if isempty(strmatch(Gsm.biolName{GsmPos(GsmL)},BiolNames))
-                                            BiolNames{end+1,1}=Gsm.biolName{GsmPos(GsmL)};
-                                        end
-                                        AllBiolNames{end+1,1}=Gsm.biolName{GsmPos(GsmL)};
-                                        Replicates=[Replicates;Gsm.replicate(GsmPos(GsmL))];
-                                        CelNames{end+1,1}=sprintf('%s.CEL',Gsm.gsm{GsmPos(GsmL)});
-                                        if exist(sprintf('%s.CEL.gz',Gsm.gsm{GsmPos(GsmL)}),'file')
-                                            gunzip(sprintf('%s.CEL.gz',Gsm.gsm{GsmPos(GsmL)}));
-                                        else
-                                            gunzip(sprintf('%s.cel.gz',Gsm.gsm{GsmPos(GsmL)}));
-                                        end
-                                    end
+                        GsmPos=find(Gsm.gseRank==GseRank);
+                        switch RoundL
+                            case {1,2}
+                                length(GsmPos)
+                                if length(GsmPos)>=Limit1&length(GsmPos)<Limit2
+                                    GseList=[GseList;GsePos(GseL)];
                                 end
-                            end
-                            %delete gz files
-                            delete *.gz
-                            if DoIt
-                                %construct sample name list and order list
-                                SampleNames={};
-                                PrintOrder=[];
-                                [CelNames CelOrder]=sort(CelNames);
-                                AllBiolNames=AllBiolNames(CelOrder);
-                                Replicates=Replicates(CelOrder);
-                                for BiolL=1:length(BiolNames)
-                                    RepPos=strmatch(BiolNames{BiolL},AllBiolNames,'exact');
-                                    [temp RepOrder]=sort(Replicates(RepPos));
-                                    for RepL=1:length(RepOrder)
-                                        SampleNames{end+1,1}=sprintf('%s_r%u',BiolNames{BiolL},RepL);
-                                        PrintOrder=[PrintOrder,RepPos(RepOrder(RepL))];
-                                    end
+                            case 3
+                                if length(GsmPos)>=Limit1
+                                    GseList=[GseList;GsePos(GseL)];
                                 end
-                                %write a description file used by
-                                %simpleaffy
-                                fid=fopen(sprintf('%s_description.txt',GSE),'w');
-                                fprintf(fid,' CEL_FILE BIOL_COND\n')
-                                for CelL=1:length(CelNames)
-                                    if exist(CelNames{CelL},'file')
-                                        fprintf(fid,'%s %s_%u\n',CelNames{CelL},AllBiolNames{CelL},Replicates(CelL));
-                                    elseif exist(strrep(CelNames{CelL},'CEL','cel'),'file')
-                                        fprintf(fid,'%s %s_%u\n',strrep(CelNames{CelL},'CEL','cel'),AllBiolNames{CelL},Replicates(CelL));
-                                    end
-                                end
-                                fclose(fid)
-
-                                sprintf('doing %s (%u upon %u)',GSE,GseL,length(GsePos))
-                                %analyze RDN
-                                if ~exist(sprintf('%s_cel.mat',GSE),'file')
-                                    affy_rdn('import cel files',GSE,GseDir);
-                                end
-                                affy_rdn('do rdn analysis',GSE,GseDir,ChipName,MyChipName,K.dir.affyMetadata,fullfile(K.dir.affyChipData,ChipName,'LibFiles'));
-                                affy_rdn('print rdn signals',GSE,GseDir,ChipName,MyChipName,K.dir.affyMetadata,fullfile(K.dir.affyChipData,ChipName,'LibFiles'),SampleNames,PrintOrder);
-                            end
                         end
                     end
                 end
-            end
-        end
-
-    case 'do RMA analysis'
-%% DO RMA ANALYSIS            
-        cd(K.dir.geoMetadata)
-        [FileName,FileDir]=uigetfile(sprintf('GPL%u.mat',Gpl),'select a GPL');
-        if isnumeric(FileName)
-            h=warndlg('use ''display a GPL'' to create the GPL you want to use');
-            waitfor(h)
-        else
-            cd(FileDir)
-            load(FileName)
-            GPL=regexp(FileName,'(?=.)^GPL\d+','match');
-            GPL=GPL{1};
-            %load data
-            cd(K.dir.geoExperiments)
-            if ~exist(GPL,'dir')
-                h=warndlg(sprintf('%s does not exist in %s',GPL,K.dir.data));
-                waitfor(h)
-            else
-                UpdateFlag=questdlg('Do you want to overwrite existing analysis','','no','yes','no');
-                if isequal(UpdateFlag,'yes')
-                    UpdateFlag=1;
-                    GsePos=find(Gse.imported);
-                else
-                    UpdateFlag=0;
-                    GsePos=find(Gse.imported&Gse.analyzed==0);
-                end
-                cd(GPL);
-                GplDir=cd;
-                ScriptRank=0;
-                %process each GSE individually, but no more than 60 GSM at the same time
-                for RoundL=1:3
-                    switch RoundL
-                        case 1
-                            Limit1=1;
-                            Limit2=20;
-                            ListNb=3;
-                        case 2
-                            Limit1=20;
-                            Limit2=30;
-                            ListNb=2;
-                        case 3
-                            Limit1=30;
-                            Limit2=[];
-                            ListNb=1;
+                if ~isempty(GseList)
+                    if length(GseList)>GseNb
+                        ListNb=ceil(length(GseList)/GseNb);
+                    else
+                        %GseNb=length(GseList);
+                        ListNb=1;
                     end
-                    %create list of Gse to be processed in the current round
-                    GseList=[];
-                    for GseL=1:length(GsePos)
+                    for ListL=1:ListNb
+                        ListRank=ListRank+1;
+                        %create R script
                         cd(GplDir)
-                        %create a directory and decompress files
-                        GSE=Gse.gse{GsePos(GseL)};
-                        GseRank=Gse.gseRank(GsePos(GseL));
-                        TarFile=sprintf('%s_RAW.tar',GSE);
-                        if ~exist(TarFile,'file')
-                            h=warndlg(sprintf('%s does not exist in %s',TarFile,GPL));
-                            waitfor(h)
-                            Gse.imported(GsePos(GseL))=0;
+                        fid=fopen(sprintf('%s_%u.r',Gpl,ListRank),'w');
+                        fprintf(fid,'library(R.utils)\n');
+                        fprintf(fid,'library(affy)\n');
+                        if ListL==ListNb
+                            EndL=length(GseList);
                         else
-                            GsmPos=find(Gsm.gseRank==GseRank);
-                            switch RoundL                                
-                                case {1,2}
-                                    length(GsmPos)
-                                    if length(GsmPos)>=Limit1&length(GsmPos)<Limit2
-                                        GseList=[GseList;GsePos(GseL)];
-                                    end
-                                case 3
-                                    if length(GsmPos)>=Limit1
-                                        GseList=[GseList;GsePos(GseL)];
-                                    end
-                            end
+                            EndL=ListL*GseNb;
                         end
-                    end
-                    if ~isempty(GseList)
-                        if length(GseList)>ListNb
-                            GseNb=floor(length(GseList)/ListNb);
-                            SuppNb=length(GseList)-ListNb*GseNb;
-                        else
-                            GseNb=length(GseList);
-                            ListNb=1;
-                        end
-                        for ScriptL=1:ListNb
-                            ScriptRank=ScriptRank+1;
-                            %create R script
+                        for GseL=(ListL-1)*GseNb+1:EndL
+                            %create directory
+                            CurrGse=Gse.gse{GseList(GseL)};
+                            CurrGseRank=Gse.gseRank(GseList(GseL));
+                            DoIt=1;
                             cd(GplDir)
-                            fid=fopen(sprintf('%s_%u.r',GPL,ScriptRank),'w');
-                            fprintf(fid,'library(R.utils)\n');
-                            fprintf(fid,'library(affy)\n');
-                            if ScriptL==ListNb
-                                EndL=length(GseList);
+                            if ~exist(CurrGse,'dir')
+                                mkdir('./',CurrGse);
                             else
-                                EndL=ScriptL*GseNb;
-                            end
-                            for GseL=(ScriptL-1)*GseNb+1:EndL
-                                %create directory
-                                CurrGse=Gse.gse{GseList(GseL)};
-                                CurrGseRank=Gse.gseRank(GseList(GseL));
-                                DoIt=1;
-                                cd(GplDir)
-                                if ~exist(CurrGse,'dir')
-                                    mkdir('./',CurrGse);
-                                else
-                                    cd(CurrGse)
-                                    if exist(sprintf('%s_rma.txt',CurrGse),'file')
-                                        DoIt=0;
-                                        Gse.analyzed(GsePos(GseL),1)=1;
-                                    end
-                                end
-                                if DoIt
-                                    GsmPos=find(Gsm.gseRank==CurrGseRank);
-
-                                    %untar GSM files
-                                    fprintf(fid,'setwd("%s")\n',GplDir);
-                                    fprintf(fid,'system("tar -xf %s_RAW.tar --directory=./%s")\n',CurrGse,CurrGse);
-                                    fprintf(fid,'setwd("./%s")\n',CurrGse);
-                                    %rename files with standardized form
-                                    %GSMxxxx.CEL;gz
-                                    fprintf(fid,'try(system("rename ''s/gsm/GSM/'' gsm*"),silent=TRUE)\n');
-                                    fprintf(fid,'try(system("rename ''s/cel/CEL/'' *cel*"),silent=TRUE)\n');
-                                    %sometimes GSM have something between the number and .CEL.gz
-                                    fprintf(fid,'try(system("rename ''s/_.+CEL/\\\\.CEL/'' *CEL*"),silent=TRUE)\n');
-                                    %eventually remove unwanted GSM files
-                                    for GsmL=1:length(GsmPos)
-                                        if ~isequal(Gsm.gpl{GsmPos(GsmL)},GPL)
-                                            fprintf(fid,'unlink("%s.CEL.gz")\n',Gsm.gsm{GsmPos(GsmL)});
-                                        else
-                                            %gunzip files
-                                            fprintf(fid,'system("gunzip %s.CEL.gz")\n',Gsm.gsm{GsmPos(GsmL)});
-                                        end
-                                    end
-                                    %clear all other gz files
-                                    fprintf(fid,'unlink("*.gz")\n');
-
-                                    %load cel files
-                                    fprintf(fid,'data=try(ReadAffy(),silent=TRUE)\n');
-                                    fprintf(fid,'result=try(rma(data),silent=TRUE)\n');
-                                    fprintf(fid,'try(write.table(assayData(result)$exprs,file="%s_rma.txt",col.names=sampleNames(phenoData(result)),row.names=featureNames(featureData(result)),sep="\\t",na="NaN",dec=".",quote=FALSE),silent=TRUE)\n',CurrGse);
-                                    fprintf(fid,'try(unlink("*.CEL"),silent=TRUE)\n');
-                                    fprintf(fid,'try(unlink("*.cel"),silent=TRUE)\n');
-                                    fprintf(fid,'try(remove(data,result),silent=TRUE)\n');
+                                cd(CurrGse)
+                                if exist(sprintf('%s_rma.txt',CurrGse),'file')
+                                    DoIt=0;
+                                    Gse.analyzed(GsePos(GseL),1)=1;
                                 end
                             end
-                            fclose(fid);
+                            if DoIt
+                                GsmPos=find(Gsm.gseRank==CurrGseRank);
+
+                                %untar GSM files
+                                fprintf(fid,'setwd("%s")\n',GplDir);
+                                fprintf(fid,'system("tar -xf %s_RAW.tar --directory=./%s")\n',CurrGse,CurrGse);
+                                fprintf(fid,'setwd("./%s")\n',CurrGse);
+                                %rename files with standardized form
+                                %GSMxxxx.CEL;gz
+                                fprintf(fid,'try(system("rename ''s/gsm/GSM/'' gsm*"),silent=TRUE)\n');
+                                fprintf(fid,'try(system("rename ''s/cel/CEL/'' *cel*"),silent=TRUE)\n');
+                                %sometimes GSM have something between the number and .CEL.gz
+                                fprintf(fid,'try(system("rename ''s/_.+CEL/\\\\.CEL/'' *CEL*"),silent=TRUE)\n');
+                                %eventually remove unwanted GSM files
+                                for GsmL=1:length(GsmPos)
+                                    if ~isequal(Gsm.gpl{GsmPos(GsmL)},Gpl)
+                                        fprintf(fid,'unlink("%s.CEL.gz")\n',Gsm.gsm{GsmPos(GsmL)});
+                                    else
+                                        %gunzip files
+                                        fprintf(fid,'system("gunzip %s.CEL.gz")\n',Gsm.gsm{GsmPos(GsmL)});
+                                    end
+                                end
+                                %clear all other gz files
+                                fprintf(fid,'unlink("*.gz")\n');
+
+                                %load cel files
+                                fprintf(fid,'data=try(ReadAffy(),silent=TRUE)\n');
+                                fprintf(fid,'result=try(rma(data),silent=TRUE)\n');
+                                fprintf(fid,'try(write.table(assayData(result)$exprs,file="%s_rma.txt",col.names=sampleNames(phenoData(result)),row.names=featureNames(featureData(result)),sep="\\t",na="NaN",dec=".",quote=FALSE),silent=TRUE)\n',CurrGse);
+                                fprintf(fid,'try(unlink("*.CEL"),silent=TRUE)\n');
+                                fprintf(fid,'try(unlink("*.cel"),silent=TRUE)\n');
+                                fprintf(fid,'try(remove(data,result),silent=TRUE)\n');
+                            end
                         end
+                        fclose(fid);
                     end
                 end
             end
-            cd(FileDir)
-            cd(K.dir.geoMetadata)
-            eval(sprintf('save %s Gsm Gse Gds Contributor',FileName))
         end
+        cd(FileDir)
+        cd(K.dir.geoMetadata)
+        eval(sprintf('save %s Gsm Gse Gds Contributor',FileName))
+    end
+end
 
     case 'create new network'
-%% CREATE NEW NETWORK
+        %% CREATE NEW NETWORK
         WARNFLAG=1;
         GplRank=varargin{1};
         DataFid=varargin{2};
@@ -440,15 +448,15 @@ switch Action
                         BiolNames={};
                         DataSignals=[];
                         ExpRank=0;
-                        
+
                         P.exp.name={};
                         P.exp.source={};
                         P.exp.reference={};
                         P.exp.pointIndex={};
                         P.exp.used=[];
                         P.exp.nb=0;
-                        
-                        P.biol.name={};                        
+
+                        P.biol.name={};
                         P.biol.pointIndex={};
                         P.biol.used=[];
                         P.biol.pairs=[];
@@ -480,7 +488,7 @@ switch Action
                         
 
 
-                        ProbeSetNb=K.chipSet.probeSetNbs{P.chip.chipSetRank}(P.chip.chipRank);
+                        ProbeSetNb=K.chip.probeSetNbs{P.chip.chipSetRank}(P.chip.chipRank);
                         for GseL=1:length(Gse.gse)
                             CurrGse=Gse.gse{GseL};
                             cd(P.dir.geoData)

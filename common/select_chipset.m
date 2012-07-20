@@ -1,4 +1,4 @@
-% SELECT_CHIPSET - Allows to select a chip set and eventually a chip if the
+% SELECT_CHISET - Allows to select a chip set and eventually a chip if the
 % chip set is composed of several chips
 
 % c) Michel Bellis
@@ -26,27 +26,30 @@
 function [ChipRank,ChipPos,Type,ProbeSetNb,Gpl,CompName,Chromosomes,Success] =select_chipset()
 global K
 
-
+ChipRank=0;
+ChipPos=0;
+Type='';
 ProbeSetNb=0;
+Gpl='';
 CompName='';
 Chromosomes={};
+Success=0;
 
 %order chip set by species
 [Temp,SortIndex]=sort(K.chipSet.name);
 [Temp,SortIndex1]=sort(K.chipSet.species(SortIndex));
-SortIndex=SortIndex(SortINdex1);
+SortIndex=SortIndex(SortIndex1);
 ChipSet.rank=[0;K.chipSet.rank(SortIndex)];
 ChipSet.myName=['not listed';K.chipSet.myName(SortIndex)];
 ChipSet.name=['not listed';K.chipSet.name(SortIndex)];
 ChipSet.shortName=['not listed';K.chipSet.shortName(SortIndex)];
 ChipSet.species=['not listed';K.chipSet.species(SortIndex)];
-ChipSet.probesetNb=['UserType';K.chipSet.probesetNb(SortIndex)];
-ChipSet.probeNb=['UserType';K.chipSet.probeNb(SortIndex)];
-ChipSet.compName=['UserType';K.chipSet.compName(SortIndex)];
-ChipSet.geoName=['UserType';K.chipSet.geoName(SortIndex)];
+ChipSet.probesetNb=[0;K.chipSet.probesetNb(SortIndex)];
+ChipSet.probeNb=[0;K.chipSet.probeNb(SortIndex)];
+ChipSet.compName=[0;K.chipSet.compName(SortIndex)];
+ChipSet.geoName=[0;K.chipSet.geoName(SortIndex)];
 
 
-Success=0;
 Continue=1;
 while Continue
     [ChipSel,ChipOK] = listdlg('ListString',ChipSet.name,'SelectionMode','single','ListSize',[600,600],'Name','Analysis of Raw Data','PromptString','Select Chip Model');

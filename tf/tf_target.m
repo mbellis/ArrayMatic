@@ -6,7 +6,7 @@
 ModelRank=8;
 RandNetRanks=[7:21,24:38,39:53];
 TfNetRanks=[56:109];
-PsNb=K.chipSet.probeSetNbs{ModelRank};
+PsNb=K.chip.probeSetNbs{ModelRank};
 
 TfNetNb=length(TfNetRanks);
 RandNetNb=length(RandNetRanks);

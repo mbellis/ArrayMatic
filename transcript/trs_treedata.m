@@ -386,7 +386,7 @@ if ~isequal(SelType,'point')
                     try
                         Values=log2(interp1(P.chip.refRank,P.chip.refSignal,Rank));
                     catch
-                        Values=log2(interp1(K.chipSet.ref.rank,K.chipSet.ref.signal,Rank));
+                        Values=log2(interp1(K.chip.ref.rank,K.chip.ref.signal,Rank));
                     end
                     if ~isempty(find(isnan(Values)))
                         h=warndlg(sprintf('%u NaN values in Signal of chip %s!',length(find(isnan(Signal))),F.list.array));

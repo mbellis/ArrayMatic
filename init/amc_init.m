@@ -117,15 +117,15 @@ end
 cd(K.dir.common)
 if exist('chiplist.mat')==2
     load chiplist
-    K.chipSet=Tempo;
+    K.chip=Tempo;
     clear Tempo
 else
     %amc_chiplist
     cd(K.dir.chipMetadata)
-    [K.chipSet.rank,K.chipSet.myName,K.chipSet.name,K.chipSet.shortName,K.chipSet.species,K.chipSet.probesetNb,K.chipSet.probeNb,K.chipSet.compName,temp,temp,K.chipSet.geoName]=textread('chip.txt','%u%s%s%s%s%u%u%s%s%s%s','delimiter','\t');
+    [K.chip.rank,K.chip.myName,K.chip.name,K.chip.shortName,K.chip.species,K.chip.probesetNb,K.chip.probeNb,K.chip.compName,temp,temp,K.chip.geoName]=textread('chip.txt','%u%s%s%s%s%u%u%s%s%s%s','delimiter','\t');
     cd(K.dir.chip)
-    [K.chipSet.ref.rank,K.chipSet.ref.signal]=textread('signal_vs_rank.txt','%f%f','delimiter','\t');
-    Tempo=K.chipSet;
+    [K.chip.ref.rank,K.chip.ref.signal]=textread('signal_vs_rank.txt','%f%f','delimiter','\t');
+    Tempo=K.chip;
     cd(K.dir.common)
     save chiplist Tempo
 end

@@ -42,7 +42,7 @@ global K
 
 NetNb=length(NetRanks);
 ListNb=length(ListRank);
-PsNb=K.chipSet.probesetNb(ChipRank);
+PsNb=K.chip.probesetNb(ChipRank);
 
 
 

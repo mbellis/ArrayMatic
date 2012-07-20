@@ -47,8 +47,8 @@ function net_properties(Action,ModelRank,NetRank,CorrLimit,varargin)
 global K
 % %STUDY NETWORK STRUCTURE
 BLOCSIZE=5000;
-ChipPos=find(K.chipSet.rank==ModelRank);
-PsNb=K.chipSet.probesetNb(ChipPos);
+ChipPos=find(K.chip.rank==ModelRank);
+PsNb=K.chip.probesetNb(ChipPos);
 BlocNb=ceil(PsNb./BLOCSIZE);
 
 switch Action

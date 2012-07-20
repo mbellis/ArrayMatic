@@ -38,7 +38,7 @@ cd(BestDir)
 eval(sprintf('load %s',BestFile))
 Best{1}=BinCount;
 clear BinCount
-PsNb=K.chipSet.probeSetNbs{ModelRank}(1);
+PsNb=K.chip.probeSetNbs{ModelRank}(1);
 
 %recover non empty gene sets
 GsPos=[];

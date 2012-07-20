@@ -25,8 +25,8 @@ global K
 
 NetDir=fullfile(K.dir.tables,sprintf('m%u',ModelRank),sprintf('m%u_data',ModelRank));
 cd(NetDir)
-OldTableNb=ceil(K.chipSet.probeSetNbs{ModelRank}/OldTableSize);
-NewTableNb=ceil(K.chipSet.probeSetNbs{ModelRank}/NewTableSize);
+OldTableNb=ceil(K.chip.probeSetNbs{ModelRank}/OldTableSize);
+NewTableNb=ceil(K.chip.probeSetNbs{ModelRank}/NewTableSize);
 if NewTableNb<OldTableNb
     if mod(NewTableSize,OldTableSize)>0
         h=errordlg('NewTableSize must be a multiple of OldTableSize');

@@ -50,10 +50,10 @@ for ChipL=1:ChipNb
         if min(Information{ChipL}.listRank)>=7
             PsNb(ChipL)=22690;
         else
-            PsNb(ChipL)=K.chipSet.probesetNb(ChipRank(ChipL));
+            PsNb(ChipL)=K.chip.probesetNb(ChipRank(ChipL));
         end
     else
-        PsNb(ChipL)=K.chipSet.probesetNb(ChipRank(ChipL));
+        PsNb(ChipL)=K.chip.probesetNb(ChipRank(ChipL));
     end
 end
 clear Info Clu CluNb

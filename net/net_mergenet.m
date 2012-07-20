@@ -39,8 +39,8 @@ if nargin<4
 elseif nargin==5
     MinNetNb=varargin{1};
 end
-ChipPos=find(K.chipSet.rank==ChipRank);
-ProbesetNb=K.chipSet.probesetNb(ChipPos);
+ChipPos=find(K.chip.rank==ChipRank);
+ProbesetNb=K.chip.probesetNb(ChipPos);
 if Continue
     Pos=length(K.net{ChipRank}.name)+1;
     NetRank=setdiff([1:Pos],K.net{ChipRank}.rank);
@@ -66,7 +66,7 @@ if Continue
 end
 
 % if Continue
-%     ProbesetNb=K.chipSet.probeSetNbs{ChipRank}(1);
+%     ProbesetNb=K.chip.probeSetNbs{ChipRank}(1);
 %     %CONTROL THAT THE FIRST MERGED NETWORK DOES NOT EXIST (CREATED LATTER IN K.net)
 %     if ~isempty(find(K.net{ChipRank}.rank==NetRank))
 %         Suggest=setdiff(1:max(K.net{ChipRank}.rank),K.net{ChipRank}.rank);

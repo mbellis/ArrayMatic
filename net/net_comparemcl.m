@@ -62,7 +62,7 @@ if ModelRank(1)~=ModelRank(2)
         error('process canceled')
     end
 else
-    ComPsRank=repmat([1:K.chipSet.probeSetNbs{ModelRank(1)}(1)]',1,2);
+    ComPsRank=repmat([1:K.chip.probeSetNbs{ModelRank(1)}(1)]',1,2);
 end
 
 %load MCL clusters
@@ -223,7 +223,7 @@ if TwinFlag
     PsNb=[];
     NetDir=[];
     for ModelL=1:2
-        PsNb(ModelL)=K.chipSet.probeSetNbs{ModelRank(ModelL)}(1);
+        PsNb(ModelL)=K.chip.probeSetNbs{ModelRank(ModelL)}(1);
         NetDir{ModelL}=fullfile(K.dir.net,sprintf('m%03u',ModelRank(ModelL)),sprintf('n%05u',NetRank(ModelL)));
         CFile{ModelL}=sprintf('c_m%u_n%u.4mat',ModelRank(ModelL),NetRank(ModelL));
         AFile{ModelL}=sprintf('a_m%u_n%u.4mat',ModelRank(ModelL),NetRank(ModelL));

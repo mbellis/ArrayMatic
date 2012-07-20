@@ -74,7 +74,7 @@ P=[];
 %% PROJECT INFO
 %Select the chip set & eventually the chip if several chips exists in the
 %same chip set model
-[P.chip.chipRank,P.chip.chipPos,ChipType,Gpl,ProbeSetNb,CompName,Chromosomes,Success] =select_chipset;
+[P.chip.chipRank,P.chip.chipPos,ChipType,Gpl,ProbeSetNb,CompName,Chromosomes,Success] =select_chip;
 if Success==0
     h=warndlg('chip set no selected , process canceled');
     waitfor(h)
@@ -211,7 +211,7 @@ else
 
         case 'G'
             %ask for the type of analysis
-            Answer=questdlg('Experiment format ?','Import of Raw Data','Transcription profiling','ChIP-chip','Yes');
+            Answer=questdlg('Experiment format ?','Import of Raw Data','Transcription profiling','ChIP-chip','ChiP-chip');
             if isequal(Answer,'ChIP-chip')
                 P.par.analType='chipchip';
             else
@@ -642,7 +642,7 @@ else
                         if size(DataSignals,1)~=ProbeSetNb
                             fclose(RankFid)
                             fclose(SignalFid)
-                            h=errordlg(sprintf('imported table has %u lines and chip %s is supposed to have %u lines',size(DataSignals,1),K.chipSet.name{P.chip.chipPos},ProbeSetNb));
+                            h=errordlg(sprintf('imported table has %u lines and chip %s is supposed to have %u lines',size(DataSignals,1),K.chip.name{P.chip.chipPos},ProbeSetNb));
                             waitfor(h);
                             error('process canceled')
                         else
@@ -783,7 +783,7 @@ else
             if P.flag.loadData==0
                 %VERIFY GLOBAL SIZE
                 if size(DataSignals,1)~=ProbeSetNb
-                    h=warndlg(sprintf('imported table has %u lines and chip %s is supposed to have %u lines',size(DataSignals,1),K.chipSet.name{P.chip.chipPos},ProbeSetNb));
+                    h=warndlg(sprintf('imported table has %u lines and chip %s is supposed to have %u lines',size(DataSignals,1),K.chip.name{P.chip.chipPos},ProbeSetNb));
                     waitfor(h);
                 end
                 %COUNT THE NB OF > VALUES
