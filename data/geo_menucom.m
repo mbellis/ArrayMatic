@@ -22,15 +22,16 @@ function varargout=geo_menucom(Action,varargin)
 global K P
 switch Action
     case 'display a GPL'
-%% DISPLAY A GPL
-        VERIF
-        [Species,GPL]=SELECT_GPL('multiple');
-        if ~isempty(GPL)
-            geo_metadb('display a GPL',GPL)
+        %% DISPLAY A GPL
+        if nargin==1
+            VERIF()
+            [Species,GPL]=SELECT_GPL('multiple');
+            if ~isempty(GPL)
+                geo_metadb('display a GPL',GPL)
+            end
         end
-        
     case 'print a GPL'
-%% PRINT A GPL
+        %% PRINT A GPL
         VERIF
         [Species,GPL]=SELECT_GPL('single');
         if ~isempty(GPL)
@@ -390,7 +391,7 @@ else
 end
 
     case 'create new network'
-        %% CREATE NEW NETWORK
+%% CREATE NEW NETWORK
         WARNFLAG=1;
         GplRank=varargin{1};
         DataFid=varargin{2};

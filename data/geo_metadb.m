@@ -34,22 +34,27 @@
 % uses mksqlite.m developped by by Martin Kortmann <mail@kortmann.de>
 % (sources downloaded at developer.berlios.de/projects/mksqlite/)
 
-%geo_metadb('display a GPL',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194])
+%geo_metadb('display a GPL',[3533,11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],1)
+%geo_metadb('display a GPL',[96,10740,11096,11098,32,339,5811,1261,6096,6193,75,8321,1355,85,341,6247,88,9199,6543,6194],1)
+%geo_metadb('display a GPL',[82,86,87],1)
+
 %geo_metadb('find biological conditions','GPL198',{'ATH1','(A|a)rabidopsis','(A.)?thaliana'})
 %geo_metadb('GSE dictionary',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194])
 %geo_metadb('GSE dictionary',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'([Bb]rains? ?)|([Nn]eur\w* ?)|([Nn]erv\w* ?)|[Cc]hannel\w* ?)|([Pp]urkinje ?)|([Cc]erebell\w+ ?)|([Cc]erebr\w+ ?)|([Aa]tax\w+ ?)|(polyglu\w+ ?)','neuro')
 %geo_metadb('GSE dictionary',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'[Pp]urkinje ?','purkinje')
 %geo_metadb('GSE dictionary',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'([Tt]h[12])|([Tt]h17)|([Tt]hreg)|([Tt][Cc][Rr])','th')
-%geo_metadb('GSE dictionary',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'[Aa]xotomy|DRG\w*|(([Aa]xon\w* ?|[Nn]eur\w* ?|[Nn]erv\w* ?)([Oo]utgrowth ?|[Rr]egeneration ?|[Rr]egrowth ?))','nerve_regeneration')
+%geo_metadb('GSE dictionary',[3533,11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'[Aa]xotomy|DRG\w*|(([Aa]xon\w* ?|[Nn]eur\w* ?|[Nn]erv\w* ?)([Oo]utgrowth ?|[Rr]egeneration ?|[Rr]egrowth ?))','nerve_regeneration')
+%geo_metadb('GSE dictionary',[3533,11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'([Tt]h[12])|([Tt]h17)|([Tt]hreg)|([Tt][Cc][Rr])','th')
 %geo_metadb('GSE dictionary',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'DRG','drg')
-%geo_metadb('GSE special symbols',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'[\|\$\[\]\)(}{_''"#`~&^%*�<>�@=���]',1,1,30,30)
-%geo_metadb('GSE special symbols',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'�',1,1,30,30)
-%geo_metadb('GSE special symbols',[339],'�',1,1,30,30)
+%geo_metadb('GSE special symbols',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'[\|\$\[\]\)(}{_''"#`~&^%*?<>?@=???]',1,1,30,30)
+%geo_metadb('GSE special symbols',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'?',1,1,30,30)
+%geo_metadb('GSE special symbols',[339],'?',1,1,30,30)
 %geo_metadb('GSE special symbols',[339],sprintf('%c',char(65533)),1,1,30,30)
 %geo_metadb('GSE special symbols',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'\S\.\S|\S;\S|\S:\S|\S,\S|\S!\S|\S\?\S|',3,2,30,30)
 %geo_metadb('print GSEs',[11095,11097,201,3921,4910,4911,4912,4913,4914,4915,4916,5082,5175,5188,570,571,6244,80,8300,91,96,10740,11096,11098,32,339,5811,1261,6096,6193,75,81,8321,1355,85,341,6247,88,9199,6543,6194],'([Tt]h[12])|([Tt]h17)|([Tt]hreg)|([Tt][Cc][Rr])','Th_cells')
 %geo_metadb('print GSEs',[81,85,88,339,570,1261,1355],'DRG\w*|(([Nn]eur\w* ?|[Nn]erv\w* ?)([Rr]egeneration ?|[Rr]egrowth ?))','nerve_regeneration')
-%geo_metadb('print GSEs',[81,85,88,96,339,570,1261,1355,6247],'[Aa]xotomy|DRG\w*|(([Aa]xon\w* ?|[Nn]eur\w* ?|[Nn]erv\w* ?)([Oo]utgrowth ?|[Rr]egeneration ?|[Rr]egrowth ?))','nerve_regeneration')
+%geo_metadb('print GSEs',[81,85,88,96,339,341,570,1261,1355,6193,6247],'[Aa]xotomy|DRG\w*|(([Aa]xon\w* ?|[Nn]eur\w* ?|[Nn]erv\w* ?)([Oo]utgrowth ?|[Rr]egeneration ?|[Rr]egrowth ?))','nerve_regeneration')
+%geo_metadb('print GSEs',[81,85,91,96,201,339,570,571,1261,1355,3533,3921,5811,6244,8300,8321,11096,11098],'([Tt]h[12])|([Tt]h17)|([Tt]hreg)|([Tt][Cc][Rr])','th')
 
 %vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv%
 %                          c) Michel Bellis                                                %
@@ -80,11 +85,12 @@ switch Action
         cd(K.dir.geoMetadata)
         K.tmp.geoDbId=mksqlite(0,'open','GEOmetadb.sqlite');
 
-    case 'close'
+    case 'close geo metadb'
 %% CLOSE GEO METADB
         Ok=VERIF();
         if Ok
-            mksqlite(0,'close','GEOmetadb.sqlite');
+            cd(K.dir.geoMetadata)
+            mksqlite(K.tmp.geoDbId,'close');
             K.tmp.geoDbId=0;
         end
 
@@ -206,283 +212,286 @@ switch Action
         if nargout==1
             varargout{1}=Technologies;
         end
+        geo_metadb('close geo metadb');
 
     case 'view species'
 %% SPECIES
         Ok=VERIF();
-        %FIND EXISTING SPECIES IN GPL
-        Species={};
-        Sel=mksqlite('SELECT organism FROM gpl');
-        Rank=0;
-        for SpecL=1:length(Sel)
-            CurrSpecies=Sel(SpecL).organism;
-            if ~isempty(CurrSpecies)
-                Rank=Rank+1;
-                Species{Rank,1}=CurrSpecies;
+        if Ok
+            %FIND EXISTING SPECIES IN GPL
+            Species={};
+            Sel=mksqlite('SELECT organism FROM gpl');
+            Rank=0;
+            for SpecL=1:length(Sel)
+                CurrSpecies=Sel(SpecL).organism;
+                if ~isempty(CurrSpecies)
+                    Rank=Rank+1;
+                    Species{Rank,1}=CurrSpecies;
+                end
             end
-        end
-        Species=unique(Species);
+            Species=unique(Species);
 
-        %SELECT ONE OR SEVERAL SPECIES
-        SpeciesSel=listdlg('liststring',Species,'PromptString','select one or several species','ListSize',[500,600]);
-        if ~isempty(SpeciesSel)
-            %PROCESS EACH SELECTED SPECIES
+            %SELECT ONE OR SEVERAL SPECIES
+            SpeciesSel=listdlg('liststring',Species,'PromptString','select one or several species','ListSize',[500,600]);
+            if ~isempty(SpeciesSel)
+                %PROCESS EACH SELECTED SPECIES
 
-            Manufacturer={};
-            Technology={};
-            Model={};
-            GseNb=[];
-            for SelL=1:length(SpeciesSel)
+                Manufacturer={};
+                Technology={};
+                Model={};
+                GseNb=[];
+                for SelL=1:length(SpeciesSel)
 
-                %RECOVER THE GPL TARGETING THIS SPECIES
-                eval(sprintf('Gpls=mksqlite(''SELECT gpl,title,manufacturer,technology FROM gpl WHERE organism=''''%s'''''');',Species{SpeciesSel(SelL)}))            %process each Gpl of the current species
+                    %RECOVER THE GPL TARGETING THIS SPECIES
+                    eval(sprintf('Gpls=mksqlite(''SELECT gpl,title,manufacturer,technology FROM gpl WHERE organism=''''%s'''''');',Species{SpeciesSel(SelL)}))            %process each Gpl of the current species
 
-                %RECOVER INFORMATION FOR EACH GPL
-
-                for GplL=1:length(Gpls)
-                    GseDates{GplL,1}={};
-                    GseNb{GplL,1}=[];
-                    GsmNb{GplL,1}=[];
-                    Model{GplL,1}=Gpls(GplL).title;
-                    Manufacturer{GplL,1}=Gpls(GplL).manufacturer;
-                    Technology{GplL,1}=Gpls(GplL).technology;
-
-                    %RECOVER THE GSE MADE WITH THE CURRENT GPL
-                    eval(sprintf('Gses=mksqlite(''SELECT gse FROM gse_gpl WHERE gpl=''''%s'''''');',Gpls(GplL).gpl))
-
-                    %proceed each Gse of the current Gpl
-                    for GseL=1:length(Gses)
-
-                        %RECOVER SUBMISSION DATE
-                        eval(sprintf('Date=mksqlite(''SELECT submission_date FROM gse WHERE gse=''''%s'''''');',Gses(GseL).gse))
-
-                        %RECOVER THE NUMBER OF GSM FOR THE CURRENT GSE
-                        eval(sprintf('Gsms=mksqlite(''SELECT gsm FROM gse_gsm WHERE gse=''''%s'''''');',Gses(GseL).gse))
-
-                        DatePos=strmatch(Date.submission_date,GseDates{GplL},'exact');
-                        if isempty(DatePos)
-                            GseDates{GplL,1}{end+1,1}=Date.submission_date;
-                            GseNb{GplL,1}(end+1,1)=1;
-                            GsmNb{GplL,1}(end+1,1)=length(Gsms);
-                        else
-                            GseNb{GplL,1}(DatePos)=GseNb{GplL}(DatePos)+1;
-                            GsmNb{GplL,1}(DatePos)=GsmNb{GplL}(DatePos)+length(Gsms);
-                        end
-                    end
-                end
-
-                %put a string in  missing Manufacturer
-                for ManL=1:length(Manufacturer)
-                    if isempty(Manufacturer{ManL})
-                        Manufacturer{ManL}='-';
-                    end
-                end
-
-                %PROCESS MANUFACTURERS
-
-                Manufacturers=unique(Manufacturer);
-                %recover existing technologies in GEO
-                Technologies=geo_metadb('view technologies',0);
-
-                %recover the number of Gse and Gsm for each Manufacturer
-                ManGseNb=zeros(length(Manufacturers),1);
-                ManGsmNb=zeros(length(Manufacturers),1);
-                for ManL=1:length(Manufacturers)
-
-                    %RECOVER THE GPL OF THE CURRENT MANUFACTURER
-                    if isequal(Manufacturers{ManL},'-')
-                        eval(sprintf('Gpls=mksqlite(''SELECT gpl FROM gpl WHERE manufacturer is NULL AND organism="%s"'');',strrep(Manufacturers{ManL},'''',''''''),Species{SpeciesSel(SelL)}))
-                    else                   
-                        eval(sprintf('Gpls=mksqlite(''SELECT gpl FROM gpl WHERE manufacturer="%s" AND organism="%s"'');',strrep(Manufacturers{ManL},'''',''''''),Species{SpeciesSel(SelL)}))
-                    end
+                    %RECOVER INFORMATION FOR EACH GPL
 
                     for GplL=1:length(Gpls)
+                        GseDates{GplL,1}={};
+                        GseNb{GplL,1}=[];
+                        GsmNb{GplL,1}=[];
+                        Model{GplL,1}=Gpls(GplL).title;
+                        Manufacturer{GplL,1}=Gpls(GplL).manufacturer;
+                        Technology{GplL,1}=Gpls(GplL).technology;
 
-                        %RECOVER THE GSE OF THE CURRENT GPL
+                        %RECOVER THE GSE MADE WITH THE CURRENT GPL
                         eval(sprintf('Gses=mksqlite(''SELECT gse FROM gse_gpl WHERE gpl=''''%s'''''');',Gpls(GplL).gpl))
-                        ManGseNb(ManL)=ManGseNb(ManL)+ length(Gses);
 
-                        if length(Gses)>0
-                            for GseL=1:length(Gses)
+                        %proceed each Gse of the current Gpl
+                        for GseL=1:length(Gses)
 
-                                %RECOVER THE GSM OF THE CURRENT GSE
-                                eval(sprintf('Gsms=mksqlite(''SELECT gsm FROM gse_gsm WHERE gse=''''%s'''''');',Gses(GseL).gse))
+                            %RECOVER SUBMISSION DATE
+                            eval(sprintf('Date=mksqlite(''SELECT submission_date FROM gse WHERE gse=''''%s'''''');',Gses(GseL).gse))
 
-                                ManGsmNb(ManL)=ManGsmNb(ManL)+ length(Gsms);
+                            %RECOVER THE NUMBER OF GSM FOR THE CURRENT GSE
+                            eval(sprintf('Gsms=mksqlite(''SELECT gsm FROM gse_gsm WHERE gse=''''%s'''''');',Gses(GseL).gse))
+
+                            DatePos=strmatch(Date.submission_date,GseDates{GplL},'exact');
+                            if isempty(DatePos)
+                                GseDates{GplL,1}{end+1,1}=Date.submission_date;
+                                GseNb{GplL,1}(end+1,1)=1;
+                                GsmNb{GplL,1}(end+1,1)=length(Gsms);
+                            else
+                                GseNb{GplL,1}(DatePos)=GseNb{GplL}(DatePos)+1;
+                                GsmNb{GplL,1}(DatePos)=GsmNb{GplL}(DatePos)+length(Gsms);
                             end
                         end
                     end
-                end
 
-                %sort over the number of GSM
-                [ManGsmNb SortOrder]=sort(ManGsmNb,'descend');
-                ManGseNb=ManGseNb(SortOrder);
-                Manufacturers=Manufacturers(SortOrder);
-                if sum(ManGseNb)>0 & sum(ManGsmNb)>0
-
-                    %construct the displayed list of manufacturers
-                    ManDisp=cell(length(Manufacturers),1);
-                    for ManL=1:length(Manufacturers)
-                        ManDisp{ManL}=sprintf('%s (%u GSE - %u GSM)',Manufacturers{ManL},ManGseNb(ManL),ManGsmNb(ManL));
+                    %put a string in  missing Manufacturer
+                    for ManL=1:length(Manufacturer)
+                        if isempty(Manufacturer{ManL})
+                            Manufacturer{ManL}='-';
+                        end
                     end
 
-                    %print Manufacturer information
-                    fid=fopen(sprintf('%s_gsenb_%s.txt',strrep(Species{SpeciesSel(SelL)},' ','_'),VERSION),'w');
-                    fprintf(fid,'Manufacturer\tGSE_NB\tGMS_NB\n')
-                    for ManL=1:length(Manufacturers)
-                        fprintf(fid,'%s\t%u\t%u\n',Manufacturers{ManL},ManGseNb(ManL),ManGsmNb(ManL));
-                    end
-                    fclose(fid)
+                    %PROCESS MANUFACTURERS
 
-                    %display information for choosing which keywords use to select
-                    %manufactorers that will be processed individually (all others
-                    %will be gathered and names 'other')
-                    ManSel=listdlg('liststring',ManDisp,'PromptString','Write down the Keywords you want to use to select manufacturers','ListSize',[500,600]);
-                    ManKeywords=inputdlg('enter list of the Keywords /nyou wrote down with this format/n  {'','',''}','',1);
-                    ManKeywords=ManKeywords{1};
-                    eval(sprintf('ManKeywords=%s;',ManKeywords))
-                    %find the manufacturers corresponding to the selected keywords
-                    ManPos={};
-                    FoundPos=[];
-                    for KeyL=1:length(ManKeywords)
-                        ManPos{KeyL}=[];
+                    Manufacturers=unique(Manufacturer);
+                    %recover existing technologies in GEO
+                    Technologies=geo_metadb('view technologies',0);
+
+                    %recover the number of Gse and Gsm for each Manufacturer
+                    ManGseNb=zeros(length(Manufacturers),1);
+                    ManGsmNb=zeros(length(Manufacturers),1);
+                    for ManL=1:length(Manufacturers)
+
+                        %RECOVER THE GPL OF THE CURRENT MANUFACTURER
+                        if isequal(Manufacturers{ManL},'-')
+                            eval(sprintf('Gpls=mksqlite(''SELECT gpl FROM gpl WHERE manufacturer is NULL AND organism="%s"'');',strrep(strrep(Manufacturers{ManL},'''',' '),'"',''),Species{SpeciesSel(SelL)}))
+                        else                     
+                            eval(sprintf('Gpls=mksqlite(''SELECT gpl FROM gpl WHERE manufacturer="%s" AND organism="%s"'');',strrep(strrep(Manufacturers{ManL},'''',' '),'"',''),Species{SpeciesSel(SelL)}))                            
+                        end
+
+                        for GplL=1:length(Gpls)
+
+                            %RECOVER THE GSE OF THE CURRENT GPL
+                            eval(sprintf('Gses=mksqlite(''SELECT gse FROM gse_gpl WHERE gpl=''''%s'''''');',Gpls(GplL).gpl))
+                            ManGseNb(ManL)=ManGseNb(ManL)+ length(Gses);
+
+                            if length(Gses)>0
+                                for GseL=1:length(Gses)
+
+                                    %RECOVER THE GSM OF THE CURRENT GSE
+                                    eval(sprintf('Gsms=mksqlite(''SELECT gsm FROM gse_gsm WHERE gse=''''%s'''''');',Gses(GseL).gse))
+
+                                    ManGsmNb(ManL)=ManGsmNb(ManL)+ length(Gsms);
+                                end
+                            end
+                        end
+                    end
+
+                    %sort over the number of GSM
+                    [ManGsmNb SortOrder]=sort(ManGsmNb,'descend');
+                    ManGseNb=ManGseNb(SortOrder);
+                    Manufacturers=Manufacturers(SortOrder);
+                    if sum(ManGseNb)>0 & sum(ManGsmNb)>0
+
+                        %construct the displayed list of manufacturers
+                        ManDisp=cell(length(Manufacturers),1);
                         for ManL=1:length(Manufacturers)
-                            if ~isempty(findstr(upper(ManKeywords{KeyL}),upper(Manufacturers{ManL})))
-                                ManPos{KeyL}=[ManPos{KeyL};ManL];
-                                FoundPos=[FoundPos;ManL];
+                            ManDisp{ManL}=sprintf('%s (%u GSE - %u GSM)',Manufacturers{ManL},ManGseNb(ManL),ManGsmNb(ManL));
+                        end
+
+                        %print Manufacturer information
+                        fid=fopen(sprintf('%s_gsenb_%s.txt',strrep(Species{SpeciesSel(SelL)},' ','_'),VERSION),'w');
+                        fprintf(fid,'Manufacturer\tGSE_NB\tGMS_NB\n')
+                        for ManL=1:length(Manufacturers)
+                            fprintf(fid,'%s\t%u\t%u\n',Manufacturers{ManL},ManGseNb(ManL),ManGsmNb(ManL));
+                        end
+                        fclose(fid)
+
+                        %display information for choosing which keywords use to select
+                        %manufactorers that will be processed individually (all others
+                        %will be gathered and names 'other')
+                        ManSel=listdlg('liststring',ManDisp,'PromptString','Write down the Keywords you want to use to select manufacturers','ListSize',[500,600]);
+                        ManKeywords=inputdlg('enter list of the Keywords /nyou wrote down with this format/n  {'','',''}','',1);
+                        ManKeywords=ManKeywords{1};
+                        eval(sprintf('ManKeywords=%s;',ManKeywords))
+                        %find the manufacturers corresponding to the selected keywords
+                        ManPos={};
+                        FoundPos=[];
+                        for KeyL=1:length(ManKeywords)
+                            ManPos{KeyL}=[];
+                            for ManL=1:length(Manufacturers)
+                                if ~isempty(findstr(upper(ManKeywords{KeyL}),upper(Manufacturers{ManL})))
+                                    ManPos{KeyL}=[ManPos{KeyL};ManL];
+                                    FoundPos=[FoundPos;ManL];
+                                end
                             end
                         end
-                    end
-                    %add a category with gathering not selected manufacturers
-                    NotFoundPos=setdiff(1:length(Manufacturers),FoundPos);
-                    ManKeywords{end+1}='others';
-                    ManPos{end+1}=NotFoundPos;
+                        %add a category with gathering not selected manufacturers
+                        NotFoundPos=setdiff(1:length(Manufacturers),FoundPos);
+                        ManKeywords{end+1}='others';
+                        ManPos{end+1}=NotFoundPos;
 
-                    %RECOVER AND DISPLAY INFORMATIONS FOR THE SELECTED MANUFACTURERS
+                        %RECOVER AND DISPLAY INFORMATIONS FOR THE SELECTED MANUFACTURERS
 
-                    TechNb=length(Technologies);
-                    %existing technologies
-                    ExisTech=zeros(length(Technologies),1);
-                    for TechL=1:TechNb
-                        for ManL=1:length(ManKeywords)
-                            for PosL=1:length(ManPos{ManL})
-                                ManIndex=strmatch(Manufacturers{ManPos{ManL}(PosL)},Manufacturer,'exact');
-                                for IndexL=1:length(ManIndex)
-                                    if isequal(Technology{ManIndex(IndexL)},Technologies{TechL})
-                                        if sum(GseNb{ManIndex(IndexL)})>0
-                                            ExistTech(TechL)=1;
-                                            break
+                        TechNb=length(Technologies);
+                        %existing technologies
+                        ExisTech=zeros(length(Technologies),1);
+                        for TechL=1:TechNb
+                            for ManL=1:length(ManKeywords)
+                                for PosL=1:length(ManPos{ManL})
+                                    ManIndex=strmatch(Manufacturers{ManPos{ManL}(PosL)},Manufacturer,'exact');
+                                    for IndexL=1:length(ManIndex)
+                                        if isequal(Technology{ManIndex(IndexL)},Technologies{TechL})
+                                            if sum(GseNb{ManIndex(IndexL)})>0
+                                                ExistTech(TechL)=1;
+                                                break
+                                            end
                                         end
                                     end
                                 end
                             end
                         end
-                    end
-                    ExistTech=find(ExistTech);
-                    TechNb=length(ExistTech);
-                    XPlot=ceil(sqrt(TechNb));
-                    YPlot=floor(TechNb/XPlot);
-                    if XPlot*YPlot==TechNb
-                        XPlot=ceil(sqrt(TechNb+1));
-                        YPlot=floor((TechNb+1)/XPlot);
-                    end
-                    if XPlot*YPlot<TechNb
-                        YPlot=YPlot+1;
-                    end
+                        ExistTech=find(ExistTech);
+                        TechNb=length(ExistTech);
+                        XPlot=ceil(sqrt(TechNb));
+                        YPlot=floor(TechNb/XPlot);
+                        if XPlot*YPlot==TechNb
+                            XPlot=ceil(sqrt(TechNb+1));
+                            YPlot=floor((TechNb+1)/XPlot);
+                        end
+                        if XPlot*YPlot<TechNb
+                            YPlot=YPlot+1;
+                        end
 
-                    h=figure;
-                    set(h,'name',Species{SpeciesSel(SelL)})
-                    ManGseNbs=zeros(length(ManKeywords),1);
-                    ManGsmNbs=zeros(length(ManKeywords),1);
-%                     CurrColor=colormap;
-%                     ColorNb=size(CurrColor,1);
-%                     Colors=zeros(TechNb,3);
-%                     ColorStep=floor(ColorNb/TechNb);
-%                     for TechL=1:TechNb
-%                         if mod((TechL-1)*ColorStep+1,ColorNb)
-%                             Colors(TechL,:)=CurrColor(mod((TechL-1)*ColorStep+1,ColorNb),:);
-%                         else
-%                             Colors(TechL,:)=CurrColor(end,:);
-%                         end
-%                     end
-                    Colors=colors(colormap,length(ManKeywords));
-                    for TechL=1:TechNb
-                        subplot(YPlot,XPlot,TechL)
-                        hold on
-                        %                Colors='mrygcbkmrygcbk';
-                        MinDate=now;
-                        MaxDate=0;
-                        for ManL=1:length(ManKeywords)
-                            CurrDates=[];
-                            CurrGseNb=[];
-                            CurrGsmNb=[];
-                            %find gse and gsm fot the current manufacturer of the
-                            %current technology (if exists)
-                            for PosL=1:length(ManPos{ManL})
-                                ManIndex=strmatch(Manufacturers{ManPos{ManL}(PosL)},Manufacturer,'exact');
-                                for IndexL=1:length(ManIndex)
-                                    if isequal(Technology{ManIndex(IndexL)},Technologies{ExistTech(TechL)})
-                                        CurrGseNb=[CurrGseNb;GseNb{ManIndex(IndexL)}];
-                                        CurrGsmNb=[CurrGsmNb;GsmNb{ManIndex(IndexL)}];
-                                        CurrDates=[CurrDates;datenum(datevec(GseDates{ManIndex(IndexL)},'yyyy-mm-dd'))];
+                        h=figure;
+                        set(h,'name',Species{SpeciesSel(SelL)})
+                        ManGseNbs=zeros(length(ManKeywords),1);
+                        ManGsmNbs=zeros(length(ManKeywords),1);
+                        %                     CurrColor=colormap;
+                        %                     ColorNb=size(CurrColor,1);
+                        %                     Colors=zeros(TechNb,3);
+                        %                     ColorStep=floor(ColorNb/TechNb);
+                        %                     for TechL=1:TechNb
+                        %                         if mod((TechL-1)*ColorStep+1,ColorNb)
+                        %                             Colors(TechL,:)=CurrColor(mod((TechL-1)*ColorStep+1,ColorNb),:);
+                        %                         else
+                        %                             Colors(TechL,:)=CurrColor(end,:);
+                        %                         end
+                        %                     end
+                        Colors=colors(colormap,length(ManKeywords));
+                        for TechL=1:TechNb
+                            subplot(YPlot,XPlot,TechL)
+                            hold on
+                            %                Colors='mrygcbkmrygcbk';
+                            MinDate=now;
+                            MaxDate=0;
+                            for ManL=1:length(ManKeywords)
+                                CurrDates=[];
+                                CurrGseNb=[];
+                                CurrGsmNb=[];
+                                %find gse and gsm fot the current manufacturer of the
+                                %current technology (if exists)
+                                for PosL=1:length(ManPos{ManL})
+                                    ManIndex=strmatch(Manufacturers{ManPos{ManL}(PosL)},Manufacturer,'exact');
+                                    for IndexL=1:length(ManIndex)
+                                        if isequal(Technology{ManIndex(IndexL)},Technologies{ExistTech(TechL)})
+                                            CurrGseNb=[CurrGseNb;GseNb{ManIndex(IndexL)}];
+                                            CurrGsmNb=[CurrGsmNb;GsmNb{ManIndex(IndexL)}];
+                                            CurrDates=[CurrDates;datenum(datevec(GseDates{ManIndex(IndexL)},'yyyy-mm-dd'))];
+                                        end
                                     end
                                 end
-                            end
-                            %plot current manufacturer of the current technology
-                            if ~isempty(CurrGseNb)
-                                MinDate=min(MinDate,min(CurrDates));
-                                MaxDate=max(MaxDate,max(CurrDates));
-                                ManGseNbs(ManL)=ManGseNbs(ManL)+sum(CurrGseNb);
-                                ManGsmNbs(ManL)=ManGsmNbs(ManL)+sum(CurrGsmNb);
-                                [CurrDate,DateOrder]=sort(CurrDates);
-                                CurrGseNb=CurrGseNb(DateOrder);
-                                CurrGsmNb=CurrGsmNb(DateOrder);
-                                CurrGseNb=cumsum(CurrGseNb);
-                                CurrGsmNb=cumsum(CurrGsmNb);
-                                plot(CurrDate,CurrGseNb,'color',Colors(ManL,:),'marker','.')
-                                plot(CurrDate,CurrGsmNb,'color',Colors(ManL,:),'marker','+','markersize',3)
-                                plot(CurrDate,CurrGseNb,'color',Colors(ManL,:))
-                                plot(CurrDate,CurrGsmNb,'color',Colors(ManL,:))
-                            end
+                                %plot current manufacturer of the current technology
+                                if ~isempty(CurrGseNb)
+                                    MinDate=min(MinDate,min(CurrDates));
+                                    MaxDate=max(MaxDate,max(CurrDates));
+                                    ManGseNbs(ManL)=ManGseNbs(ManL)+sum(CurrGseNb);
+                                    ManGsmNbs(ManL)=ManGsmNbs(ManL)+sum(CurrGsmNb);
+                                    [CurrDate,DateOrder]=sort(CurrDates);
+                                    CurrGseNb=CurrGseNb(DateOrder);
+                                    CurrGsmNb=CurrGsmNb(DateOrder);
+                                    CurrGseNb=cumsum(CurrGseNb);
+                                    CurrGsmNb=cumsum(CurrGsmNb);
+                                    plot(CurrDate,CurrGseNb,'color',Colors(ManL,:),'marker','.')
+                                    plot(CurrDate,CurrGsmNb,'color',Colors(ManL,:),'marker','+','markersize',3)
+                                    plot(CurrDate,CurrGseNb,'color',Colors(ManL,:))
+                                    plot(CurrDate,CurrGsmNb,'color',Colors(ManL,:))
+                                end
 
+                            end
+                            %                datetick('x')
+                            MinDate=datevec(MinDate);
+                            MinDate=datenum([MinDate(1) 01 01]);
+                            MaxDate=datevec(MaxDate);
+                            MaxDate=datenum([MaxDate(1)+1 01 01]);
+                            set(gca,'xlim',[MinDate,MaxDate])
+                            set(gca,'xtick',[datenum(MinDate(1)),datenum(MaxDate(1))])
+                            datetick('x','keeplimits','keepticks')
+                            title(sprintf('%s',Technologies{ExistTech(TechL)}))
+                            set(gca,'box','on')
+                            set(gca,'yscale','log')
                         end
-                        %                datetick('x')
-                        MinDate=datevec(MinDate);
-                        MinDate=datenum([MinDate(1) 01 01]);
-                        MaxDate=datevec(MaxDate);
-                        MaxDate=datenum([MaxDate(1)+1 01 01]);
-                        set(gca,'xlim',[MinDate,MaxDate])
-                        set(gca,'xtick',[datenum(MinDate(1)),datenum(MaxDate(1))])
-                        datetick('x','keeplimits','keepticks')
-                        title(sprintf('%s',Technologies{ExistTech(TechL)}))
-                        set(gca,'box','on')
-                        set(gca,'yscale','log')
-                    end
 
-                    %put legend
-                    subplot(YPlot,XPlot,TechNb+1)
-                    hold on
-                    Legend=cell(1,length(ManKeywords));
-                    for ManL=1:length(ManKeywords)
-                        Legend{ManL}=sprintf('%s (%u gse - %u gsm)',ManKeywords{ManL},ManGseNbs(ManL),ManGsmNbs(ManL));
+                        %put legend
+                        subplot(YPlot,XPlot,TechNb+1)
+                        hold on
+                        Legend=cell(1,length(ManKeywords));
+                        for ManL=1:length(ManKeywords)
+                            Legend{ManL}=sprintf('%s (%u gse - %u gsm)',ManKeywords{ManL},ManGseNbs(ManL),ManGsmNbs(ManL));
+                        end
+                        for ManL=1:length(ManKeywords)
+                            plot(0,0,'color',Colors(ManL,:))
+                        end
+                        legend(Legend,'location','BestOutside')
+                        set(gca,'yscale','log')
+                        set(gca,'visible','off')
+                        set(gcf,'color',[1,1,1])
+                        set_figsize('1280px')
+                        saveas(h,sprintf('%s_GEO_%s',strrep(Species{SpeciesSel(SelL)},' ','_'),VERSION),'png')
                     end
-                    for ManL=1:length(ManKeywords)
-                        plot(0,0,'color',Colors(ManL,:))
-                    end
-                    legend(Legend,'location','BestOutside')
-                    set(gca,'yscale','log')
-                    set(gca,'visible','off')
-                    set(gcf,'color',[1,1,1])
-                    set_figsize('1280px')
-                    saveas(h,sprintf('%s_GEO_%s',strrep(Species{SpeciesSel(SelL)},' ','_'),VERSION),'png')
-                end
-            end %current species
-            
+                end %current species
+            end
+            geo_metadb('close geo metadb');
         end
-    case 'display a GPL'
-%% DISPLAY A GPL
-        %process a GPL
-        Ok=VERIF();
+        
+    case 'read a GPL'
+%% READ A GPL
+        %process GPLs
         if nargin<2
             h=errordlg('misses GPL');
             waitfor(h)
@@ -490,44 +499,309 @@ switch Action
         end
         GPLs=varargin{1};
         if nargin==3
-            ControlFlag=varargin{2};
+            KeepFlag=1;
+            KeepGpl=varargin{2};
         else
-            ControlFlag=1;
+            KeepFlag=0;
         end
-        for GplL=1:length(GPLs)
-            GPL=GPLs{GplL};
-            %modify eventuelly to use the right format
-            if isnumeric(GPL)
-                GPL=sprintf('GPL%u',GPL);
-            end
+        Ok=VERIF();
+        if Ok
+            try
+            feature('DefaultCharacterSet','UTF-8')
+            GseFields={'title';...
+                'status';...
+                'submissionDate';...
+                'lastUpdateDate';...
+                'pubmedId';...
+                'summary';...
+                'type';...
+                'contributor';...
+                'webLink';...
+                'overallDesign';...
+                'repeats';...
+                'repeatsSampleList';...
+                'variable';...
+                'variableDescription';...
+                'contact';...
+                'supplementaryFile'};
+            CurrGseFields={'title';...
+                'status';...
+                'submission_date';...
+                'last_update_date';...
+                'pubmed_id';...
+                'summary';...
+                'type';...
+                'contributor';...
+                'web_link';...
+                'overall_design';...
+                'repeats';...
+                'repeats_sample_list';...
+                'variable';...
+                'variable_description';...
+                'contact';...
+                'supplementary_file'};
 
-            if Ok
+            GsmFields={'gsm';...
+                'Id';...
+                'title';...
+                'seriesId';...
+                'gpl';...
+                'status';...
+                'submissionDate';...
+                'lastUpdateDate';...
+                'type';...
+                'sourceNameCh1';...
+                'organismCh1';...
+                'characteristicsCh1';...
+                'moleculeCh1';...
+                'labelCh1';...
+                'treatmentProtocolCh1';...
+                'extractProtocolCh1';...
+                'labelProtocolCh1';...
+                'sourceNameCh2';...
+                'organismCh2';...
+                'characteristicsCh2';...
+                'moleculeCh2';...
+                'labelCh2';...
+                'treatmentProtocolCh2';...
+                'extractProtocolCh2';...
+                'labelProtocolCh2';...
+                'hybProtocol';...
+                'description';...
+                'dataProcessing';...
+                'contact';...
+                'supplementaryFile';...
+                'dataRowCount';...
+                'channelCount'};
+            CurrGsmFields={'gsm';...
+                'ID';...              
+                'title';...
+                'series_id';...
+                'gpl';...
+                'status';...
+                'submission_date';...
+                'last_update_date';...
+                'type';...
+                'source_name_ch1';...
+                'organism_ch1';...
+                'characteristics_ch1';...
+                'molecule_ch1';...
+                'label_ch1';...
+                'treatment_protocol_ch1';...
+                'extract_protocol_ch1';...
+                'label_protocol_ch1';...
+                'source_name_ch2';...
+                'organism_ch2';...
+                'characteristics_ch2';...
+                'molecule_ch2';...
+                'label_ch2';...
+                'treatment_protocol_ch2';...
+                'extract_protocol_ch2';...
+                'label_protocol_ch2';...
+                'hyb_protocol';...
+                'description';...
+                'data_processing';...
+                'contact';...
+                'supplementary_file';...
+                'data_row_count';...
+                'channel_count'};
+            FactorFields={'gdsIds';...
+                'gdsRanks';...
+                'factorNames';...
+                'factorValues'};
+
+
+            cd(K.dir.geoMetadata)
+            LogFid=fopen(sprintf('display_gpl_%s_%s.log',VERSION,Date),'a');
+            GdsFid=fopen(sprintf('gds_%s.log',VERSION),'a');
+            fprintf(GdsFid,'Gpl\tAction\tGds\tGsm\n');
+            GseFid=fopen(sprintf('gse_%s.log',VERSION),'a');
+            fprintf(GseFid,'Gpl\tGse\tField\tOldValue\tNewValue\n');
+            GsmFid=fopen(sprintf('gsm_%s.log',VERSION),'a');
+            fprintf(GsmFid,'Gpl\tGse\tGsm\tField\tOldValue\tNewValue\n');
+            %process each GPL
+            for GplL=1:length(GPLs)
+                try
+                    GPL=GPLs{GplL};
+                catch
+                    GPL=GPLs(GplL);
+                end
+                %modify eventuelly to use the right format
+                if isnumeric(GPL)
+                    GPL=sprintf('GPL%u',GPL);
+                end
+                CurrGplRank=str2num(GPL(4:end));
+                cd(K.dir.geoMetadata)
+                if exist(sprintf('%s.mat',GPL),'file')
+                    if KeepFlag==0
+                        CurrKeepGpl=questdlg(sprintf('%s GPL already exists. Do you want to update it (otherwise cleared)',GPL),'','yes','no','yes');
+                        waitfor(CurrKeepGpl)
+                        if isequal(CurrKeepGpl,'yes')
+                            eval(sprintf('load %s.mat;',GPL))
+                            CurrKeepGpl=1;
+                        else
+                            CurrKeepGpl=0;
+                        end
+                    else
+                        if KeepGpl
+                            try
+                                eval(sprintf('load %s.mat;',GPL))
+                                CurrKeepGpl=1;
+                            catch
+                                CurrKeepGpl=0;
+                            end
+                        end
+                    end
+                else
+                    CurrKeepGpl=0;
+                end
+                if CurrKeepGpl
+                    NewGds=0;
+                    NewGse=0;
+                    NewGsm=0;
+                else
+                    %initiate empty structures
+                    Gse=[];
+                    Gsm=[];
+                    Gds.gsmRank=[];
+                    Gds.gdsIds=[];
+                    Gds.metadb=[];         
+                end
+
+
                 %SCAN GDS TO RECOVER EVENTUAL FACTORS
                 Gdss=mksqlite('SELECT * FROM gds_subset');
-                Gds.gsmRank=[];
-                Gds.gdsIds=[];
-                Gds.metadb=[];
-                %process each gds and write the list of gds ids in each found
-                %gsm
-                for GdsL=1:length(Gdss)
-                    %add a GSM string to process it easely
-                    CurrGsms=[Gdss(GdsL).sample_id,',GSM'];
-                    GSMPos=findstr('GSM',CurrGsms);
-                    for GsmL=1:length(GSMPos)-1
-                        CurrGsmRank=str2num(CurrGsms(GSMPos(GsmL)+3:GSMPos(GsmL+1)-2));
-                        GsmPos=find(Gds.gsmRank==CurrGsmRank);
-                        if isempty(GsmPos)
-                            GsmPos=length(Gds.gsmRank)+1;
-                            Gds.gsmRank(GsmPos,1)=CurrGsmRank;
-                            Gds.gdsIds{GsmPos}=Gdss(GdsL).ID;
-                            Gds.metadb{GsmPos}=VERSION;
-                        else
-                            Gds.gdsIds{GsmPos}=sort([Gds.gdsIds{GsmPos},Gdss(GdsL).ID]);
+
+                %load or construct Gpl which contains ,for each Gpl, the list of Gdss
+                % positions
+                try
+                    eval(sprintf('load GDS_%s.mat',VERSION))
+                catch
+                    Gpl=[];
+                    Gpl.gplRank=[];
+                    Gpl.gdsPos={};
+                    for GdsL=1:length(Gdss)
+                        %verify GPL
+                        eval(sprintf('CurrGpl=mksqlite(''SELECT  gpl FROM gds WHERE ID=%u'');',Gdss(GdsL).ID));
+                        if ~isempty(CurrGpl)
+                            CurrGpl=str2num(CurrGpl.gpl(4:end));
+                            GplPos=find(Gpl.gplRank==CurrGpl);
+                            if isempty(GplPos)
+                                Gpl.gplRank(end+1,1)=CurrGpl;
+                                Gpl.gdsPos{end+1,1}=GdsL;
+                            else
+                                Gpl.gdsPos{GplPos,1}(end+1)=GdsL;
+                            end
+                        end
+                    end
+                    eval(sprintf('save GDS_%s.mat Gpl',VERSION))
+                end
+
+                if CurrKeepGpl
+                    %construct list of GSM for each GDS
+                    RegisteredGds=[];
+                    RegisteredGds.gdsRank=[];
+                    RegisteredGds.gsm={};
+                    for GsmL=1:length(Gds.gsmRank)
+                        for GdsL=1:length(Gds.gdsIds{GsmL})
+                            GdsPos=find(RegisteredGds.gdsRank==Gds.gdsIds{GsmL}(GdsL));
+                            if isempty(GdsPos)
+                                RegisteredGds.gdsRank(end+1)=Gds.gdsIds{GsmL}(GdsL);
+                                RegisteredGds.gsm{end+1,1}=Gds.gsmRank(GsmL);
+                            else
+                                RegisteredGds.gsm{GdsPos}(end+1)=Gds.gsmRank(GsmL);
+                            end
                         end
                     end
                 end
 
-                %RECOVER ALL GSE OF GPL198 => USE sMatrix
+                %process each gds and write the list of gds ids in each found
+                %gsm
+                GplPos=find(Gpl.gplRank==CurrGplRank);
+                if ~isempty(GplPos)
+                    for GdsL=1:length(Gpl.gdsPos{GplPos})
+                        GdsPos=Gpl.gdsPos{GplPos}(GdsL);
+                        %recover GSMs
+                        Gsms=regexp(Gdss(GdsPos).sample_id,'(?<=GSM)\d*(?=,?)','match');
+                        CurrGsms=[];
+                        for GsmL=1:length(Gsms)
+                            CurrGsms(GsmL)=str2num(Gsms{GsmL});
+                        end
+                        CurrGds=Gdss(GdsPos).ID;
+                        if CurrKeepGpl
+                            %recover registered GSMs
+                            RegisteredPos=find(RegisteredGds.gdsRank==CurrGds);
+                            if ~isempty(RegisteredPos)
+                                %test if some GSM have been removed
+                                RemovedGsms=setdiff(RegisteredGds.gsm{RegisteredPos},CurrGsms);
+                                if ~isempty(RemovedGsms)
+                                    for GsmL=1:length(RemovedGsms)
+                                        CurrGsmRank=RemovedGsms{GsmL};
+                                        fprintf(GdsFid,'%u\tremoved\t%u\t%u\n',CurrGplRank,CurrGds,CurrGsmRank);
+                                        GsmPos=find(Gds.gsmRank==CurrGsmRank);
+                                        if ~isempty(GsmPos)
+                                            CurrGdss=setdiff(Gds.gdsIds{GsmPos},CurrGds);
+                                            if isempty(CurrGds)
+                                                Gds.gsmRank(GsmPos)=[];
+                                                Gds.gdsIds{GsmPos}=[];
+                                                Gds.metadb{GsmPos}=[];
+                                            else
+                                                Gds.gdsIds{GsmPos}=CurrGdss;
+                                                Gds.metadb{GsmPos}=VERSION;
+                                            end
+                                        end
+                                    end
+                                end
+                                %test if some GSM have been addeed
+                                AddedGsms=setdiff(CurrGsms,RegisteredGds.gsm{RegisteredPos});
+                                if ~isempty(AddedGsms)
+                                    for GsmL=1:length(AddedGsms)
+                                        CurrGsmRank=AddedGsms{GsmL};
+                                        fprintf(GdsFid,'%u\tadded\t%u\t%u\n',CurrGplRank,CurrGds,CurrGsmRank);
+                                        GsmPos=find(Gds.gsmRank==CurrGsmRank);
+                                        if isempty(GsmPos)
+                                            GsmPos=length(Gds.gsmRank)+1;
+                                            Gds.gsmRank(GsmPos,1)=CurrGsmRank;
+                                            Gds.gdsIds{GsmPos}=CurrGds;
+                                            Gds.metadb{GsmPos}=VERSION;
+                                        else
+                                            Gds.gdsIds{GsmPos}=sort([Gds.gdsIds{GsmPos},CurrGds]);
+                                        end
+                                    end
+                                end
+                            else
+                                for GsmL=1:length(CurrGsms)
+                                    CurrGsmRank=CurrGsms(GsmL);
+                                    GsmPos=find(Gds.gsmRank==CurrGsmRank);
+                                    if isempty(GsmPos)
+                                        GsmPos=length(Gds.gsmRank)+1;
+                                        Gds.gsmRank(GsmPos,1)=CurrGsmRank;
+                                        Gds.gdsIds{GsmPos}=CurrGds;
+                                        Gds.metadb{GsmPos}=VERSION;
+                                    else
+                                        Gds.gdsIds{GsmPos}=sort([Gds.gdsIds{GsmPos},CurrGds]);
+                                    end
+                                end
+                            end
+                        else
+                            for GsmL=1:length(CurrGsms)
+                                CurrGsmRank=CurrGsms(GsmL);
+                                GsmPos=find(Gds.gsmRank==CurrGsmRank);
+                                if isempty(GsmPos)
+                                    GsmPos=length(Gds.gsmRank)+1;
+                                    Gds.gsmRank(GsmPos,1)=CurrGsmRank;
+                                    Gds.gdsIds{GsmPos}=CurrGds;
+                                    Gds.metadb{GsmPos}=VERSION;
+                                else
+                                    Gds.gdsIds{GsmPos}=sort([Gds.gdsIds{GsmPos},CurrGds]);
+                                end
+                            end
+                        end
+                    end
+                end
+          
+
+                %recover all Gses
                 eval(sprintf('Gses=mksqlite(''SELECT * FROM sMatrix WHERE gpl=''''%s'''' ORDER BY ID'');',GPL));
                 GseNb=length(Gses);
                 %order GSE
@@ -536,69 +810,123 @@ switch Action
                     GseRanks(GseL)=str2num(Gses(GseL).gse(4:end));
                 end
                 [GseRanks,GseOrder]=sort(GseRanks);
-                %initiate empty structures
-                Gse=[];
-                Gsm=[];
-                OffSet=0;
+                %process each Gse
+                if CurrKeepGpl
+                    %need MemGse to calculate new values before comparing them to old ones
+                    MemGse=[];
+                    MemGse.outGplGsmNb=[];
+                    MemGse.gseRank=[];
+                end
+
                 for GseL=1:GseNb
                     GseP=GseOrder(GseL);
                     %gse name ('GSEXXX')
                     %RECOVER INFORMATION OF THE CURRENT GSE
                     eval(sprintf('CurrGse=mksqlite(''SELECT * FROM gse WHERE gse=''''%s'''''');',Gses(GseP).gse));
-                    if isempty(CurrGse)
+
+                    if ~isempty(CurrGse)
                         %if isempty, it means that the Gse is private and not
                         %yet released
-                        OffSet=OffSet+1;
-                    else
-                        Pos=GseL-OffSet;
-                        Gse.gse{Pos}=Gses(GseP).gse;
-                        Gse.gseRank(Pos)=str2num(Gses(GseP).gse(4:end));
-                        Gse.id(Pos)=Gses(GseP).ID;
-                        %verify the number of GSM
-                        eval(sprintf('Gsms=mksqlite(''SELECT * FROM gse_gsm WHERE gse=''''%s'''''');',Gses(GseP).gse));
-                        %keep this information to determine the number GsmNb
-                        Gse.gsmNb(Pos)=length(Gsms);
-                        Gse.gsmCount(Pos)=Gses(GseP).GSM_Count;
-                        Gse.outGplGsmNb(Pos)=0;
-                        if ControlFlag
-                            %control GSM nb
-                            if Gse.gsmCount(Pos)~=Gse.gsmNb(Pos)
-                                sprintf('%s : GSM nb  is %u and GSM count is  %u',Gse.gse{Pos},Gse.gsmNb(Pos),Gse.gsmCount(Pos))
+                        CurrGseRank=str2num(Gses(GseP).gse(4:end));
+                        if ~CurrKeepGpl
+                            RegisterIt=1;
+                        else
+                            if length(find(Gse.gseRank==CurrGseRank))>1
+                                fprintf(GseFid,'%u\t%u\tGsePos\t%u\t%u\n',CurrGplRank,CurrGseRank,length(find(Gse.gseRank==CurrGseRank)),Gses(GseP).ID);
                             end
-                        end
-                        Gse.title{Pos}=CurrGse.title;
-                        Gse.status{Pos}=CurrGse.status;
-                        Gse.submissionDate{Pos}=CurrGse.submission_date;
-                        Gse.lastUpdateDate{Pos}=CurrGse.last_update_date;
-                        Gse.lastUpdateDateSMatrix{Pos}=Gses(GseP).Last_Update_Date;
-                        if ControlFlag
-                            %control last update date
-                            if Gse.lastUpdateDate{Pos}~=Gse.lastUpdateDateSMatrix{Pos}
-                                h=warndlg(sprintf('%s : LastUpdate  is %s and sMatrix LastUpdate is  %s',Gse.lastUpdateDate{Pos},Gse.lastUpdateDateSMatrix{Pos}));
-                                waitfor(h)
-                            end
-                        end
+                            GsePos=find(Gse.gseRank==CurrGseRank&Gse.id==Gses(GseP).ID);
+                            if isempty(GsePos)
+                                RegisterIt=1;
+                                NewGse=NewGse+1;
+                            else
+                                RegisterIt=0;
+                                ChangedFlag=0;
+                                if Gse.id(GsePos)~=Gses(GseP).ID;
+                                    fprintf(GseFid,'%u\t%u\tid\t%u\t%u\n',CurrGplRank,CurrGseRank,Gse.id(GsePos),Gses(GseP).ID)
+                                    ChangedFlag=1;
+                                end
+                                %verify the number of GSM
+                                eval(sprintf('Gsms=mksqlite(''SELECT * FROM gse_gsm WHERE gse=''''%s'''''');',Gses(GseP).gse));
+                                %keep this information to determine the number GsmNb                        
+                                if Gse.gsmNb(GsePos)~=length(Gsms);
+                                    fprintf(GseFid,'%u\t%u\tgsmNb\t%u\t%u\n',CurrGplRank,CurrGseRank,Gse.gsmNb(GsePos),length(Gsms))
+                                    Gse.gsmNb(GsePos)=length(Gsms);
+                                    ChangedFlag=1;
+                                end
+                                if Gse.gsmCount(GsePos)~=Gses(GseP).GSM_Count
+                                    fprintf(GseFid,'%u\t%u\tgsmCount\t%u\t%u\n',CurrGplRank,CurrGseRank,Gse.gsmCount(GsePos),Gses(GseP).GSM_Count);
+                                    Gse.gsmCount(GsePos)=Gses(GseP).GSM_Count;
+                                    ChangedFlag=1;
+                                end
+                                %Gse.outGplGsmNb(GsePos)=0;
 
-                        Gse.pubmedId{Pos}=CurrGse.pubmed_id;
-                        Gse.summary{Pos}=CurrGse.summary;
-                        Gse.type{Pos}=CurrGse.type;
-                        Gse.contributor{Pos}=CurrGse.contributor;
-                        Gse.webLink{Pos}=CurrGse.web_link;
-                        Gse.overallDesign{Pos}=CurrGse.overall_design;
-                        Gse.repeats{Pos}=CurrGse.repeats;
-                        Gse.repeatsSampleList{Pos}=CurrGse.repeats_sample_list;
-                        Gse.variable{Pos}=CurrGse.variable;
-                        Gse.variableDescription{Pos}=CurrGse.variable_description;
-                        Gse.contact{Pos}=CurrGse.contact;
-                        Gse.supplementaryFile{Pos}=CurrGse.supplementary_file;
-                        Gse.metadb{Pos}=VERSION;
-                        Gse.isBiol(Pos)=0;
+
+                                for FieldL=1:length(GseFields)
+                                    if eval(sprintf('~isequal(Gse.%s{GsePos},CurrGse.%s)',GseFields{FieldL},CurrGseFields{FieldL}))                                        
+                                        try
+                                            fprintf(GseFid,'%u\t%u\t%s\t%s\t%s\n',CurrGplRank,CurrGseRank,GseFields{FieldL},num2str(eval(sprintf('Gse.%s{GsePos}',GseFields{FieldL}))),num2str(eval(sprintf('CurrGse.%s',CurrGseFields{FieldL}))));
+                                        catch
+                                            fprintf(GseFid,'%u\t%u\t%s\t%s\t%s\n',CurrGplRank,CurrGseRank,GseFields{FieldL},eval(sprintf('Gse.%s{GsePos}',GseFields{FieldL})),eval(sprintf('CurrGse.%s',CurrGseFields{FieldL})));
+                                        end
+                                        eval(sprintf('Gse.%s{GsePos}=CurrGse.%s;',GseFields{FieldL},CurrGseFields{FieldL}));
+                                        ChangedFlag=1;
+                                    end
+                                end
+                                if ~isequal(Gse.lastUpdateDate{GsePos},Gses(GseP).Last_Update_Date)
+                                    fprintf(GseFid,'%u\t%u\tlastUpdateDate\t%s\t%s\n',CurrGplRank,CurrGseRank,Gse.lastUpdateDate{GsePos},Gses(GseP).Last_Update_Date);   
+                                    try
+                                        Gse.lastUpdateDate{GsePos}=Gses(GseP).Last_Update_Date;
+                                    catch
+                                        Gse.lastUpdateDate(GsePos)='';
+                                        Gse.lastUpdateDate{GsePos}='';
+                                        Gse.lastUpdateDate{GsePos}=Gses(GseP).Last_Update_Date;
+                                    end
+                                    ChangedFlag=1;
+                                end
+                                if ChangedFlag
+                                    Gse.metadb{GsePos}=VERSION;
+                                end
+                            end
+                        end
+                        if RegisterIt
+                            if isempty(Gse)
+                                GsePos=1;
+                            else
+                                GsePos=length(Gse.gse)+1;
+                            end
+                            Gse.gse{GsePos}=Gses(GseP).gse;
+                            Gse.gseRank(GsePos)=CurrGseRank;
+                            Gse.id(GsePos)=Gses(GseP).ID;
+                            %verify the number of GSM
+                            eval(sprintf('Gsms=mksqlite(''SELECT * FROM gse_gsm WHERE gse=''''%s'''''');',Gses(GseP).gse));
+                            %keep this information to determine the number GsmNb
+                            Gse.gsmNb(GsePos)=length(Gsms);
+                            Gse.gsmCount(GsePos)=Gses(GseP).GSM_Count;
+                            Gse.outGplGsmNb(GsePos)=0;
+
+                            for FieldL=1:length(GseFields)
+                                eval(sprintf('Gse.%s{GsePos}=CurrGse.%s;',GseFields{FieldL},CurrGseFields{FieldL}));
+                            end
+                            Gse.lastUpdateDate{GsePos}=Gses(GseP).Last_Update_Date;
+                            Gse.metadb{GsePos}=VERSION;
+                            Gse.isBiol(GsePos)=0;
+                        end
 
                         %process each GSM
+                        if CurrKeepGpl
+                            %need MemGsm to calculate new values before comparing them to old ones
+                            MemGsm=[];
+                            MemGsm.gsmRank=[];
+                            MemGsm.gseRanks={};
+                            MemGsm.gseNb=[];
+                        end
                         for GsmL=1:length(Gsms)
                             %RECOVER INFO OF EACH GSM
                             eval(sprintf('CurrGsm=mksqlite(''SELECT * FROM gsm WHERE gsm=''''%s'''''');',Gsms(GsmL).gsm));
-                            try
+                            if ~isempty(CurrGsm)
+                                CurrGsmRank=str2num(CurrGsm.gsm(4:end));
+
+                                % try
                                 if isequal(CurrGsm.gpl,GPL)
                                     %some GSE may have GSM belonging to several GPL
                                     GsmPos=0;
@@ -616,51 +944,160 @@ switch Action
                                         end
                                         GsmPos=strmatch(CurrGsm.gsm,Gsm.gsm,'exact');
                                     end
-                                    if GsmPos>0
-                                        %increment Gse nb (several Gse reference the same GSM)
-                                        Gsm.gseRanks{GsmPos}=sort([Gsm.gseRanks{GsmPos},Gse.gseRank(Pos)]);
-                                        Gsm.gseNb=Gsm.gseNb+1;
+                                    if ~CurrKeepGpl
+                                        RegisterIt=1;
                                     else
+                                        if isempty(GsmPos)
+                                            RegisterIt=1;
+                                            NewGsm=NewGsm+1;
+                                        else
+                                            RegisterIt=0;
+                                            ChangedFlag=0;
+                                            try
+                                                MemGsm.gseRanks{GsmPos}=sort([MemGsm.gseRanks{GsmPos},Gse.gseRank(GsePos)]);
+                                                MemGsm.gseNb(GsmPos)=MemGsm.gseNb(GsmPos)+1;
+                                            catch
+                                                MemGsm.gseRanks{GsmPos}=Gse.gseRank(GsePos);
+                                                MemGsm.gseNb(GsmPos)=1;
+                                            end
+                                            MemGsm.gsmRank(GsmPos)=CurrGsmRank;
+                                            for FieldL=1:length(GsmFields)
+                                                try
+                                                    if eval(sprintf('~isequal(Gsm.%s{GsmPos},CurrGsm.%s)',GsmFields{FieldL},CurrGsmFields{FieldL}))
+                                                        try
+                                                            fprintf(GsmFid,'%u\t%u\t%u\t%s\t%s\t%s\n',CurrGplRank,CurrGseRank,CurrGsmRank,GsmFields{FieldL},num2str(eval(sprintf('Gsm.%s{GsmPos}',GsmFields{FieldL}))),num2str(eval(sprintf('CurrGsm.%s',CurrGsmFields{FieldL}))));
+                                                        catch
+                                                            fprintf(GsmFid,'%u\t%u\t%u\t%s\t%s\t%s\n',CurrGplRank,CurrGseRank,CurrGsmRank,GsmFields{FieldL},eval(sprintf('Gsm.%s{GsmPos}',GsmFields{FieldL})),eval(sprintf('CurrGsm.%s',CurrGsmFields{FieldL})));
+                                                        end
+                                                        eval(sprintf('Gsm.%s{GsmPos}=CurrGsm.%s;',GsmFields{FieldL},CurrGsmFields{FieldL}));
+                                                        ChangedFlag=1;
+                                                    end
+                                                catch
+                                                    if eval(sprintf('~isequal(Gsm.%s(GsmPos),CurrGsm.%s)',GsmFields{FieldL},CurrGsmFields{FieldL}))
+                                                        fprintf(GsmFid,'%u\t%u\t%u\t%s\t%u\t%u\n',CurrGplRank,CurrGseRank,CurrGsmRank,GsmFields{FieldL},eval(sprintf('Gsm.%s(GsmPos)',GsmFields{FieldL})),eval(sprintf('CurrGsm.%s',CurrGsmFields{FieldL})));
+                                                        eval(sprintf('Gsm.%s(GsmPos)=CurrGsm.%s;',GsmFields{FieldL},CurrGsmFields{FieldL}));
+                                                        ChangedFlag=1;
+                                                    end
+                                                end
+                                            end
+
+
+
+
+                                            %RECOVER EVENTUAL FACTORS
+                                            GdsPos=find(Gds.gsmRank==Gsm.gsmRank(GsmPos));
+
+                                            if ~isempty(GdsPos)
+                                                GdsIds=Gds.gdsIds{GdsPos};
+                                                MemGsm.gdsIds{GsmPos}=GdsIds;
+                                                for GdsL=1:length(GdsIds)
+                                                    GdsId=GdsIds(GdsL);
+                                                    %RECOVER THE CURRENT GDS
+                                                    eval(sprintf('CurrGds=mksqlite(''SELECT * FROM gds_subset WHERE ID=%u'');',GdsId))
+                                                    GdsRank=str2num(CurrGds.gds(4:end));
+                                                    NewFlag=0;
+                                                    if isfield(MemGsm,'gdsRanks')
+                                                        if length(MemGsm.gdsRanks)>=GsmPos
+                                                            if isempty(MemGsm.gdsRanks{GsmPos})
+                                                                NewFlag=1;
+                                                            else
+                                                                %in general exist several factors
+                                                                MemGsm.gdsIds{GsmPos}=unique([MemGsm.gdsIds{GsmPos},GdsId]);
+                                                                %may also exist several Gds
+                                                                MemGsm.gdsRanks{GsmPos}=unique([MemGsm.gdsRanks{GsmPos},GdsRank]);
+                                                                %find if the current factor already
+                                                                %exists
+
+                                                                FactorPos=strmatch(CurrGds.type,MemGsm.factorNames{GsmPos},'exact');
+                                                                if isempty(FactorPos)
+                                                                    MemGsm.factorNames{GsmPos}{end+1}=CurrGds.type;
+                                                                    MemGsm.factorValues{GsmPos}{end+1}=CurrGds.description;
+                                                                else
+                                                                    %verify that the value is the same
+                                                                    if iscell(MemGsm.factorValues{GsmPos}{FactorPos})
+                                                                        %exist already
+                                                                        %several values
+                                                                        if isempty(strmatch(CurrGds.description,MemGsm.factorValues{GsmPos}{FactorPos},'exact'))
+                                                                            MemGsm.factorValues{GsmPos}{FactorPos}{end+1,1}=CurrGds.description;
+                                                                        end
+                                                                    else
+                                                                        if ~isequal(MemGsm.factorValues{GsmPos}{FactorPos},CurrGds.description)
+                                                                            %transform the content of MemGsm.factorValues{GsmPos} into a cell
+                                                                            MemVal=MemGsm.factorValues{GsmPos}{FactorPos};
+                                                                            MemGsm.factorValues{GsmPos}{FactorPos}={};
+                                                                            MemGsm.factorValues{GsmPos}{FactorPos}{1}=MemVal;
+                                                                            MemGsm.factorValues{GsmPos}{FactorPos}{end+1,1}=CurrGds.description;
+                                                                            %h=warndlg(sprintf('There exist several values for factor %s in %s',CurrGds.type,MemGsm.gsm{GsmPos}));
+                                                                            %waitfor(h)
+                                                                        end
+                                                                    end
+                                                                end
+
+                                                            end
+                                                        else
+                                                            NewFlag=1;
+                                                        end
+                                                    else
+                                                        NewFlag=1;
+                                                    end
+                                                    if NewFlag==1
+                                                        MemGsm.gdsRanks{GsmPos}=GdsRank;
+                                                        MemGsm.gdsIds{GsmPos}=GdsId;
+                                                        MemGsm.factorNames{GsmPos}{1}=CurrGds.type;
+                                                        MemGsm.factorValues{GsmPos}{1}=CurrGds.description;
+                                                    end
+                                                end
+                                                MemGsm.gdsNb(GsmPos)=length(MemGsm.gdsRanks{GsmPos});
+
+
+                                                for FieldL=1:length(FactorFields)
+                                                    if eval(sprintf('~isequal(MemGsm.%s{GsmPos},Gsm.%s{GsmPos})',FactorFields{FieldL},FactorFields{FieldL}))
+                                                        try
+                                                            fprintf(GsmFid,'%u\t%u\t%u\t%s\t%s\t%s\n',CurrGplRank,CurrGseRank,CurrGsmRank,FactorFields{FieldL},num2str(eval(sprintf('MemGsm.%s{GsmPos}',FactorFields{FieldL}))),num2str(eval(sprintf('Gsm.%s{GsmPos}',FactorFields{FieldL}))));
+                                                        catch
+                                                            fprintf(GsmFid,'%u\t%u\t%u\t%s\t%s\t%s\n',CurrGplRank,CurrGseRank,CurrGsmRank,FactorFields{FieldL},eval(sprintf('MemGsm.%s{GsmPos}',FactorFields{FieldL})),eval(sprintf('Gsm.%s{GsmPos}',FactorFields{FieldL})));
+                                                        end
+                                                        eval(sprintf('Gsm.%s{GsmPos}=MemrGsm.%s{GsmPos};',FactorFields{FieldL},FactorFields{FieldL}));
+                                                        ChangedFlag=1;
+                                                    end
+                                                end
+                                                if ChangedFlag
+                                                    Gsm.metadb{GsmPos}=VERSION;
+                                                end
+                                            end
+
+                                        end
+                                    end
+                                    if RegisterIt
+                                        if GsmPos>0
+                                            %increment Gse nb (several Gse reference the same GSM)
+                                            try
+                                                Gsm.gseRanks{GsmPos}=sort([Gsm.gseRanks{GsmPos},Gse.gseRank(GsePos)]);
+                                                Gsm.gseNb(GsmPos)=Gsm.gseNb(GsmPos)+1;
+                                            catch
+                                                Gsm.gseRanks{GsmPos}=Gse.gseRank(GsePos);
+                                                Gsm.gseNb(GsmPos)=1;
+                                            end
+                                        end
                                         if isempty(Gsm)
                                             GsmPos=1;
                                         else
                                             GsmPos=length(Gsm.gsm)+1;
                                         end
-                                        Gsm.gsm{GsmPos}=CurrGsm.gsm;
-                                        Gsm.gsmRank(GsmPos)=str2num(CurrGsm.gsm(4:end));
-                                        Gsm.Id(GsmPos)=CurrGsm.ID;
-                                        Gsm.gseRanks{GsmPos}=Gse.gseRank(Pos);
-                                        Gsm.gseNb=1;
-                                        Gsm.title{GsmPos}=CurrGsm.title;
-                                        Gsm.seriesId{GsmPos}=CurrGsm.series_id;
-                                        Gsm.gpl{GsmPos}=CurrGsm.gpl;
-                                        Gsm.status{GsmPos}=CurrGsm.status;
-                                        Gsm.submissionDate{GsmPos}=CurrGsm.submission_date;
-                                        Gsm.lastUpdateDate{GsmPos}=CurrGsm.last_update_date;
-                                        Gsm.type{GsmPos}=CurrGsm.type;
-                                        Gsm.sourceNameCh1{GsmPos}=CurrGsm.source_name_ch1;
-                                        Gsm.organismCh1{GsmPos}=CurrGsm.organism_ch1;
-                                        Gsm.characteristicsCh1{GsmPos}=CurrGsm.characteristics_ch1;
-                                        Gsm.moleculeCh1{GsmPos}=CurrGsm.molecule_ch1;
-                                        Gsm.labelCh1{GsmPos}=CurrGsm.label_ch1;
-                                        Gsm.treatmentProtocolCh1{GsmPos}=CurrGsm.treatment_protocol_ch1;
-                                        Gsm.extractProtocolCh1{GsmPos}=CurrGsm.extract_protocol_ch1;
-                                        Gsm.labelProtocolCh1{GsmPos}=CurrGsm.label_protocol_ch1;
-                                        Gsm.sourceNameCh2{GsmPos}=CurrGsm.source_name_ch2;
-                                        Gsm.organismCh2{GsmPos}=CurrGsm.organism_ch2;
-                                        Gsm.characteristicsCh2{GsmPos}=CurrGsm.characteristics_ch2;
-                                        Gsm.moleculeCh2{GsmPos}=CurrGsm.molecule_ch2;
-                                        Gsm.labelCh2{GsmPos}=CurrGsm.label_ch2;
-                                        Gsm.treatmentProtocolCh2{GsmPos}=CurrGsm.treatment_protocol_ch2;
-                                        Gsm.extractProtocolCh2{GsmPos}=CurrGsm.extract_protocol_ch2;
-                                        Gsm.labelProtocolCh2{GsmPos}=CurrGsm.label_protocol_ch2;
-                                        Gsm.hybProtocol{GsmPos}=CurrGsm.hyb_protocol;
-                                        Gsm.description{GsmPos}=CurrGsm.description;
-                                        Gsm.dataProcessing{GsmPos}=CurrGsm.data_processing;
-                                        Gsm.contact{GsmPos}=CurrGsm.contact;
-                                        Gsm.supplementaryFile{GsmPos}=CurrGsm.supplementary_file;
-                                        Gsm.dataRowCount(GsmPos)=CurrGsm.data_row_count;
-                                        Gsm.channelCount(GsmPos)=CurrGsm.channel_count;
+
+                                        %Gsm.gsm{GsmPos}=CurrGsm.gsm;
+                                        Gsm.gsmRank(GsmPos)=CurrGsmRank;
+                                        for FieldL=1:length(GsmFields)
+                                            try
+                                                eval(sprintf('Gsm.%s{GsmPos}=CurrGsm.%s;',GsmFields{FieldL},CurrGsmFields{FieldL}));
+                                            catch
+                                                eval(sprintf('Gsm.%s(GsmPos)=CurrGsm.%s;',GsmFields{FieldL},CurrGsmFields{FieldL}));
+                                            end
+                                        end
+
+
+                                        Gsm.gseRanks{GsmPos}=Gse.gseRank(GsePos);
+                                        Gsm.gseNb(GsmPos)=1;
                                         Gsm.metadb{GsmPos}=VERSION;
                                         Gsm.isBiol(GsmPos)=0;
 
@@ -732,115 +1169,195 @@ switch Action
                                     end
                                 else
                                     %indicate that exist other gpl
-                                    Gse.outGplGsmNb(Pos)=Gse.outGplGsmNb(Pos)+1;
+                                    if CurrKeepGpl
+                                        try
+                                            MemGse.outGplGsmNb(GsePos)=Gse.outGplGsmNb(GsePos)+1;
+                                        catch
+                                            MemGse.outGplGsmNb(GsePos)=1;
+                                        end
+                                        MemGse.gseRank(GsePos)=CurrGseRank;
+                                    else
+                                        Gse.outGplGsmNb(GsePos)=Gse.outGplGsmNb(GsePos)+1;
+                                    end
                                 end
-                            catch
-                                'stop'
                             end
                         end %of GsmL
                     end %if ~isempty
+
+                    %process MemGsm
+                    if CurrKeepGpl
+                        GsmPos=find(MemGsm.gsmRank);
+                        for GsmL=1:length(GsmPos)
+                            CurrGsmPos=GsmPos(GsmL);
+                            if length(Gsm.gseRanks{CurrGsmPos})==length(MemGsm.gseRanks{CurrGsmPos})
+                                if Gsm.gseRanks{CurrGsmPos}~=MemGsm.gseRanks{CurrGsmPos}
+                                    fprintf(GsmFid,'%u\t%u\t%u\tgseRanks\t%s\t%s\n',CurrGplRank,CurrGseRank,Gsm.gsmRank(CurrGsmPos),num2str(MemGsm.gseRanks{CurrGsmPos}),num2str(Gsm.gseRanks{CurrGsmPos}));
+                                    Gsm.gseRanks{CurrGsmPos}=MemGsm.gseRanks{CurrGsmPos};
+                                    Gsm.metadb{CurrGsmPos}=VERSION;
+                                end
+                            else
+                                fprintf(GsmFid,'%u\t%u\t%u\tgseRanks\t%s\t%s\n',CurrGplRank,CurrGseRank,Gsm.gsmRank(CurrGsmPos),num2str(MemGsm.gseRanks{CurrGsmPos}),num2str(Gsm.gseRanks{CurrGsmPos}));
+                                Gsm.gseRanks{CurrGsmPos}=MemGsm.gseRanks{CurrGsmPos};
+                                Gsm.metadb{CurrGsmPos}=VERSION;
+                            end
+                            try
+                                if Gsm.gseNb(CurrGsmPos)~=MemGsm.gseNb(CurrGsmPos)
+                                    fprintf(GsmFid,'%u\t%u\t%u\tgseNb\t%u\t%u\n',CurrGplRank,CurrGseRank,Gsm.gsmRank(CurrGsmPos),MemGsm.gseNb(CurrGsmPos),Gsm.gseNb(CurrGsmPos));
+                                    Gsm.gseNb(CurrGsmPos)=MemGsm.gseNb(CurrGsmPos);
+                                    Gsm.metadb{CurrGsmPos}=VERSION;
+                                end
+                            catch
+                                %patch to recover a previous error (Gsm.gseNb=1 instead of
+                                %Gsm.gseNb(GsmPos)=1
+                                fprintf(GsmFid,'%u\t%u\t%u\tgseNb\t%u\t-\n',CurrGplRank,CurrGseRank,Gsm.gsmRank(CurrGsmPos),MemGsm.gseNb(CurrGsmPos));
+                                Gsm.gseNb(CurrGsmPos)=MemGsm.gseNb(CurrGsmPos);
+                                Gsm.metadb{CurrGsmPos}=VERSION;
+                            end
+                        end
+                    end
                 end %of GseL
-            end %of OK
+                %process MemGse and MemGsm
+                if CurrKeepGpl
+                    GsePos=find(MemGse.gseRank);
+                    for GseL=1:length(GsePos)
+                        CurrGsePos=GsePos(GseL);
+                        if Gse.outGplGsmNb(CurrGsePos)~=MemGse.outGplGsmNb(CurrGsePos)
+                            fprintf(GseFid,'%u\t%u\toutGplGsmNb\t%u\t%u\n',CurrGplRank,Gse.gseRank(CurrGsePos),MemGse.outGplGsmNb(CurrGsePos),Gse.outGplGsmNb(CurrGsePos));
+                            Gse.outGplGsmNb(CurrGsePos)=MemGse.outGplGsmNb(CurrGsePos);
+                            Gse.metadb{CurrGsePos}=VERSION;
+                        end
+                    end
+                end
 
 
-            %FIND CONTRIBUTORS
-            Contributor.lastName={};
-            Contributor.firstNames={};
-            Contributor.gses={};
-            Contributor.gseRanks={};
-            Contributor.gseIndexes={};
-            Contributor.gseNb=[];
-            Contributor.metadb=[];
-            for GseL=1:length(Gse.gse)
-                CurrNames=sprintf(';%s;',Gse.contributor{GseL});
-                SepPos=findstr(';',CurrNames);
-                for NameL=1:length(SepPos)-1
-                    CurrName=CurrNames(SepPos(NameL)+1:SepPos(NameL+1)-1);
-                    ColonPos=findstr(',',CurrName);
-                    if isempty(ColonPos)
-                        ColonPos=findstr(' ',CurrName);
-                    end
-                    if isempty(ColonPos)
-                        LastName=CurrName;
-                    else
-                        FirstNames=CurrName(1:ColonPos(end)-1);
-                        LastName=upper(CurrName(ColonPos(end)+1:end));
-                    end
-                    if ~isempty(LastName)
-                        NamePos=strmatch(LastName,Contributor.lastName,'exact');
-                        if isempty(NamePos)
-                            Contributor.lastName{end+1}=LastName;
-                            Contributor.firstNames{end+1}=FirstNames;
-                            Contributor.gses{end+1}{1}=Gse.gse{GseL};
-                            Contributor.gseRanks{end+1}=Gse.gseRank(GseL);
-                            Contributor.gseIndexes{end+1}=GseL;
-                            Contributor.gseNb(end+1)=1;
-                            Contributor.metadb{end+1}=VERSION;
+
+                %FIND CONTRIBUTORS
+                Contributor.lastName={};
+                Contributor.firstNames={};
+                Contributor.gses={};
+                Contributor.gseRanks={};
+                Contributor.gseIndexes={};
+                Contributor.gseNb=[];
+                Contributor.metadb=[];
+                for GseL=1:length(Gse.gse)
+                    CurrNames=sprintf(';%s;',Gse.contributor{GseL});
+                    SepPos=findstr(';',CurrNames);
+                    for NameL=1:length(SepPos)-1
+                        CurrName=CurrNames(SepPos(NameL)+1:SepPos(NameL+1)-1);
+                        ColonPos=findstr(',',CurrName);
+                        if isempty(ColonPos)
+                            ColonPos=findstr(' ',CurrName);
+                        end
+                        if isempty(ColonPos)
+                            LastName=CurrName;
                         else
-                            if isempty(find(Contributor.gseRanks{NamePos}==Gse.gseRank(GseL)))
-                                [Contributor.gseRanks{NamePos},SortOrder]=sort([Contributor.gseRanks{NamePos},Gse.gseRank(GseL)]);
-                                Contributor.gses{NamePos}{end+1}=Gse.gse{GseL};
-                                Contributor.gses{NamePos}=Contributor.gses{NamePos}(SortOrder);
-                                Contributor.gseIndexes{NamePos}=[Contributor.gseIndexes{NamePos},GseL];
-                                Contributor.gseIndexes{NamePos}=Contributor.gseIndexes{NamePos}(SortOrder);
-                                Contributor.gseNb(NamePos)=Contributor.gseNb(NamePos)+1;
+                            FirstNames=CurrName(1:ColonPos(end)-1);
+                            LastName=upper(CurrName(ColonPos(end)+1:end));
+                        end
+                        if ~isempty(LastName)
+                            NamePos=strmatch(LastName,Contributor.lastName,'exact');
+                            if isempty(NamePos)
+                                Contributor.lastName{end+1}=LastName;
+                                Contributor.firstNames{end+1}=FirstNames;
+                                Contributor.gses{end+1}{1}=Gse.gse{GseL};
+                                Contributor.gseRanks{end+1}=Gse.gseRank(GseL);
+                                Contributor.gseIndexes{end+1}=GseL;
+                                Contributor.gseNb(end+1)=1;
+                                Contributor.metadb{end+1}=VERSION;
+                            else
+                                if isempty(find(Contributor.gseRanks{NamePos}==Gse.gseRank(GseL)))
+                                    [Contributor.gseRanks{NamePos},SortOrder]=sort([Contributor.gseRanks{NamePos},Gse.gseRank(GseL)]);
+                                    Contributor.gses{NamePos}{end+1}=Gse.gse{GseL};
+                                    Contributor.gses{NamePos}=Contributor.gses{NamePos}(SortOrder);
+                                    Contributor.gseIndexes{NamePos}=[Contributor.gseIndexes{NamePos},GseL];
+                                    Contributor.gseIndexes{NamePos}=Contributor.gseIndexes{NamePos}(SortOrder);
+                                    Contributor.gseNb(NamePos)=Contributor.gseNb(NamePos)+1;
+                                end
                             end
                         end
                     end
                 end
-            end
-            cd(K.dir.geoMetadata)
-            fid=fopen(sprintf('contributors_%s_%s.txt',GPL,VERSION),'w');
-            fprintf(fid,'first name\tlast name\tgse\tgse nb\n')
-            for ContL=1:length(Contributor.gses)
-                fprintf(fid,'%s\t%s',strrep(strrep(Contributor.firstNames{ContL},sprintf('\t'),''),',',' '),Contributor.lastName{ContL});
-                fprintf(fid,'\t%s',Contributor.gses{ContL}{1});
-                if length(Contributor.gses{ContL})>1
-                    for GseL=2:length(Contributor.gses{ContL})
-                        fprintf(fid,'/%s',Contributor.gses{ContL}{GseL});
+                cd(K.dir.geoMetadata)
+                fid=fopen(sprintf('contributors_%s_%s.txt',GPL,VERSION),'w');
+                fprintf(fid,'first name\tlast name\tgse\tgse nb\n')
+                for ContL=1:length(Contributor.gses)
+                    fprintf(fid,'%s\t%s',strrep(strrep(Contributor.firstNames{ContL},sprintf('\t'),''),',',' '),Contributor.lastName{ContL});
+                    fprintf(fid,'\t%s',Contributor.gses{ContL}{1});
+                    if length(Contributor.gses{ContL})>1
+                        for GseL=2:length(Contributor.gses{ContL})
+                            fprintf(fid,'/%s',Contributor.gses{ContL}{GseL});
+                        end
                     end
-                end
-                fprintf(fid,'\t%u\n',Contributor.gseNb(ContL));
-            end
-            fclose(fid)
-
-
-            Pb=find(Gse.gsmCount~=Gse.gsmNb);
-            Pb=find(Gse.gsmNb(Pb)-Gse.gsmCount(Pb)~=Gse.outGplGsmNb(Pb));
-            if ~isempty(Pb)
-                fid=fopen(sprintf('missing_gsm_%s_%s.txt',GPL,VERSION),'w');
-                fprintf(fid,'gse\tgsm count\tgsm nb\tin other gpl\n');
-                for PbL=1:length(Pb)
-                    fprintf(fid,'%u\t%u\t%u\t%u\n',Gse.gseRank(Pb(PbL)),Gse.gsmCount(Pb(PbL)),Gse.gsmNb(Pb(PbL)),Gse.outGplGsmNb(Pb(PbL)));
+                    fprintf(fid,'\t%u\n',Contributor.gseNb(ContL));
                 end
                 fclose(fid)
-            end
 
 
-            Gsm.gseRank=zeros(length(Gsm.gsm),1);
-            for GsmL=1:length(Gsm.gsm)
-                if length(Gsm.gseRanks{GsmL})==1
-                    Gsm.gseRank(GsmL)=Gsm.gseRanks{GsmL};
-                else
-                    Gsm.gseRank(GsmL)=Gsm.gseRanks{GsmL}(1);
+                Pb=find(Gse.gsmCount~=Gse.gsmNb);
+                Pb=find(Gse.gsmNb(Pb)-Gse.gsmCount(Pb)~=Gse.outGplGsmNb(Pb));
+                if ~isempty(Pb)
+                    fid=fopen(sprintf('missing_gsm_%s_%s.txt',GPL,VERSION),'w');
+                    fprintf(fid,'gse\tgsm count\tgsm nb\tin other gpl\n');
+                    for PbL=1:length(Pb)
+                        fprintf(fid,'%u\t%u\t%u\t%u\n',Gse.gseRank(Pb(PbL)),Gse.gsmCount(Pb(PbL)),Gse.gsmNb(Pb(PbL)),Gse.outGplGsmNb(Pb(PbL)));
+                    end
+                    fclose(fid)
                 end
-            end
 
-            eval(sprintf('save %s Gsm Gse Gds Contributor',GPL))
+
+                Gsm.gseRank=zeros(length(Gsm.gsm),1);
+                for GsmL=1:length(Gsm.gsm)
+                    if length(Gsm.gseRanks{GsmL})==1
+                        Gsm.gseRank(GsmL)=Gsm.gseRanks{GsmL};
+                    else
+                        Gsm.gseRank(GsmL)=Gsm.gseRanks{GsmL}(1);
+                    end
+                end
+
+
+                ModifiedGse=strmatch(VERSION,Gse.metadb,'exact');
+                ModifiedGsm=strmatch(VERSION,Gsm.metadb,'exact');
+                if CurrKeepGpl==0
+                    NewGse=length(ModifiedGse);
+                    NewGsm=length(ModifiedGsm);
+                end
+                %h=warndlg(sprintf('%u new, %u updated',NewGse,length(ModifiedGse)-NewGse),'GSE');
+                %waitfor(h)
+                %h=warndlg(sprintf('%u new, %u updated',NewGsm,length(ModifiedGsm)-NewGsm),'GSM');
+                %waitfor(h)                
+                %cd(K.dir.geoMetadata)
+                %sprintf('GPL%u: %u new GSE, %u updated',CurrGplRank,NewGse,length(ModifiedGse)-NewGse)
+                %sprintf('GPL%u: %u new GSM, %u updated',CurrGplRank,NewGsm,length(ModifiedGsm)-NewGsm)
+                fprintf(LogFid,'%u\t%u\t%u\n',CurrGplRank,NewGse,length(ModifiedGse)-NewGse)
+                fprintf(LogFid,'%u\t%u\t%u\n',CurrGplRank,NewGsm,length(ModifiedGsm)-NewGsm)
+                eval(sprintf('save %s Gsm Gse Gds Contributor',GPL))
+            end
+            catch
+                fclose(LogFid);
+                fclose(GdsFid);
+                fclose(GseFid);
+                fclose(GsmFid);
+
+                h=warndlg(sprintf('GPL%u has failed',CurrGplRank));
+                waitfor(h)
+                'stop'
+                feature('DefaultCharacterSet','windows-1252')
+                geo_metadb('close geo metadb');
+            end
         end
 
 
 %% GSE special symbols
-%find neighbourhood of special charater to set up recover_words function used in GSE
-%dictionnary
-%writes two list by reordering list on words that are just ahead and behind of the symbol
-%geo_metadb('GSE special symbols',[339],sprintf('%c',char(65533)),1,1,30,30)
+        %find neighbourhood of special charater to set up recover_words function used in GSE
+        %dictionnary
+        %writes two list by reordering list on words that are just ahead and behind of the symbol
+        %geo_metadb('GSE special symbols',[339],sprintf('%c',char(65533)),1,1,30,30)
     case 'GSE special symbols'
         if nargin<3
             h=errordlg('GSE special symbols needs 6 parameters: a list of GPL in numerical format, a regular expression pattern, length of pattern, position of symbol and length of left and right neighbhourood');
             waitfor(h)
             error('process canceled')
-        end      
+        end
         feature('DefaultCharacterSet','UTF-8')
         GPLs=varargin{1};
         Exp=varargin{2};
@@ -870,7 +1387,7 @@ switch Action
                         %for GseL=1:20
                         String=Gse.summary{GseL};
                         if ~isempty(String)
-                            %[Match,Index]=regexp(String,'[\|\$\[\]\)(}{_''"#`~&^%*�<>�@=���]','match','start');
+                            %[Match,Index]=regexp(String,'[\|\$\[\]\)(}{_''"#`~&^%*?<>?@=???]','match','start');
                             %[Match,Index]=regexp(String,'\S\.\S|\S;\S|\S:\S|\S,\S|\S!\S|\S\?\S|','match','start');                            
                             [Match,Index]=regexp(String,Exp,'match','start');                            
                             if ~isempty(Index)
