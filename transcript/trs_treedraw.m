@@ -326,18 +326,18 @@ for TreeL=1:TreeNb
 
     if isequal(SelType,'fdr')
         if isempty(TreeType)
-             Title=sprintf('%s - %s - %s (%s)\nSelection at fdr<=%.2f,pv<=%.2f,s<=%.2f - Distances between %s',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipSetRank},'_','\_'),date,Fdr,Pv,Sensitivity,DataType);
+             Title=sprintf('%s - %s - %s (%s)\nSelection at fdr<=%.2f,pv<=%.2f,s<=%.2f - Distances between %s',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipPos},'_','\_'),date,Fdr,Pv,Sensitivity,DataType);
         else
-            Title=sprintf('%s - %s - %s (%s)\nSelection at fdr<=%.2f,pv<=%.2f,s<=%.2f - %u probe sets - Distances between %s (%s)',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipSetRank},'_','\_'),date,Fdr,Pv,Sensitivity,length(T{TRank}.psIndex),DataType,TreeType);
+            Title=sprintf('%s - %s - %s (%s)\nSelection at fdr<=%.2f,pv<=%.2f,s<=%.2f - %u probe sets - Distances between %s (%s)',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipPos},'_','\_'),date,Fdr,Pv,Sensitivity,length(T{TRank}.psIndex),DataType,TreeType);
         end
     else
         if ~isempty(TreeType)
-             Title=sprintf('%s - %s - %s (%s)\n%u probe sets - Distances between %s (%s)',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipSetRank},'_','\_'),date,length(T{TRank}.psIndex),DataType,TreeType);
+             Title=sprintf('%s - %s - %s (%s)\n%u probe sets - Distances between %s (%s)',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipPos},'_','\_'),date,length(T{TRank}.psIndex),DataType,TreeType);
         else
             if isequal(SelType,'point distances')
-                Title=sprintf('%s - %s - %s (%s)\nfdr<=%.2f,pv<=%.2f,s<=%.2f - %u probe sets - Distances between %s (%s)',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipSetRank},'_','\_'),date,Fdr,Pv,Sensitivity,length(T{1}.psIndex),DataType,T{1}.treeType);
+                Title=sprintf('%s - %s - %s (%s)\nfdr<=%.2f,pv<=%.2f,s<=%.2f - %u probe sets - Distances between %s (%s)',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipPos},'_','\_'),date,Fdr,Pv,Sensitivity,length(T{1}.psIndex),DataType,T{1}.treeType);
             else
-                Title=sprintf('%s - %s - %s (%s)\nfirst %u of top lists - Distances between %s',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipSetRank},'_','\_'),date,DataType);
+                Title=sprintf('%s - %s - %s (%s)\nfirst %u of top lists - Distances between %s',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipPos},'_','\_'),date,DataType);
             end
         end
     end
@@ -413,18 +413,18 @@ for TreeL=1:TreeNb
 
                 if isequal(SelType,'fdr')
                     if isempty(TreeType)
-                        Title=sprintf('%s - %s - %s (%s) - tree %u\nSelection at fdr<=%.2f,pv<=%.2f,s<=%.2f - Distances between %s',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipSetRank},'_','\_'),date,Rank,Fdr,Pv,Sensitivity,DataType);
+                        Title=sprintf('%s - %s - %s (%s) - tree %u\nSelection at fdr<=%.2f,pv<=%.2f,s<=%.2f - Distances between %s',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipPos},'_','\_'),date,Rank,Fdr,Pv,Sensitivity,DataType);
                     else
-                        Title=sprintf('%s - %s - %s (%s) - tree %u\nSelection at fdr<=%.2f,pv<=%.2f,s<=%.2f - %u probe sets - Distances between %s (%s)',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipSetRank},'_','\_'),date,Rank,Fdr,Pv,Sensitivity,length(T{TRank}.psIndex),DataType,TreeType);
+                        Title=sprintf('%s - %s - %s (%s) - tree %u\nSelection at fdr<=%.2f,pv<=%.2f,s<=%.2f - %u probe sets - Distances between %s (%s)',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipPos},'_','\_'),date,Rank,Fdr,Pv,Sensitivity,length(T{TRank}.psIndex),DataType,TreeType);
                     end
                 else
                     if ~isempty(TreeType)
-                        Title=sprintf('%s - %s - %s (%s) - tree %u\n%u probe sets - Distances between %s (%s)',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipSetRank},'_','\_'),date,Rank,length(T{TRank}.psIndex),DataType,TreeType);
+                        Title=sprintf('%s - %s - %s (%s) - tree %u\n%u probe sets - Distances between %s (%s)',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipPos},'_','\_'),date,Rank,length(T{TRank}.psIndex),DataType,TreeType);
                     else
                         if isequal(SelType,'point distances')
-                            Title=sprintf('%s - %s - %s (%s) - tree %u\nfdr<=%.2f,pv<=%.2f,s<=%.2f - %u probe sets - Distances between %s (%s)',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipSetRank},'_','\_'),date,Rank,Fdr,Pv,Sensitivity,length(T{1}.psIndex),DataType,T{1}.treeType);
+                            Title=sprintf('%s - %s - %s (%s) - tree %u\nfdr<=%.2f,pv<=%.2f,s<=%.2f - %u probe sets - Distances between %s (%s)',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipPos},'_','\_'),date,Rank,Fdr,Pv,Sensitivity,length(T{1}.psIndex),DataType,T{1}.treeType);
                         else
-                            Title=sprintf('%s - %s - %s (%s) - tree %u\nfirst %u of top lists - Distances between %s',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipSetRank},'_','\_'),date,Rank,DataType);
+                            Title=sprintf('%s - %s - %s (%s) - tree %u\nfirst %u of top lists - Distances between %s',T{TRank}.distType,T{TRank}.selType,strrep(K.chip.name{P.chip.chipPos},'_','\_'),date,Rank,DataType);
                         end
                     end
                 end

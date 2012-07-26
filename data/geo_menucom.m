@@ -489,7 +489,7 @@ end
                         
 
 
-                        ProbeSetNb=K.chip.probeSetNbs{P.chip.chipSetRank}(P.chip.chipRank);
+                        ProbeSetNb=K.chip.probeSetNbs(P.chip.chipPos);
                         for GseL=1:length(Gse.gse)
                             CurrGse=Gse.gse{GseL};
                             cd(P.dir.geoData)

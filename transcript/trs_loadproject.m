@@ -159,11 +159,13 @@ else
         set(F.gh.amcmenu.same_algorithm,'enable','off')
         set(F.gh.amcmenu.several_algorithms,'checked','off')
         set(F.gh.amcmenu.several_algorithms,'enable','on')
+        set(F.gh.amcmenu.plot_algo_vs_algo,'enable','off')
     else
         set(F.gh.amcmenu.several_algorithms,'checked','on')
         set(F.gh.amcmenu.several_algorithms,'enable','off')
         set(F.gh.amcmenu.same_algorithm,'checked','off')
         set(F.gh.amcmenu.same_algorithm,'enable','on')
+        set(F.gh.amcmenu.plot_algo_vs_algo,'enable','on')
     end 
     if isequal(P.par.analType,'network')
         set(F.gh.amcmenu.plot_signal_vs_rank,'enable','off')

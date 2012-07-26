@@ -31,8 +31,7 @@
 % Experiment description
 % Example of description file (tab delimited format) if raw data are in distinct files
 % FileName  HeaderLine  PointName   ReplicateRank   BiolCond	BiolRank	status	sex	age
-% CT052.txt 1           YF-052b 	1               YN           1
-% N      F	Y
+% CT052.txt 1           YF-052b 	1               YN           1           N      F	Y
 % CT053.txt 1           YM-053b     1               YN           1           N      M	Y
 % CT054.txt 1           YM-054b     2               YN           1           N      M	Y
 % CT008.txt 1           OF-008b     1               ON           2           N      F   0
@@ -43,10 +42,8 @@
 % If raw data are in a single file the first column can contain anything :
 % The first value of Headerline is used for import (no matter what are the
 % following values)
-% FileName  HeaderLine  PointName   ReplicateRank   BiolCond	BiolRank
-% status	sex	age
-% 0         1           YF-052b     1               YN           1
-% N       F	Y
+% FileName  HeaderLine  PointName   ReplicateRank   BiolCond	BiolRank status	sex	age
+% 0         1           YF-052b     1               YN           1        N       F	 Y
 % etc ...
 
 % Raw data in distincts files
@@ -74,7 +71,7 @@ P=[];
 %% PROJECT INFO
 %Select the chip set & eventually the chip if several chips exists in the
 %same chip set model
-[P.chip.chipRank,P.chip.chipPos,ChipType,Gpl,ProbeSetNb,CompName,Chromosomes,Success] =select_chip;
+[P.chip.chipRank,P.chip.chipPos,ChipType,ProbeSetNb,Gpl,CompName,Chromosomes,Success] =select_chip;
 if Success==0
     h=warndlg('chip set no selected , process canceled');
     waitfor(h)
@@ -230,10 +227,10 @@ else
 
     if ChipType=='G'
         switch CompName
-            case 'affy'
+            case 'Affymetrix'
                 % !!! to be refactored
                 [DFile,DFileDir]=AffyWriteData;
-            case 'nimb'
+            case 'Nimblegen'
                 % !!! to be refactored
                 [DFile,DFileDir]=NimbWriteData(ProbeSetNb);
         end
@@ -316,10 +313,10 @@ else
                 TabPos2=find(SndLine==char(9));
                 FieldNb=length(TabPos1)+1;
                 if isequal(P.par.analType,'chipchip')
-                    ExpOutPut='[FileName,HeaderLine,PointName,ReplicateRank,BiolName,BiolRank,ResType';
+                    ExpOutput='[FileName,HeaderLine,PointName,ReplicateRank,BiolName,BiolRank,ResType';
                     ExpDataType='%s%u%s%u%s%u%c';
                 else
-                    ExpOutPut='[FileName,HeaderLine,PointName,ReplicateRank,BiolName,BiolRank';
+                    ExpOutput='[FileName,HeaderLine,PointName,ReplicateRank,BiolName,BiolRank';
                     ExpDataType='%s%u%s%u%s%u';
                 end
                 %control that the field nb is right
@@ -409,7 +406,7 @@ else
                             P.point.factorNames{FactorPos}=Factor{1};
                             P.point.factorTypes{FactorPos}=Factor{2};
                         end
-                        ExpOutPut=[ExpOutPut,sprintf(',FactorValues{%u}',FactorL-MinFieldNb+1)];
+                        ExpOutput=[ExpOutput,sprintf(',FactorValues{%u}',FactorL-MinFieldNb+1)];
                         switch Factor{2}
                             case 'int'
                                 ExpDataType=[ExpDataType,'%u'];
@@ -422,10 +419,10 @@ else
                         end
                     end
                 end
-                ExpOutPut=[ExpOutPut,']'];
+                ExpOutput=[ExpOutput,']'];
             end
             %read experiment information file
-            eval(sprintf('%s=textread(''%s'',''%s'',''delimiter'',''\t'',''headerlines'',1)',ExpOutPut,DFile,ExpDataType));
+            eval(sprintf('%s=textread(''%s'',''%s'',''delimiter'',''\t'',''headerlines'',1)',ExpOutput,DFile,ExpDataType));
             if FieldNb>MinFieldNb
                 if Loop==1
                     P.point.factorValues=FactorValues;
@@ -532,7 +529,7 @@ else
         if ChipType=='T'
             %Write signal in one Data variable
             switch CompName
-                case {'affy','oth'}
+                case {'Affymetrix','Other'}
                     if DataTable
                         cd(TDir)
                         fid = fopen(TFileName);
@@ -684,7 +681,7 @@ else
                             P.point.algoGrp(PointOffset+PointL,1)=AlgoGrp;
                         end
                     end
-                case 'AGIL'
+                case 'Agilent'
                     % !!! to be refactored
                     SignalList={'gProcessedSignal';'gProcessedSigError';'gMeanSignal';'gMedianSignal';'gBGSubSignal';'gBGSubSigError';'gNetSignal';'gInterpolatedNegCtrlSub'};
                     SignalTypeRank=listdlg('ListString',SignalList,'SelectionMode','single','PromptString','Select the signal type to be used');
@@ -785,6 +782,7 @@ else
                 if size(DataSignals,1)~=ProbeSetNb
                     h=warndlg(sprintf('imported table has %u lines and chip %s is supposed to have %u lines',size(DataSignals,1),K.chip.name{P.chip.chipPos},ProbeSetNb));
                     waitfor(h);
+                    'stop'
                 end
                 %COUNT THE NB OF > VALUES
                 PosNb=zeros(size(DataSignals,2),1);
@@ -917,7 +915,7 @@ else
         
         
 
-        % PCA DISPLAY
+%% PCA DISPLAY
         Continue=1;
         if P.flag.loadData
             [DataSignals,Success]=load_data(SignalFid,[],P.chip.currProbeSetNb,P.point.nb,'single','ieee-le');
@@ -953,12 +951,12 @@ else
             else
                 BiolNb=P.biol.nb;
                 Colors=colors(colormap,BiolNb);
-                Legend={P.biol.name{P.point.biolRank(1)}};
+                Legend=strrep({P.biol.name{P.point.biolRank(1)}},'_',' ');
                 plot(0,0,'color',Colors(1,:))
                 BiolRank=1;
                 for PointL=1:P.point.nb
-                    if isempty(strmatch(P.biol.name{P.point.biolRank(PointL)},Legend,'exact'))
-                        Legend{end+1}=P.biol.name{P.point.biolRank(PointL)};
+                    if isempty(strmatch(strrep(P.biol.name{P.point.biolRank(PointL)},'_',' '),Legend,'exact'))
+                        Legend{end+1}=strrep(P.biol.name{P.point.biolRank(PointL)},'_',' ');
                         BiolRank=BiolRank+1;
                         plot(0,0,'color',Colors(BiolRank,:))
                     end                
@@ -969,7 +967,7 @@ else
                 if P.flag.testAlgo
                     LegendPos=strmatch(P.point.algo{PointL},Legend,'exact');
                 else
-                    LegendPos=strmatch(P.biol.name{P.point.biolRank(PointL)},Legend,'exact');
+                    LegendPos=strmatch(strrep(P.biol.name{P.point.biolRank(PointL)},'_',' '),Legend,'exact');
                 end
                 plot(1:ProbeSetNb,log2(sort(DataSignals(:,PointL))),'color',Colors(LegendPos,:))                
             end

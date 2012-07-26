@@ -30,12 +30,12 @@ switch Action
         else
             BiolNb=P.biol.nb;
             Colors=colors(colormap,BiolNb);
-            Legend={P.biol.name{P.point.biolRank(1)}};
+            Legend={strrep(P.biol.name{P.point.biolRank(1)},'_',' ')};
             plot(0,0,'color',Colors(1,:))
             BiolRank=1;
             for PointL=1:P.point.nb
-                if isempty(strmatch(P.biol.name{P.point.biolRank(PointL)},Legend,'exact'))
-                    Legend{end+1}=P.biol.name{P.point.biolRank(PointL)};
+                if isempty(strmatch(strrep(P.biol.name{P.point.biolRank(PointL)},'_',' '),Legend,'exact'))
+                    Legend{end+1}=strrep(P.biol.name{P.point.biolRank(PointL)},'_',' ');
                     BiolRank=BiolRank+1;
                     plot(0,0,'color',Colors(BiolRank,:))
                 end

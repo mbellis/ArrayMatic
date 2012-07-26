@@ -24,7 +24,7 @@ switch action
         trs_loadproject
 
     case 'quit project'
-        %% quit project
+%% quit project
         DataRanks=[];
         P=[];
         R=[];
@@ -59,7 +59,7 @@ switch action
 
 
     case 'keep data on disk'
-        %% keep data on disk
+%% keep data on disk
         if P.flag.loadData==0
             DataRanks=[];
             P.flag.loadData=1;
@@ -73,7 +73,7 @@ switch action
 
 
     case 'keep data in memory'
-        %% keep data in memory
+%% keep data in memory
         if P.flag.loadData
             DataRanks=load_data('DataRanks.float32le',P.dir.data,P.chip.currProbeSetNb,P.point.nb,'single','ieee-le');
             P.flag.loadData=0;
@@ -86,14 +86,14 @@ switch action
         end
 
     case 'same algorithm'
-        %% same algorithm
+%% same algorithm
         set(F.gh.amcmenu.same_algorithm,'checked','on')
         set(F.gh.amcmenu.same_algorithm,'enable','off')
         set(F.gh.amcmenu.several_algorithms,'checked','off')
         set(F.gh.amcmenu.several_algorithms,'enable','on')
 
     case 'several algorithms'
-        %% severalalgorithms
+%% severalalgorithms
         set(F.gh.amcmenu.several_algorithms,'checked','on')
         set(F.gh.amcmenu.several_algorithms,'enable','off')
         set(F.gh.amcmenu.same_algorithm,'checked','off')
@@ -101,7 +101,7 @@ switch action
 
 
     case 'select used points'
-        %% select used points
+%% select used points
         %keep in memory the number of used points in biol cond marked as
         %not used
         NotUsedBiol=find(P.biol.used==0);
@@ -212,13 +212,14 @@ switch action
 
 
     case 'plot signal vs rank'
-        %% plot signal vs rank
+%% plot signal vs rank
 
 
         %recover color map
 
         %figure with all curves rank vs log2(signal)
         h=figure;
+        set(h,'color',[1,1,1])
         set(h,'name','all signal vs rank curves')
         subplot(1,2,1)
         hold on
@@ -244,7 +245,7 @@ switch action
             if P.flag.testAlgo
                 ColorPos=strmatch(P.point.algo{PointL},Legend,'exact');
             else
-                ColorPos=strmatch(P.biol.name{P.point.biolRank(PointL)},Legend,'exact');
+                ColorPos=strmatch(strrep(P.biol.name{P.point.biolRank(PointL)},'_',' '),Legend,'exact');
             end
             plot(CurrRanks,log2(CurrSignals),'color',Colors(ColorPos,:))
             if PointL==1
@@ -287,11 +288,11 @@ switch action
 
         h=msgbox(sprintf('resize and save as \nsignals_vs_ranks_%s_%s.png',P.project.name,date));
         waitfor(h)
-        %saveas(gcf,sprintf('signal_distribution_%s_%s.png',P.project.name,date))
-        %delete(gcf)
+        plot2svg(sprintf('%s_%s.svg',P.project.name,date))
+
 
     case 'calculate cv'
-        %% CALCULATE CV
+%% CALCULATE CV
 
         BlOC_SIZE=1000;
         BlocNb=ceil(P.chip.probeSetNb/BlOC_SIZE);

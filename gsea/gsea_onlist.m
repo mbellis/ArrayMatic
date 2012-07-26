@@ -43,7 +43,7 @@ else
 end
 rand('twister',RandSeed)
 
-[ModelRank,NetRank,NetPos]=select_net('unique',P.chip.chipSetRank);
+[ModelRank,NetRank,NetPos]=select_net('unique',P.chip.chipRank);
 if length(K.net{ModelRank}.biolRank{NetPos})==2
     BiolRank{1}=K.net{ModelRank}.biolRank{NetPos}{1};
     BiolRank{2}=K.net{ModelRank}.biolRank{NetPos}{2};

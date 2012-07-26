@@ -1026,7 +1026,7 @@ else
                     K.net{ModelRank}.netMade(NetPos,1)=0;
                 end
             else
-                ModelRank=P.chip.chipSetRank;
+                ModelRank=P.chip.chipRank;
                 for NetL=1:NetNb
                     NetPos=length(K.net{ModelRank}.name)+1;
                     K.net{ModelRank}.name{NetPos,1}=sprintf('%s ps%u',TfGeneSymbol{UsedPs(NetL)},TfPs(UsedPs(NetL)));

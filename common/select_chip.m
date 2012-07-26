@@ -62,7 +62,7 @@ while Continue
         Continue=0;
         ChipRank=Chip.rank(ChipSel);        
         ChipPos=find(K.chip.rank==ChipRank);
-        Type=K.chip.type(ChipPos);
+        Type=K.chip.type{ChipPos};
         ProbeSetNb=K.chip.probesetNb(ChipPos);
         CompName=K.chip.compName{ChipPos};        
         Gpl=K.chip.geoName{ChipPos};

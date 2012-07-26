@@ -22,7 +22,7 @@
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!%
 function trs_newnetwork()
 KNetMem=K.net;
-ModelRank=P.chipSetRank;
+ModelRank=P.chipRank;
 Continue=0;
 Cancel=0;
 Default='All';

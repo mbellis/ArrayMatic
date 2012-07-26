@@ -190,7 +190,7 @@ end
 
 
 
-PsIndex=[];
+PsIndex=1:P.chip.currProbeSetNb;
 % Answer=questdlg('Do you want to restrict trees to a particular probe set list ?','trs_treedata','No','Yes','No');
 % if isequal(Answer,'Yes')
 %     PsIndex=SELECTGENE(sprintf('Select probe sets used to draw %s dendrogram',DataType));

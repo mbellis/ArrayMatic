@@ -32,7 +32,7 @@
 
 function net_description(GrpList,Fdr,Sensitivity)
 global K P 
-ModelRank=P.chip.chipSetRank;
+ModelRank=P.chip.chipRank;
 Tempo=K.net;
 if length(Tempo)<ModelRank
     Tempo{ModelRank}=[];

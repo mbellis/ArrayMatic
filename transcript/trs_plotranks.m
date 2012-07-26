@@ -77,11 +77,10 @@ end
 for AlgoL=1:AlgoNb
     figure(h(AlgoL))
     set_figsize('1910px')
-    saveas(h(AlgoL),sprintf('rankplot_%s_%s_%s',P.project.name,AlgoList{AlgoL},date),'png');
+    plot2svg(sprintf('rankplot_%s_%s_%s',P.project.name,AlgoList{AlgoL},date))
+    %saveas(h(AlgoL),sprintf('rankplot_%s_%s_%s',P.project.name,AlgoList{AlgoL},date),'png');
     delete(h(AlgoL))
 end
-
-'stop'
 
     
     

@@ -333,41 +333,61 @@ end
 
 if ChipNb==2
     AllGenes=union(Nts{1}.gene,Nts{2}.gene);
-    Title1=sprintf('\t\t\t\tContinuous analysis');
+    Title={};
+    Title{1}=sprintf('\t\t\t\tContinuous analysis');
     if TypeNb==2
-        Title1=sprintf('%s\tDiscrete analysis',Title1);
+        Title{1}=sprintf('%s\tDiscrete analysis',Title{1});
     end
-    Title2=sprintf('GeneId\tGeneDef\tExist in m%u\tExist in m%u\tClustered in m%u\tClustered in m%u ',ChipRank(1),ChipRank(2),ChipRank(1),ChipRank(2));
-    Title3=sprintf('\t\t\t\t');
-    Title4=sprintf('\t\t\t\t');
+
+    Title{2}=sprintf('GeneId\tGeneDef\tExist in m%u\tExist in m%u\tClustered in m%u\tClustered in m%u ',ChipRank(1),ChipRank(2),ChipRank(1),ChipRank(2));
+    for i=3:5        
+        Title{i}=sprintf('\t\t\t\t\t');
+    end
     if TypeNb==2
-        Title2=sprintf('%s\tClustered in m%u\tClustered in m%u ',Title2,ChipRank(1),ChipRank(2));
-        Title3=sprintf('%s\t\t',Title3);
-        Title4=sprintf('%s\t\t',Title4);
+        Title{2}=sprintf('%s\tClustered in m%u\tClustered in m%u ',Title{2},ChipRank(1),ChipRank(2));
+        for i=3:5        
+            Title{i}=sprintf('%s\t\t\t',Title{i});
+        end
     end
+    
     if CluFlag
+        if TypeNb==1
+            MatPos1=4;
+        else
+            MatPos1=6;
+        end
         ZeroNb=2+TypeNb*2;
+        CluNb1=0;
         for TypeL=1:TypeNb
             if TypeL==1
-                Title1=sprintf('%s\tTSN clusters in continuous analysis',Title1);
+                Title{1}=sprintf('%s\t\tTSN clusters in continuous analysis',Title{1});
             else
-                Title1=sprintf('%s\tTSN clusters in discrete analysis',Title1);
+                Title{1}=sprintf('%s\t\tTSN clusters in discrete analysis',Title{1});
             end
             for ChipL=1:2
-                Title2=sprintf('%s\tm%u',Title2,ChipRank(ChipL));
+                Title{2}=sprintf('%s\tm%u',Title{2},ChipRank(ChipL));
                 for ClassL=1:3
-                    Title3=sprintf('%s\tClass %s',Title3,ClassName{ClassL});
-                    for DensL=1:length(Nts{ChipL}.clu{TypeL}{ClassL})
-                        Title4=sprintf('%s\tDensity %u',Title4,Nts{ChipL}.densities(DensL));
-                        CluNb=length(Nts{ChipL}.clu{TypeL}{ClassL}{1,DensL});
+                    Title{3}=sprintf('%s\tClass %s',Title{3},ClassName{ClassL});
+                    for DensL=1:length(Nts{ChipL}.clu{TypeL}{ClassL})                        
+                        CluNb=length(Nts{ChipL}.clu{TypeL}{ClassL}{1,DensL});                        
                         if CluNb<CluNbLimit
+                            CluNb1=CluNb1+CluNb;
+                            Title{4}=sprintf('%s\tDensity %u',Title{4},round(Nts{ChipL}.densities(DensL)*100));
                             ZeroNb=ZeroNb+CluNb;
-                            Title1=sprintf('%s%s',Title1,repmat('\t',1,ZeroNb));
-                            Title2=sprintf('%s%s',Title2,repmat('\t',1,ZeroNb));
-                            Title3=sprintf('%s%s',Title3,repmat('\t',1,ZeroNb));
-                            Title4=sprintf('%s%s',Title4,repmat('\t',1,ZeroNb));
+                            for i=1:4
+                                Title{i}=sprintf('%s%s',Title{i},repmat('\t',1,CluNb-1));
+                            end
+                            Title{2}=sprintf('%s\t',Title{2});
+                            %Title{3}=sprintf('%s\t',Title{3});
+                            for CluL=1:CluNb
+                                Title{5}=sprintf('%s\tclu%u',Title{5},CluL);
+                            end
                         end
                     end
+                end
+                if ChipL==1
+                    MatPos2(1)=MatPos1;
+                    MatPos2(2)=MatPos2(1)+ZeroNb;
                 end
             end
         end
@@ -379,53 +399,60 @@ if ChipNb==2
 
     for GeneL=1:length(AllGenes)
         for TypeL=1:TypeNb
-            GenePos=strmatch(AllGenes{GeneL},Nts{1}.gene,'exact');
-            if  ~isempty(GenePos)
-                GeneMat(GeneL,1)=1;
-                if isempty(AllDef{GeneL})
-                    AllDef{GeneL}=Nts{1}.def{GenePos(1)};
+            for ChipL=1:2
+                GenePos=strmatch(AllGenes{GeneL},Nts{ChipL}.gene,'exact');
+                if  ~isempty(GenePos)
+                    GeneMat(GeneL,ChipL)=1;
+                    if isempty(AllDef{GeneL})
+                        AllDef{GeneL}=Nts{ChipL}.def{GenePos(1)};
+                    end
                 end
-            end
-            GenePos=strmatch(AllGenes{GeneL},Nts{2}.gene,'exact');
-            if  ~isempty(GenePos)
-                GeneMat(GeneL,2)=1;
-                if isempty(AllDef{GeneL})
-                    AllDef{GeneL}=Nts{2}.def{GenePos(1)};
-                end
-            end
-            try
-                if ~isempty(strmatch(AllGenes{GeneL},NtsGene{TypeL}{1},'exact'))
-                    GeneMat(GeneL,(TypeL-1)*2+3)=1;
-                    if CluFlag
-                        for ClassL=1:3
-                            for DensL=1:length(Nts{ChipL}.clu{TypeL}{ClassL})
-                                CluNb=length(Nts{ChipL}.clu{TypeL}{ClassL}{1,DensL});
-                                if CluNb<CluNbLimit
-                                    for CluL=1:CluNb
-                                        GeneMat(GeneL,(TypeL-1)*2+3)=1;
+
+                %             GenePos=strmatch(AllGenes{GeneL},Nts{2}.gene,'exact');
+                %             if  ~isempty(GenePos)
+                %                 GeneMat(GeneL,2)=1;
+                %                 if isempty(AllDef{GeneL})
+                %                     AllDef{GeneL}=Nts{2}.def{GenePos(1)};
+                %                 end
+                %             end
+                %             for ChipL=1:2
+                try
+                    %CurrGenePos=strmatch(AllGenes{GeneL},NtsGene{TypeL}{ChipL},'exact');
+                    if ~isempty(GenePos)
+                        GeneMat(GeneL,(TypeL-1)*2+2+ChipL)=1;
+                        MatPos=MatPos2(ChipL);
+                        if CluFlag
+                            for ClassL=1:3
+                                for DensL=1:length(Nts{ChipL}.clu{TypeL}{ClassL})
+                                    CluNb=length(Nts{ChipL}.clu{TypeL}{ClassL}{1,DensL});
+                                    if CluNb<CluNbLimit                                        
+                                        for CluL=1:CluNb
+                                            MatPos=MatPos+1;
+                                            
+                                            for i=1:length(GenePos)
+                                            if ~isempty(find(Nts{ChipL}.clu{TypeL}{ClassL}{1,DensL}{CluL}==GenePos(i)))
+                                                GeneMat(GeneL,MatPos)=1;
+                                            end
+                                            end
+                                        end
                                     end
                                 end
                             end
-                        end                                                        
+                        end
                     end
+                catch
                 end
-            catch
-            end
-            try
-                if ~isempty(strmatch(AllGenes{GeneL},NtsGene{TypeL}{2},'exact'))
-                    GeneMat(GeneL,(TypeL-1)*2+4)=1;
-                end
-            catch
             end
         end
     end
 
     cd(sprintf('/home/mbellis/net/clum%u',ChipRank(1)'))
     fid=fopen(sprintf('gene_%s_%s.txt',ListName{1},ListName{2}),'w');    
-
+    for i=1:5
+        fprintf(fid,[Title{i},'\n']);
+    end
     for GeneL=1:length(AllGenes)
-        fprintf(fid,'%s\t%s\t%u\t%u\t%u\t%u\t%u\t%u\n',AllGenes{GeneL},AllDef{GeneL},GeneMat(GeneL,1),...
-            GeneMat(GeneL,2),GeneMat(GeneL,3),GeneMat(GeneL,4),GeneMat(GeneL,5),GeneMat(GeneL,6));
+        fprintf(fid,['%s\t%s',repmat('\t%u',1,size(GeneMat,2)),'\n'],AllGenes{GeneL},AllDef{GeneL},GeneMat(GeneL,:));
     end
     fclose(fid)
 
