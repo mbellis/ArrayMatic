@@ -9,6 +9,7 @@
 using namespace std;
 
 /* Changelog
+    0-0-7   2012/12/14   add freqFlag (selection on % of changed in used comp)
     0-0-6   2012/12/10   add superior limit - correction rawFlag was not read
     0-0-5   2012/09/12   correct bug in TSN output
     0-0-4   2012/08/16   add local and distal server usage
@@ -28,7 +29,7 @@ using namespace std;
     int rankPos;
     unsigned int psNb,currPsNb,currPsRank,lineL,psL,distalFlag,listRank,Start;
     unsigned short modelRank,netRank,listL;
-    char cInfLimit,cSupLimit,testValue,diffFlag,rawFlag;
+    char cInfLimit,cSupLimit,testValue,diffFlag,rawFlag,freqFlag;
     float cRatio;
     char exportType[256],inputFile[256],outputFile[256],fileName[256];
     char *cValues;
@@ -80,7 +81,7 @@ int exportA(){
 
     aValues=(char*) malloc(sizeof(char)*psNb);
     cValues=(char*) malloc(sizeof(char)*psNb);
-    if (rawFlag){
+    if (rawFlag or freqFlag){
         fValues=(char*) malloc(sizeof(char)*psNb);
     }
     //the x vs x value is not used
@@ -93,20 +94,41 @@ int exportA(){
 
     if (rawFlag){
         if (diffFlag){
-            sprintf(outputFile,"m%d_n%d_c%dto%d_%s_%d_diff_raw.txt",modelRank,netRank,cInfLimit,cSupLimit,exportType,listRank);
+            if (freqFlag){
+                sprintf(outputFile,"m%d_n%d_c%dto%d_%s_%d_diff_raw_freq.txt",modelRank,netRank,cInfLimit,cSupLimit,exportType,listRank);
+            }
+            else{
+                sprintf(outputFile,"m%d_n%d_c%dto%d_%s_%d_diff_raw.txt",modelRank,netRank,cInfLimit,cSupLimit,exportType,listRank);
+            }
         }
         else{
-            sprintf(outputFile,"m%d_n%d_c%dto%d_%s_%d_raw.txt",modelRank,netRank,cInfLimit,cSupLimit,exportType,listRank);
+            if (freqFlag){
+                sprintf(outputFile,"m%d_n%d_c%dto%d_%s_%d_raw_freq.txt",modelRank,netRank,cInfLimit,cSupLimit,exportType,listRank);
+            }
+            else{
+                sprintf(outputFile,"m%d_n%d_c%dto%d_%s_%d_raw.txt",modelRank,netRank,cInfLimit,cSupLimit,exportType,listRank);
+            }
         }
     }
     else{
         if (diffFlag){
-            sprintf(outputFile,"m%d_n%d_c%dto%d_%s_%d_diff.txt",modelRank,netRank,cInfLimit,cSupLimit,exportType,listRank);
+            if (freqFlag){
+                sprintf(outputFile,"m%d_n%d_c%dto%d_%s_%d_diff_freq.txt",modelRank,netRank,cInfLimit,cSupLimit,exportType,listRank);
+            }
+            else{
+                sprintf(outputFile,"m%d_n%d_c%dto%d_%s_%d_diff.txt",modelRank,netRank,cInfLimit,cSupLimit,exportType,listRank);
+            }
         }
         else{
-            sprintf(outputFile,"m%d_n%d_c%dto%d_%s_%d.txt",modelRank,netRank,cInfLimit,cSupLimit,exportType,listRank);
+            if (freqFlag){
+                sprintf(outputFile,"m%d_n%d_c%dto%d_%s_%d_freq.txt",modelRank,netRank,cInfLimit,cSupLimit,exportType,listRank);
+            }
+            else{
+                sprintf(outputFile,"m%d_n%d_c%dto%d_%s_%d.txt",modelRank,netRank,cInfLimit,cSupLimit,exportType,listRank);
+            }
         }
     }
+
     writeFile=NULL;
     writeFile=fopen(outputFile,"w");
     if (writeFile==NULL){
@@ -142,7 +164,7 @@ int exportA(){
         printf("anti input file %s not opened\n",inputFile);
         exit(1);
     }
-    if (rawFlag){
+    if (rawFlag or freqFlag){
         sprintf(inputFile,"f_m%d_n%d.4mat",modelRank,netRank);
         fReadFile=NULL;
         fReadFile=fopen(inputFile,"rb");
@@ -167,7 +189,7 @@ int exportA(){
         fseek(cReadFile,sizeof(char)*currPsRank*psNb,SEEK_SET);
         fread(aValues,sizeof(char),psNb,aReadFile);
         fread(cValues,sizeof(char),psNb,cReadFile);
-        if (rawFlag){
+        if (rawFlag or freqFlag){
             fseek(fReadFile,sizeof(char)*currPsRank*psNb,SEEK_SET);
             fread(fValues,sizeof(char),psNb,fReadFile);
         }
@@ -184,7 +206,10 @@ int exportA(){
                     }
                 }
                 else{
-                    if (diffFlag==0){
+                    if (freqFlag){
+                        testValue=fValues[currPsRank];
+                    }
+                    else if (diffFlag==0){
                         testValue=cValues[currPsRank];
                     }
                     else {
@@ -249,8 +274,8 @@ int main(int argc, char *argv[])
         for(argNb=0;argNb<argc;argNb++){
             printf("argument %i: %s\n",argNb+1,argv[argNb]);
         }*/
-        if(argc != 12){
-            printf("needs modelRank netRank psNb  exportType cInfLimit cSupLimit cRatio  diffFlag listRank rawFlag distalFlag\n");
+        if(argc != 13){
+            printf("needs modelRank netRank psNb  exportType cInfLimit cSupLimit cRatio  diffFlag listRank rawFlag distalFlag freqFlag\n");
             printf("/work/cinbell/exportnet 27 22 22690 MCL 30 70 1.0 1 5 0 1\n");
             printf("/work/cinbell/exportnet 8 24 45101 MCL 30 70 1.0 1 5 1 0\n");
             return 0;
@@ -266,6 +291,7 @@ int main(int argc, char *argv[])
         listRank=atoi(argv[9]);
         rawFlag=atoi(argv[10]);
         distalFlag=atoi(argv[11]);
+        freqFlag=atoi(argv[11]);
 
     }
     else{
