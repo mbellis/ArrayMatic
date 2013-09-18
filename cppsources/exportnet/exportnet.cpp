@@ -9,6 +9,7 @@
 using namespace std;
 
 /* Changelog
+    0-0-4   2012/08/16   add local and distal server usage
     0-0-3   2012/02/21 - export subsets of probe sets
                          simplification of loops (avec if (psL!=lineL))
                          replace PAJEK by TSN (TensorNet)
@@ -23,8 +24,8 @@ using namespace std;
 */
 
     int rankPos;
-    unsigned int psNb,currPsNb,currPsRank,lineL,psL;
-    unsigned short modelRank,netRank,listRank,listL;
+    unsigned int psNb,currPsNb,currPsRank,lineL,psL,distalFlag,listRank;
+    unsigned short modelRank,netRank,listL;
     char cLimit,testValue,diffFlag,rawFlag;
     float cRatio;
     char exportType[256],inputFile[256],outputFile[256],fileName[256];
@@ -47,7 +48,13 @@ int exportA(){
 
 
     FILE *listFile;
-    sprintf(fileName,"m%u_pslist%u.u32",modelRank,listRank);
+    if (distalFlag==1){
+        sprintf(fileName,"m%u_pslist%u.u32",modelRank,listRank);
+    }
+    else{
+        sprintf(fileName,"/home/mbellis/array1/sosma/net/m%u/list/m%u_pslist%u.u32",modelRank,modelRank,listRank);
+        printf("%s\n",fileName);
+    }
     listFile = fopen ( fileName , "rb" );
     if (listFile==NULL) {fputs ("List file error",stderr); exit (1);}
     // obtain file size:
@@ -108,19 +115,32 @@ int exportA(){
         for (psL=0;psL<currPsNb;psL++){
             fprintf(writeFile,"%d \"%d\"\n",psL+1,psL+1);
         }
+
         fprintf(writeFile,"*edges\n");
     }
     //process network file
 
     //open anti and corr files
-    sprintf(inputFile,"c_m%d_n%d.4mat",modelRank,netRank);
+    if (distalFlag==1){
+        sprintf(inputFile,"c_m%d_n%d.4mat",modelRank,netRank);
+    }
+    else{
+        sprintf(inputFile,"/home/mbellis/array1/sosma/net/m%u/n%u/c_m%d_n%d.4mat",modelRank,netRank,modelRank,netRank);
+        printf("%s\n",inputFile);
+    }
     cReadFile=NULL;
     cReadFile=fopen(inputFile,"rb");
     if (cReadFile==NULL){
         printf("corr input file %s not opened\n",inputFile);
         exit(1);
     }
-    sprintf(inputFile,"a_m%d_n%d.4mat",modelRank,netRank);
+    if (distalFlag==1){
+        sprintf(inputFile,"a_m%d_n%d.4mat",modelRank,netRank);
+        }
+    else{
+        sprintf(inputFile,"/home/mbellis/array1/sosma/net/m%u/n%u/a_m%d_n%d.4mat",modelRank,netRank,modelRank,netRank);
+        printf("%s\n",inputFile);
+    }
     aReadFile=NULL;
     aReadFile=fopen(inputFile,"rb");
     if (aReadFile==NULL){
@@ -217,10 +237,10 @@ int main(int argc, char *argv[])
         for(argNb=0;argNb<argc;argNb++){
             printf("argument %i: %s\n",argNb+1,argv[argNb]);
         }*/
-        if(argc != 10){
-            printf("needs modelRank netRank psNb  exportType cLimit cRatio  diffFlag listRank rawFlag\n");
-            printf("/work/cinbell/exportnet 27 22 22690 MCL 30 1.0 1 5 0");
-            printf("/work/cinbell/exportnet 8 24 45101 MCL 30 1.0 1 5 1");
+        if(argc != 11){
+            printf("needs modelRank netRank psNb  exportType cLimit cRatio  diffFlag listRank rawFlag distalFlag\n");
+            printf("/work/cinbell/exportnet 27 22 22690 MCL 30 1.0 1 5 0 1\n");
+            printf("/work/cinbell/exportnet 8 24 45101 MCL 30 1.0 1 5 1 0\n");
             return 0;
         }
         modelRank=atoi(argv[1]);
@@ -231,7 +251,8 @@ int main(int argc, char *argv[])
         cRatio=atof(argv[6]);
         diffFlag=atoi(argv[7]);
         listRank=atoi(argv[8]);
-        rawFlag=atoi(argv[9]);
+        distalFlag=atoi(argv[10]);
+
     }
     else{
         modelRank=27;
@@ -245,6 +266,7 @@ int main(int argc, char *argv[])
         exportType[2]='L';
         exportType[3]='\0';
         listRank=4;
+        distalFlag=1;
         //exportnet.exe 27 22 22690 30 1 1 MCL
 //      exportType[0]='P';
 //      exportType[1]='A';
