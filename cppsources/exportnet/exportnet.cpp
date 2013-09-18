@@ -9,6 +9,7 @@
 using namespace std;
 
 /* Changelog
+    0-0-5   2012/09/12   correct bug in TSN output
     0-0-4   2012/08/16   add local and distal server usage
     0-0-3   2012/02/21 - export subsets of probe sets
                          simplification of loops (avec if (psL!=lineL))
@@ -24,7 +25,7 @@ using namespace std;
 */
 
     int rankPos;
-    unsigned int psNb,currPsNb,currPsRank,lineL,psL,distalFlag,listRank;
+    unsigned int psNb,currPsNb,currPsRank,lineL,psL,distalFlag,listRank,Start;
     unsigned short modelRank,netRank,listL;
     char cLimit,testValue,diffFlag,rawFlag;
     float cRatio;
@@ -85,6 +86,7 @@ int exportA(){
     cTransfert=(char*) malloc(sizeof(char)*currPsNb);
     psRank=(unsigned int*) malloc(sizeof(unsigned int)*currPsNb);
 
+
     //TotalNb=0;
     //open the output mcl file
 
@@ -109,14 +111,6 @@ int exportA(){
     if (writeFile==NULL){
         printf("output file %s not opened",outputFile);
         exit(1);
-    }
-    if (strcmp(exportType,"PAJ")==0){
-        fprintf(writeFile,"*vertices %d\n",currPsNb);
-        for (psL=0;psL<currPsNb;psL++){
-            fprintf(writeFile,"%d \"%d\"\n",psL+1,psL+1);
-        }
-
-        fprintf(writeFile,"*edges\n");
     }
     //process network file
 
@@ -158,6 +152,13 @@ int exportA(){
     }
     //Read C and A line by line
     for (lineL=0;lineL<currPsNb;lineL++){
+        if (strcmp(exportType,"MCL")==0){
+            Start=0;
+        }
+        else if (strcmp(exportType,"TSN")==0){
+            Start=lineL+1;
+        }
+
     //for (lineL=currPsNb-1;lineL<currPsNb;lineL++){
     //for (lineL=0;lineL<1;lineL++){
         currPsRank=psRanks[lineL]-1;
@@ -170,7 +171,7 @@ int exportA(){
             fread(fValues,sizeof(char),psNb,fReadFile);
         }
         rankPos=-1;
-        for (psL=0;psL<currPsNb;psL++){
+        for (psL=Start;psL<currPsNb;psL++){
             currPsRank=psRanks[psL]-1;
             if (psL!=lineL){
                 if (rawFlag){
@@ -193,13 +194,23 @@ int exportA(){
                     if (aValues[currPsRank]>0){
                         if ((float)cValues[currPsRank]/(float)aValues[currPsRank]>=cRatio){
                             rankPos++;
-                            psRank[rankPos]=psRanks[psL];
+                            if (strcmp(exportType,"MCL")==0){
+                                psRank[rankPos]=psRanks[psL];
+                            }
+                            else if (strcmp(exportType,"TSN")==0){
+                                psRank[rankPos]=psL;
+                            }
                             cTransfert[rankPos]=testValue;
                         }
                     }
                     else{
                         rankPos++;
-                        psRank[rankPos]=psRanks[psL];
+                        if (strcmp(exportType,"MCL")==0){
+                            psRank[rankPos]=psRanks[psL];
+                        }
+                        else if (strcmp(exportType,"TSN")==0){
+                            psRank[rankPos]=psL;
+                        }
                         cTransfert[rankPos]=testValue;
                     }
                 }
@@ -211,7 +222,7 @@ int exportA(){
                 fprintf(writeFile,"%d %d %d\n",psRanks[lineL],psRank[psL],cTransfert[psL]);
             }
             else if (strcmp(exportType,"TSN")==0){
-                fprintf(writeFile,"%d %d %0.2f\n",psRanks[lineL],psRank[psL],(float)cTransfert[psL]/100.0);
+                fprintf(writeFile,"%d\t%d\t%0.2f\n",lineL+1,psRank[psL]+1,(float)cTransfert[psL]/100.0);
             }
         }
     }
