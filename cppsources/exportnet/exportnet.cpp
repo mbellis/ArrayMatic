@@ -7,6 +7,7 @@
 using namespace std;
 
 /* Changelog
+    0-0-1   treat case c>0 and a=0
     0-0-0   first version : export to MCL and PAJEK NET format
 */
 
@@ -18,7 +19,6 @@ using namespace std;
     char inputFile[256],outputFile[256];
     char *cValues;
     char *aValues;
-    char *aTransfert;
     char *cTransfert;
     int *psRank;
     FILE *writeFile=NULL;
@@ -30,18 +30,17 @@ int exportA(){
     aValues=(char*) malloc(sizeof(char)*psNb);
     cValues=(char*) malloc(sizeof(char)*psNb);
     //the x vs x value is not used
-    aTransfert=(char*) malloc(sizeof(char)*(psNb-1));
     cTransfert=(char*) malloc(sizeof(char)*(psNb-1));
     psRank=(int*) malloc(sizeof(char)*(psNb-1));
 
     //TotalNb=0;
     //open the output mcl file
     if (strcmp(exportType,"MCL")==0){
-        printf("starting MCL\n");
+        //printf("starting MCL\n");
         sprintf(outputFile,"m%03d_n%05d_c%d_mcl.txt",modelRank,netRank,cLimit);
     }
     else if (strcmp(exportType,"PAJ")==0){
-        printf("starting PAJ\n");
+        //printf("starting PAJ\n");
         sprintf(outputFile,"m%03d_n%05d_c%d_paj.txt",modelRank,netRank,cLimit);
     }
     writeFile=NULL;
@@ -94,18 +93,19 @@ int exportA(){
             for (psL=0;psL<blocSize*blocL+lineL;psL++){
                 if (cValues[psL]>cLimit){
                     if (aValues[psL]>0){
-                        if (cValues[psL]/aValues[psL]>=cRatio){
+                        if ((float)cValues[psL]/aValues[psL]>=cRatio){
                             valueNb++;
                             psRank[valueNb]=psL;
                             if (diffFlag==1){
                                 cTransfert[valueNb]=cValues[psL]-aValues[psL];
-                                aTransfert[valueNb]=aValues[psL];
                             }
                             else{
                                 cTransfert[valueNb]=cValues[psL];
-                                aTransfert[valueNb]=aValues[psL];
                             }
                         }
+                    }
+                    else{
+                        cTransfert[valueNb]=cValues[psL];
                     }
                 }
             }
@@ -113,24 +113,24 @@ int exportA(){
             for (psL=blocSize*blocL+lineL+1;psL<psNb;psL++){
                 if (cValues[psL]>cLimit){
                     if (aValues[psL]>0){
-                        if (cValues[psL]/aValues[psL]>=cRatio){
+                        if ((float)cValues[psL]/aValues[psL]>=cRatio){
                             valueNb++;
                             psRank[valueNb]=psL;
                             if (diffFlag==1){
                                 cTransfert[valueNb]=cValues[psL]-aValues[psL];
-                                //aTransfert[valueNb]=aValues[psL];
                             }
                             else{
                                 cTransfert[valueNb]=cValues[psL];
-                                //aTransfert[valueNb]=aValues[psL];
                             }
                         }
+                    }
+                    else{
+                        cTransfert[valueNb]=cValues[psL];
                     }
                 }
             }
             //fwrite(transfert,sizeof(char),psNb,writeFile);
             for (psL=0;psL<valueNb;psL++){
-                //fprintf(writeFile,"%d %d %d %d\n",lineL+offSet+1,psRank[psL]+1,aTransfert[psL],cTransfert[psL]);
                 if (strcmp(exportType,"MCL")==0){
                     fprintf(writeFile,"%d %d %d\n",lineL+offSet+1,psRank[psL]+1,cTransfert[psL]);
                 }
