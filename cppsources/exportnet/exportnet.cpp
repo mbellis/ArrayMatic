@@ -9,6 +9,7 @@
 using namespace std;
 
 /* Changelog
+    0-0-6   2012/12/10   add superior limit - correction rawFlag was not read
     0-0-5   2012/09/12   correct bug in TSN output
     0-0-4   2012/08/16   add local and distal server usage
     0-0-3   2012/02/21 - export subsets of probe sets
@@ -27,7 +28,7 @@ using namespace std;
     int rankPos;
     unsigned int psNb,currPsNb,currPsRank,lineL,psL,distalFlag,listRank,Start;
     unsigned short modelRank,netRank,listL;
-    char cLimit,testValue,diffFlag,rawFlag;
+    char cInfLimit,cSupLimit,testValue,diffFlag,rawFlag;
     float cRatio;
     char exportType[256],inputFile[256],outputFile[256],fileName[256];
     char *cValues;
@@ -92,18 +93,18 @@ int exportA(){
 
     if (rawFlag){
         if (diffFlag){
-            sprintf(outputFile,"m%d_n%d_c%d_%s_%d_diff_raw.txt",modelRank,netRank,cLimit,exportType,listRank);
+            sprintf(outputFile,"m%d_n%d_c%dto%d_%s_%d_diff_raw.txt",modelRank,netRank,cInfLimit,cSupLimit,exportType,listRank);
         }
         else{
-            sprintf(outputFile,"m%d_n%d_c%d_%s_%d_raw.txt",modelRank,netRank,cLimit,exportType,listRank);
+            sprintf(outputFile,"m%d_n%d_c%dto%d_%s_%d_raw.txt",modelRank,netRank,cInfLimit,cSupLimit,exportType,listRank);
         }
     }
     else{
         if (diffFlag){
-            sprintf(outputFile,"m%d_n%d_c%d_%s_%d_diff.txt",modelRank,netRank,cLimit,exportType,listRank);
+            sprintf(outputFile,"m%d_n%d_c%dto%d_%s_%d_diff.txt",modelRank,netRank,cInfLimit,cSupLimit,exportType,listRank);
         }
         else{
-            sprintf(outputFile,"m%d_n%d_c%d_%s_%d.txt",modelRank,netRank,cLimit,exportType,listRank);
+            sprintf(outputFile,"m%d_n%d_c%dto%d_%s_%d.txt",modelRank,netRank,cInfLimit,cSupLimit,exportType,listRank);
         }
     }
     writeFile=NULL;
@@ -190,7 +191,7 @@ int exportA(){
                         testValue=cValues[currPsRank]-aValues[currPsRank];
                     }
                 }
-                if (testValue>cLimit){
+                if ((testValue>cInfLimit)&(testValue<=cSupLimit)){
                     if (aValues[currPsRank]>0){
                         if ((float)cValues[currPsRank]/(float)aValues[currPsRank]>=cRatio){
                             rankPos++;
@@ -248,28 +249,30 @@ int main(int argc, char *argv[])
         for(argNb=0;argNb<argc;argNb++){
             printf("argument %i: %s\n",argNb+1,argv[argNb]);
         }*/
-        if(argc != 11){
-            printf("needs modelRank netRank psNb  exportType cLimit cRatio  diffFlag listRank rawFlag distalFlag\n");
-            printf("/work/cinbell/exportnet 27 22 22690 MCL 30 1.0 1 5 0 1\n");
-            printf("/work/cinbell/exportnet 8 24 45101 MCL 30 1.0 1 5 1 0\n");
+        if(argc != 12){
+            printf("needs modelRank netRank psNb  exportType cInfLimit cSupLimit cRatio  diffFlag listRank rawFlag distalFlag\n");
+            printf("/work/cinbell/exportnet 27 22 22690 MCL 30 70 1.0 1 5 0 1\n");
+            printf("/work/cinbell/exportnet 8 24 45101 MCL 30 70 1.0 1 5 1 0\n");
             return 0;
         }
         modelRank=atoi(argv[1]);
         netRank=atoi(argv[2]);
         psNb=atol(argv[3]);
         copie_string(argv[4],exportType);
-        cLimit=atoi(argv[5]);
-        cRatio=atof(argv[6]);
-        diffFlag=atoi(argv[7]);
-        listRank=atoi(argv[8]);
-        distalFlag=atoi(argv[10]);
+        cInfLimit=atoi(argv[5]);
+        cSupLimit=atoi(argv[6]);
+        cRatio=atof(argv[7]);
+        diffFlag=atoi(argv[8]);
+        listRank=atoi(argv[9]);
+        rawFlag=atoi(argv[10]);
+        distalFlag=atoi(argv[11]);
 
     }
     else{
         modelRank=27;
         netRank=22;
         psNb=22690;
-        cLimit=30;
+        cInfLimit=30;
         cRatio=1.0;
         diffFlag=1;
         exportType[0]='M';
