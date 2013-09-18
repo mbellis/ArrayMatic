@@ -17,10 +17,10 @@
 function [Colors]=colors(ColorMap,ItemNb)
 ColorNb=size(ColorMap,1);
 while ItemNb>ColorNb
-    if ItemNb-ColorMap>ColorMap
+    if ItemNb-ColorNb>ColorNb
         ColorMap=[ColorMap;ColorMap];
     else
-        ColorMap=[ColorMap;ColorMap(1:ItemNb-ColorMap,:)];
+        ColorMap=[ColorMap;ColorMap(1:ItemNb-ColorNb,:)];
     end
     ColorNb=size(ColorMap,1);
 end    

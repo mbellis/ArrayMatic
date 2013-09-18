@@ -7,7 +7,7 @@
 
 %INPUT PARAMETERS
 
-% 1 KegSpecies: KEGG species (hsa, mmu ...)
+% 1 KegSpecies: KEGG species (hsa, mmu, rn0 ...)
 
 %OUTPUT FILE
 
@@ -41,7 +41,7 @@ Kegg=KEGG;
 
 
 %recover list of Kegg genes
-GeneNb=get_number_of_genes_by_organism(Kegg,'mmu');
+eval(sprintf('GeneNb=get_number_of_genes_by_organism(Kegg,''%s'')',KeggSpecies));
 eval(sprintf('KGeneId=get_genes_by_organism(Kegg,''%s'',1,%u);',KeggSpecies,GeneNb));
 EnsGeneRank=zeros(GeneNb,1);
 KeggGeneRank=zeros(GeneNb,1);

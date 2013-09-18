@@ -1,0 +1,68 @@
+%write data for tensor net
+Clu=3;
+Limit=50;
+%make dir for TensorNet
+TensorDir=fullfile(K.dir.mldata,Species,sprintf('m%u_m%u_tensornet',ChipRanks(1),ChipRanks(2)),'datasets');
+mkdir(TensorDir)
+
+%load data
+for ChipL=1:2
+    NodeNb=0;
+    ColNb=K.chip.probesetNb(ChipPos(ChipL));
+    LineNb=ColNb;
+    Index=Indexes{ChipL}{Clu};
+    ChipRank=ChipRanks(ChipL);
+   for NetL=18:length(NetRanks{ChipL})
+       NetRank=NetRanks{ChipL}(NetL);
+       cd(fullfile(K.dir.net,sprintf('m%03u',ChipRank),sprintf('n%05u',NetRank)));
+       a=load_data(sprintf('a_m%u_n%u.4mat',ChipRank,NetRank),'./',LineNb,ColNb,'uint8','ieee-le',Index,Index);
+       c=load_data(sprintf('c_m%u_n%u.4mat',ChipRank,NetRank),'./',LineNb,ColNb,'uint8','ieee-le',Index,Index);
+%        i=find(a>=c);
+%        a(i)=0;
+%        c(i)=0;
+%        c=c-a;
+%        clear a
+%        i=find(c<Limit);
+       i=find(a>=10); 
+       c(i)=0;
+       NodeNb=NodeNb+length(find(c));
+       cd(TensorDir)
+       %fid=fopen(sprintf('m%u_n%u_c%02u_l%02u.txt',ChipRank,NetRank,Clu,Limit),'w');
+       fid=fopen(sprintf('m%u_n%u_c%02u_notneg10.txt',ChipRank,NetRank,Clu),'w');
+       for LineL=1:length(c)
+           Pos=find(c(LineL,LineL+1:end));
+           if ~isempty(Pos)
+               for PosL=1:length(Pos)
+                   fprintf(fid,'%u\t%u\t%.2f\n',LineL,Pos(PosL)+LineL,single(c(LineL,LineL+Pos(PosL)))/100);
+               end
+           end
+       end       
+       %clear c
+       fclose(fid)
+   end
+end
+
+%write files used by tensor net
+%gene ids
+cd(TensorDir)
+fid=fopen('gene_ids','w');
+for PsL=1:length(Indexes{1}{Clu})
+    fprintf(fid,'%u\n',PsL)
+end
+fclose(fid)
+
+%write list of networks
+cd(TensorDir)
+for ChipL=1:2
+    ChipRank=ChipRanks(ChipL);
+    fid=fopen(sprintf('m%u_c%02u_notneg10_netlist_4.txt',ChipRank,Clu),'w');
+    for NetL=1:length(NetRanks{ChipL})
+        NetRank=NetRanks{ChipL}(NetL);
+        fprintf(fid,'m%u_n%u_c%02u_notneg10\n',ChipRank,NetRank,Clu);
+    end
+    fclose(fid)
+end
+
+
+
+    

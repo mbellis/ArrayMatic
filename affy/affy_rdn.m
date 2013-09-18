@@ -1,11 +1,15 @@
-% RDN - Call RDN scripts developped by
-% Marc Hulsman, 2010
+% RDN scripts developped by  Marc Hulsman, 2010
+%
+%===========
+% AFFY_RDN %
+%===========
+%
 % Information & Communication Theory Group
 % Faculty of Electrical Engineering, Mathematics and Computer Science
 % Delft University of Technology, Mekelweg 4, 2628 CD Delft, The
 % Netherlands
 % http://bioinformatics.tudelft.nl/users/marc-hulsman
-
+%
 %
 %  RDN(ACTION,EXPNAME,CELDIR,CHIPNAME,CHIPDIR,LIBDIR,SAMPLENAMES,PRINTORDER);
 %
@@ -43,9 +47,9 @@
 %             SampleNames but if SampleName is empty, the cel file names will be reordered
 %             to fit PrintOrder. If PrintOrder is empty, the alphabetical order of cel
 %             file names is used.
-
-
-
+%
+%
+%
 % OUTPUT
 %   No output. Results are written in CelDir.
 %

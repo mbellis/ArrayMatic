@@ -7,7 +7,7 @@
 %vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv%
 %                          c) Michel Bellis                                                %
 %                          michel.bellis@crbm.cnrs.fr                                      %
-%            Affiliation:  CNRS (Centre National de la Recherche Scientifique - France)    %                               
+%            Affiliation:  CNRS (Centre National de la Recherche Scientifique - France)    %
 %  Bioinformatic Project:  ARRAYMATIC => http://code.google.com/p/arraymatic               %
 %        Code Repository:  GITHUB => http://github.com/mbellis                             %
 %          Personal Page:  http://bns.crbm.cnrs.fr                                         %
@@ -29,6 +29,7 @@ if ~isempty(F.h.amcmenu)
 end
 F.h.amcmenu=openfig('amc_menu');
 set(F.h.amcmenu,'visible','on');
+set(F.h.amcmenu,'Name','ARRAYMATIC MENU')
 
 set(gcf,'pointer','watch')
 

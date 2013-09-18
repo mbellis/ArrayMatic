@@ -3,7 +3,7 @@
 %====================%
 
 % KEGGLIST recover Kegg gene IDs and Ensembl gene IDs corresponding to a list of KEGG
-% pathway
+% pathways
 
 %INPUT PARAMETERS
 
@@ -11,7 +11,15 @@
 % 2  PathwayId: list of pathway (numerical part only : [3050,20,4010])
 % 3   ListName: name of the saved file
 
+%OUTPUT
 
+% save Pathway under ListName in K.dir.list
+% Pathway(PathRank).keggGeneRank: KEGG gene IDS belonging to the pathway
+% Pathway(PathRank).endGeneRank: numeric part of Ensembl gene IDS belonging to the pathway
+% Pathway(PathRank).name: KEGG pathway name
+% 
+
+%EXAMPLE
 %kegglist('mmu',[20,3050,4010],'mouse_krebs_proteasome_mapk_ens')
 %kegglist('hsa',[20,3050,4010],'mouse_krebs_proteasome_mapk_ens')
 %kegglist('hsa',4010,'human_mapk_ens')

@@ -21,7 +21,7 @@ end
 %load all Results if P.flag.loadData==0 (otherwise write results directly
 %in files)
 if P.flag.loadData==0
-    [ZVar,Fdr,Sensitivity,Pv]=loadsave_comp('load',1,1:P.point.nb,P.dir.data,1,1,1,1,P.chip.currProbeSetNb,P.point.nb,1);
+    [ZVar,Fdr,Sensitivity,Pv,Fc]=loadsave_comp('load',1,1:P.point.nb,P.dir.data,1,1,1,1,0,P.chip.currProbeSetNb,P.point.nb,1);
 end
 
 %if P.flag.loadData==0, add temporarily MedianRanks

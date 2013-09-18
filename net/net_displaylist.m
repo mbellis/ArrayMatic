@@ -2,7 +2,7 @@
 % FUNCTION NET_DISPLAYLIST  %
 %===========================%
 
-% NET_DISPLAYLIST displays  Netstensor results for a given list in several networks
+% NET_DISPLAYLIST displays  NetsTensor results for a given list in several networks
 
 %INPUT PARAMETERS
 
@@ -22,7 +22,7 @@
 % 11      CorrType: indicates how is calculated correlation between probesets by the rank in
 %                   the CorrTypeName list
 %                   {'C','C-A','rawC','raw(C-A)','scoreC','scoreC-scoreA'}
-% 12       ValFlag: keep in memory correlation values of all networsk
+% 12       ValFlag: keep in memory correlation values of all networks
 % 13    QLimitFlag: indicates if qlimit has been used to construct networks
 % 14       TsnFlag: 1: write files necessary to do NetsTensor analysis
 %                   0: load, process and save results of NetsTensor analysis
@@ -35,12 +35,14 @@
 %C
 % write TSN files
 %net_displaylist(27,'_2to22_1p',[2:22],[119:133],'mouse_krebs_proteasome_mapk',{'Krebs','Proteasome','MAPPK'},'mouse',0,1,0,1,1,1,0,1)
+%net_displaylist('8','_1p',[7:21],[119:133],'mouse_krebs_proteasome_mapk',{'Krebs','Proteasome','MAPPK'},'mouse',0,1,0,1,1,1,0,1)
 % load TSN results
 %net_displaylist(27,'_2to22_1p',[2:22],[119:133],'mouse_krebs_proteasome_mapk',{'Krebs','Prot%easome','MAPPK'},'mouse',0,1,0,1,1,1,0,0)
 %net_displaylist(5,'_1p',[17:21,35:64],[89:104],'mouse_krebs_proteasome_mapk',{'Krebs','Prote%asome','MAPPK'},'mouse',0,1,0,1,1,1,0,0)
 
-%net_displaylist('8','_1p',[7:21],[119:133],'mouse_krebs_proteasome_mapk',{'Krebs','Proteasome','MAPPK'},'mouse',0,1,0,1,1,1,0,1)
 
+%MCL clusters
+%net_displaylist('8','_1p',[7:21],[119:133],'mouse_krebs_proteasome_mapk',{'Krebs','Proteasome','MAPPK'},'mouse',0,1,0,1,1,1,0,1)
 
 %qlimit
 %net_displaylist(27,[2:22],[2:22],'mouse_krebs_proteasome_mapk',{'Krebs','Proteasome','MAPPK'},'mouse')
@@ -89,7 +91,8 @@ cd(K.dir.gene)
 %     ensGeneRank: [31x1 double]
 
 NetNb=length(NetRanks2);
-PsNb=K.chip.probesetNb(ChipRank);
+ChipPos=find(K.chip.rank==ChipRank);
+PsNb=K.chip.probesetNb(ChipPos);
 if CorrType==1|CorrType==3
     %C or raw(C)
     if QLimitFlag
@@ -349,7 +352,7 @@ if TsnFlag
             fclose(fid)
         end
         if ClassFlag
-            %add subset according to probest class (s and rest)
+            %add subset according to probeset class (s and rest)
             for ClassL=1:4
                 switch ClassL
                     case {1,3}
@@ -518,7 +521,7 @@ if TsnFlag
 
 
 
-    %write files used by tensor net
+    %write files used by NetsTensor
 
     cd(sprintf('/home/mbellis/net/clum%u',ChipRank'))
 

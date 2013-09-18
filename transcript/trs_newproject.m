@@ -87,8 +87,9 @@ else
     else
         ProjectFullDir=uigetdir('*.*','Select the directory you want to use for this project');
         if ischar(ProjectFullDir)
-            [temp, ProjectDir,temp,temp] = fileparts(ProjectFullDir)
+            [temp, ProjectDir,temp,temp] = fileparts(ProjectFullDir);
         else
+            %canceled
             h=errordlg('Process canceled');
             waitfor(h)
             error('process canceled')
@@ -283,8 +284,7 @@ else
             P.probeSet.selBindex=zeros(length(P.probeSet.name),1);
             P.probeSet.nb=length(P.probeSet.name);
         end
-        if ChipType=='T'
-            cd(ProjectFullDir)
+        if ChipType=='T'          
             if Loop>1
                 MemDFile=DFile;
                 MemDFileDir=DFileDir;
@@ -313,10 +313,10 @@ else
                 TabPos2=find(SndLine==char(9));
                 FieldNb=length(TabPos1)+1;
                 if isequal(P.par.analType,'chipchip')
-                    ExpOutput='[FileName,HeaderLine,PointName,ReplicateRank,BiolName,BiolRank,ResType';
+                    ExpOutput='[DataFileName,HeaderLine,PointName,ReplicateRank,BiolName,BiolRank,ResType';
                     ExpDataType='%s%u%s%u%s%u%c';
                 else
-                    ExpOutput='[FileName,HeaderLine,PointName,ReplicateRank,BiolName,BiolRank';
+                    ExpOutput='[DataFileName,HeaderLine,PointName,ReplicateRank,BiolName,BiolRank';
                     ExpDataType='%s%u%s%u%s%u';
                 end
                 %control that the field nb is right
@@ -329,9 +329,9 @@ else
                     h=msgbox(sprintf('first line is %s',FirstLine));
                     waitfor(h)
                     if isequal(P.par.analType,'chipchip')
-                        h=msgdlg(sprintf('first line has less than %u mandatory fields (FileName, HeaderLine, PointName, ReplicateRank, BiolCond, BiolRank & ResType)',MinFieldNb));
+                        h=msgdlg(sprintf('first line has less than %u mandatory fields (DataFileName, HeaderLine, PointName, ReplicateRank, BiolCond, BiolRank & ResType)',MinFieldNb));
                     else
-                        h=msgdlg(sprintf('first line has less than %u mandatory fields (FileName, HeaderLine, PointName, ReplicateRank, BiolCond & BiolRank)',MinFieldNb));
+                        h=msgdlg(sprintf('first line has less than %u mandatory fields (DataFileName, HeaderLine, PointName, ReplicateRank, BiolCond & BiolRank)',MinFieldNb));
                     end
                     waitfor(h)
                     errordlg('process canceled')
@@ -346,23 +346,34 @@ else
                         CurrFactorValue=SndLine(TabPos2(FactorL)+1:TabPos2(FactorL+1)-1);
                         Ok=0;
                         while Ok==0
-                            if isequal(upper(CurrFactor),'TIME')|isequal(upper(CurrFactor),'DATE')
-                                Factor=inputdlg({sprintf('edit the current factor (%s)',CurrFactorValue),sprintf('indicate the factor type (int,float,char,str) for %s',CurrFactorValue)},'',1,{CurrFactor,'str'});
-                            else
-                                IsNb=str2num(CurrFactorValue);
-                                if isempty(IsNb)
-                                    if length(CurrFactorValue)==1
-                                        Factor=inputdlg({sprintf('edit the current factor (%s)',CurrFactorValue),'indicate the factor type (int,float,char,str) for %s'},'',1,{CurrFactor,'char'});
-                                    else
-                                        Factor=inputdlg({sprintf('edit the current factor (%s)',CurrFactorValue),'indicate the factor type (int,float,char,str) for %s'},'',1,{CurrFactor,'str'});
-                                    end
+                            if Loop>1
+                                FactorPos=strmatch(CurrFactor,P.point.factorNames,'exact');
+                                if isempty(FactorPos)
+                                    errordlg('all experiment description files must have the same factors. Process canceled')
+                                    error('Process canceled 08')
                                 else
-                                    if round(IsNb)==IsNb
-                                        Factor=inputdlg({sprintf('edit the current factor (%s)',CurrFactorValue),'indicate the factor type (int,float,char,str) for %s'},'',1,{CurrFactor,'int'});
+                                    Factor{1}=P.point.factorNames{FactorPos};
+                                    Factor{2}=P.point.factorTypes{FactorPos};
+                                end
+                            else
+                                if isequal(upper(CurrFactor),'TIME')|isequal(upper(CurrFactor),'DATE')
+                                    Factor=inputdlg({sprintf('edit the current factor (%s)',CurrFactorValue),sprintf('indicate the factor type (int,float,char,str) for %s',CurrFactor)},'',1,{CurrFactor,'str'});
+                                else
+                                    IsNb=str2num(CurrFactorValue);
+                                    if isempty(IsNb)
+                                        if length(CurrFactorValue)==1
+                                            Factor=inputdlg({sprintf('edit the current factor (%s)',CurrFactorValue),sprintf('indicate the factor type (int,float,char,str) for %s',CurrFactor)},'',1,{CurrFactor,'char'});
+                                        else
+                                            Factor=inputdlg({sprintf('edit the current factor (%s)',CurrFactorValue),sprintf('indicate the factor type (int,float,char,str) for %s',CurrFactor)},'',1,{CurrFactor,'str'});
+                                        end
                                     else
-                                        Factor=inputdlg({sprintf('edit the current factor (%s)',CurrFactorValue),'indicate the factor type (int,float,char,str) for %s'},'',1,{CurrFactor,'float'});
-                                    end
+                                        if round(IsNb)==IsNb
+                                            Factor=inputdlg({sprintf('edit the current factor (%s)',CurrFactorValue),sprintf('indicate the factor type (int,float,char,str) for %s',CurrFactor)},'',1,{CurrFactor,'int'});
+                                        else
+                                            Factor=inputdlg({sprintf('edit the current factor (%s)',CurrFactorValue),sprintf('indicate the factor type (int,float,char,str) for %s',CurrFactor)},'',1,{CurrFactor,'float'});
+                                        end
 
+                                    end
                                 end
                             end
                             if ~isempty(Factor{1}) && (isequal(Factor{2},'int') || isequal(Factor{2},'float') || isequal(Factor{2},'char') || isequal(Factor{2},'str'))
@@ -386,6 +397,7 @@ else
                                             errordlg('all experiment description files must have the same factors. Process canceled')
                                             error('Process canceled 08')
                                         elseif FactorPos~=FactorL-MinFieldNb+1
+                                            'stop'
                                             errordlg('all experiment description files must have the factors identically ordered. Process canceled')
                                             error('Process canceled 08')
                                         end
@@ -491,7 +503,11 @@ else
                 BiolRanks=unique(BiolRank);
                 for BiolL=1:length(BiolRanks)
                     Pos=find(BiolRank==BiolRanks(BiolL));
+                    try
                     BiolNames{BiolRanks(BiolL),1}=BiolName{Pos(1)};
+                    catch
+                        'stop'
+                    end
                 end
             end
         end
@@ -534,6 +550,35 @@ else
                         cd(TDir)
                         fid = fopen(TFileName);
                         if fid~=-1
+                            %control that point order is good
+                            Output='[';
+                            for PointL=1:PointNb-1
+                                Output=[Output,sprintf('CurrPointName{%u},',PointL)];
+                            end
+                            Output=[Output,sprintf('CurrPointName{%u}]',PointNb)];
+                            DataType=repmat('%s',1,PointNb);
+                            FirstLine=fgetl(fid);
+                            eval(sprintf('%s=strread(FirstLine,''%s'',''delimiter'',''\t'',''emptyvalue'',NaN);',Output,DataType));                            
+                            fclose(fid)
+                            for PointL=1:PointNb
+                                DataFileName{PointL}=upper(strtrim(DataFileName{PointL}));
+                                CurrPointName{PointL}=upper(strtrim(CurrPointName{PointL}{1}));
+                                if ~isempty(findstr('.CEL',CurrPointName{PointL}))
+                                    CurrPointName{PointL}=regexp(CurrPointName{PointL},'.+(?=.CEL)','match');
+                                    CurrPointName{PointL}=CurrPointName{PointL}{1};
+                                end                               
+                                if ~isempty(findstr('.CEL',DataFileName{PointL}))
+                                    DataFileName{PointL}=regexp(DataFileName{PointL},'.+(?=.CEL)','match');
+                                    DataFileName{PointL}=DataFileName{PointL}{1};
+                                end                               
+                                if ~isequal(CurrPointName{PointL},DataFileName{PointL})
+                                    'stop'
+                                    h=errordlg('Samples are not in the same order in %s and in %s',DFile,DataFileName);
+                                    waitfor(h)
+                                    error('process canceled')
+                                end
+                            end
+                            fid = fopen(TFileName);
                             Output='[ProbeSet';
                             if P.flag.loadData
                                 %load in memory only current experiment
@@ -556,11 +601,7 @@ else
                                 end
                             end
                             Output=strcat(Output,']');
-                            if isequal(P.par.analType,'chipchip')
-                                eval(sprintf('%s=textread(TFileName,''%s'',''headerlines'',%u,''delimiter'',''\t'',''emptyvalue'',NaN);',Output,DataType,HeaderLine(1)));
-                            else
-                                eval(sprintf('%s=textread(TFileName,''%s'',''headerlines'',%u,''delimiter'',''\t'',''emptyvalue'',NaN);',Output,DataType,HeaderLine(1)));
-                            end
+                            eval(sprintf('%s=textread(TFileName,''%s'',''headerlines'',%u,''delimiter'',''\t'',''emptyvalue'',NaN);',Output,DataType,HeaderLine(1)));                            
                             fclose(fid);
                             %DETECT LOG VALUES
                             for PointL=1:PointNb

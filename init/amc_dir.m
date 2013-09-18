@@ -11,6 +11,7 @@ if isunix
     K.dir.cliques=fullfile('/home','mbellis','array2','mbellis','sosma','arraymatic','amcdata','cliques');
     K.dir.chip=fullfile('/home','mbellis','array2','mbellis','sosma','arraymatic','amcdata','chip');
     K.dir.gene=fullfile('/home','mbellis','array2','mbellis','sosma','arraymatic','amcdata','gene');
+    K.dir.wpm=fullfile('/home','mbellis','array2','mbellis','sosma','arraymatic','amcdata','wpm');
     K.dir.list=fullfile('/home','mbellis','array2','mbellis','sosma','arraymatic','amcdata','list');
     K.dir.net=fullfile('/home','mbellis','array1','sosma','net');
     K.dir.tables=fullfile('/usr','data','net');
@@ -19,8 +20,8 @@ if isunix
 else
     K.dir.common=fullfile('X:','mbellis','sosma','arraymatic','amcdata','common');
     K.dir.test=fullfile('X:','mbellis','sosma','arraymatic','amcdata','test');
-    K.dir.affyChipData=fullfile('E:','sosma','chips','affymetrix')
-    K.dir.geoExperiments=fullfile('E:','sosma','data','experiments','geo');
+    K.dir.affyChipData=fullfile('X:','mbellis','sosma','chips','affymetrix');
+    K.dir.geoExperiments=fullfile('X:','mbellis','sosma','data','experiments','geo');
     K.dir.metadata=fullfile('X:','mbellis','sosma','arraymatic','amcdata','metadata');
     K.dir.geoMetadata=fullfile('X:','mbellis','sosma','arraymatic','amcdata','metadata','geo');
     K.dir.affyMetadata=fullfile('X:','mbellis','sosma','arraymatic','amcdata','metadata','affy');
@@ -28,8 +29,9 @@ else
     K.dir.cliques=fullfile('X:','mbellis','sosma','arraymatic','amcdata','cliques');
     K.dir.chip=fullfile('X:','mbellis','sosma','arraymatic','amcdata','chip');
     K.dir.gene=fullfile('X:','mbellis','sosma','arraymatic','amcdata','gene');
+    K.dir.wpm=fullfile('X:','mbellis','sosma','arraymatic','amcdata','wpm');    
     K.dir.gene=fullfile('X:','mbellis','sosma','arraymatic','amcdata','list');
-    K.dir.net=fullfile('E:','mbellis','net');
+    K.dir.net=fullfile('X:','mbellis','array1','sosma','net');
     K.dir.tables=fullfile('E:','mbellis','tables');
     K.dir.amcResults=fullfile('E:','mbellis','sosma','amcres');
 end

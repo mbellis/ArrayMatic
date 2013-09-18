@@ -1,8 +1,8 @@
+% processes GEO menu calls
+%
 %=======================
 % FUNCTION GEO_MENUCOM
 %=======================
-
-% GEO_MENUCOM 
 
 %vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv%
 %                          c) Michel Bellis                                                %
@@ -21,17 +21,37 @@
 function varargout=geo_menucom(Action,varargin)
 global K P
 switch Action
-    case 'display a GPL'
-        %% DISPLAY A GPL
+    case 'read a GPL'
+%% READ A GPL        
         if nargin==1
             VERIF()
             [Species,GPL]=SELECT_GPL('multiple');
             if ~isempty(GPL)
-                geo_metadb('display a GPL',GPL)
+                KeepFlag=questdlg('Do you want to keep existing GPL mat files ?','','yes','no','cancel','yes');
+                if isequal(KeepFlag,'yes')
+                    geo_metadb('read a GPL',GPL,1)
+                elseif isequal(KeepFlag,'no')
+                    geo_metadb('read a GPL',GPL,0)                    
+                end
             end
         end
+        
+    case 'control a GPL'
+%% CONTROL A GPL        
+        if nargin==1
+            
+            GPL=inputdlg('Indicate GPL rank','');
+            GPL=str2num(GPL{1});
+            if isnumeric(GPL)
+                geo_metadb('control a GPL',GPL,1)
+            else
+                h=warndlg('GPL rank must be numeric');
+                waitfor(h)
+            end
+        end     
+        
     case 'print a GPL'
-        %% PRINT A GPL
+%% PRINT A GPL                %% PRINT A GPL
         VERIF
         [Species,GPL]=SELECT_GPL('single');
         if ~isempty(GPL)
@@ -56,38 +76,126 @@ switch Action
         else
             cd(FileDir)
             load(FileName)
+            if ~isfield(Gse,'imported')
+                Gse.imported=zeros(length(Gse.gse),1);
+            end
             FileName=regexp(FileName,'(?=.)^GPL\d+','match');
             FileName=FileName{1};
             %load data            
-            try
-                cd(K.dir.geoExperiments)
-            catch
-                mkdir(K.dir.geoExperiments)
+            GplDir=regexp(FileName,'GPL\d+','match');
+            GplDir=fullfile(K.dir.geoExperiments,GplDir{1});
+            if ~exist(GplDir,'dir')
+                mkdir(GplDir)
             end
-            GPL=regexp(FileName,'GPL\d+','match');
-            GPL=GPL{1};
-            if ~exist(GPL,'dir')
-                mkdir(GPL)
-            end
-            cd(GPL)
+            cd(GplDir)
             %select GSE to be imported
             [GseSel,GseOK] = listdlg('ListString',Gse.gse,'SelectionMode','multiple','ListSize',[600,600],'Name','FTP load of GSE','PromptString','Select GSE(s)');
-            if GseOK
-                for GseL=1:length(GseSel)
-                    Ftp=ftp('ftp.ncbi.nih.gov');                
-                    CurrGse=GseSel(GseL);
-                    %if ~isempty(Gse.supplementaryFile{CurrGse})&Gse.isBiol(CurrGse)
-                    if ~isempty(Gse.supplementaryFile{CurrGse})
-                        cd(Ftp,sprintf('pub/geo/DATA/supplementary/series/%s',Gse.gse{CurrGse}))
-                        MGet=mget(Ftp,sprintf('%s_RAW.tar',Gse.gse{CurrGse}));
-                        if ~isempty(findstr(Gse.gse{CurrGse},MGet{1}))
-                            if ~isfield(Gse,'imported')
-                                Gse.imported=zeros(length(Gse.gse),1);
+            SuppFilePos=[];
+            for GseL=1:length(Gse.supplementaryFile)
+                if ~isempty(Gse.supplementaryFile{GseL})
+                    SuppFilePos(end+1,1)=GseL;
+                end
+            end
+            if length(Gse.imported)<length(Gse.gsmNb)
+                Gse.imported=[Gse.imported;zeros(length(Gse.gsmNb)-length(Gse.imported),1)];
+            end
+            GseSel=find(Gse.imported==0&Gse.gsmNb'>0);
+            GseSel=intersect(GseSel,SuppFilePos);
+            if GseOK & length(GseSel)>0     
+                %eliminate doublons
+                [temp,KeepIndex,temp]=unique(Gse.gseRank(GseSel));
+                GseSel=GseSel(KeepIndex);
+                for GseL=1:length(GseSel)                    
+                    CurrGsePos=GseSel(GseL);
+                    CurrGseRank=Gse.gseRank(CurrGsePos);
+                    GseUpdatePos=find(Gse.gseRank==CurrGseRank);
+                    GsmNb=length(find(Gsm.gseRank==CurrGseRank));
+                    fprintf('\nGSE%u %u GSM (%u/%u)\n',CurrGseRank,GsmNb,GseL,length(GseSel))
+                    %test if exist directory
+                    %do not try to import it no GSM
+                    
+                    OutGsmNb=Gse.outGplGsmNb(CurrGsePos);
+                    if GsmNb>0
+                        if OutGsmNb<50
+                            cd(GplDir)
+                            if ~exist(sprintf('GSE%u_RAW.tar',CurrGseRank),'file')
+                                Gse.imported(GseUpdatePos)=0;
+                                try
+                                    eval(sprintf('!wget -nv ftp://ftp.ncbi.nih.gov/pub/geo/DATA/supplementary/series/GSE%u/GSE%u_RAW.tar',CurrGseRank,CurrGseRank));
+                                    if exist(sprintf('GSE%u_RAW.tar',CurrGseRank),'file')
+                                        Gse.imported(GseUpdatePos)=1;
+                                        if isempty(Gse.supplementaryFile{CurrGsePos})
+                                            for i=1:length(GseUpdatePos)
+                                                Gse.supplementaryFile{GseUpdatePos(i)}=sprintf('ftp://ftp.ncbi.nih.gov/pub/geo/DATA/supplementary/series/GSE%u/GSE%u_RAW.tar',CurrGseRank,CurrGseRank);
+                                            end
+                                        end
+                                    else
+                                        fprintf('GSE%u_RAW.tar not imported\n',CurrGseRank)
+                                        Gse.imported(GseUpdatePos)=0;
+                                        Gse.analyzed(GseUpdatePos)=0;
+                                    end
+                                catch
+                                    fprintf('GSE%u_RAW.tar not imported\n',CurrGseRank)
+                                    Gse.imported(GseUpdatePos)=0;
+                                    Gse.analyzed(GseUpdatePos)=0;
+                                end
+                                close(Ftp)
+                            else
+                                fprintf('GSE%u already exists\n',CurrGseRank)
+                                Gse.imported(GseUpdatePos)=1;
+                                Gse.analyzed(GseUpdatePos)=0;
                             end
-                            Gse.imported(CurrGse)=1;
+                        else
+                            if exist(sprintf('%s_RAW.tar',CurrGseRank),'file')
+                                eval(sprintf('delete %s_RAW.tar',CurrGseRank))
+                                fprintf('%s_RAW.tar deleted\n',CurrGseRank)
+                            end
+                            GseDir=fullfile(GplDir,sprintf('GSE%u',CurrGseRank));
+                            mkdir(GseDir)
+                            cd(GseDir)                            
+                            CurrGsmPos=find(Gsm.gseRank==CurrGseRank);
+                            ImportedNb=0;
+                            for GsmL=1:GsmNb
+                                CurrGsmRank=Gsm.gsmRank(CurrGsmPos(GsmL));
+                                FtpInfo=Gsm.supplementaryFile{CurrGsmPos(GsmL)};
+                                if ~isempty(FtpInfo)
+                                    ImportFlag=1;
+                                    if ~isempty(findstr('CEL',FtpInfo))
+                                        FtpFileName=regexp(FtpInfo,'(?<=suppl/).+(?=CEL)','match');                                                                
+                                        FtpFileName=[FtpFileName{1},'CEL.gz'];
+                                    elseif ~isempty(findstr('cel',FtpInfo))
+                                        FtpFileName=regexp(FtpInfo,'(?<=suppl/).+(?=cel)','match');                                                                
+                                        FtpFileName=[FtpFileName{1},'cel.gz'];
+                                    else
+                                        ImportFlag=0;
+                                        fprintf('GSM%u not imported\n',CurrGsmRank);
+                                    end
+                                    if ImportFlag
+                                        eval(sprintf('!wget -nv %s',FtpInfo));
+                                        if exist(FtpFileName,'file')
+                                            if ~isequal(FtpFileName,sprintf('GSM%u.CEL.gz',CurrGsmRank))
+                                                eval(sprintf('!mv %s GSM%u.CEL.gz',FtpFileName,CurrGsmRank))
+                                            end
+                                            ImportedNb=ImportedNb+1;
+                                        else
+                                            fprintf('GSM%u not imported\n',CurrGsmRank);
+                                        end
+                                    end
+
+                                end
+                            end
+                            if ImportedNb>0
+                                Gse.imported(GseUpdatePos)=1;
+                                Gse.analyzed(GseUpdatePos)=0;
+                                if ImportedNb~=GsmNb
+                                    fprintf('GSE%u: %u GSM imported instead of %u\n',CurrGseRank,ImportedNb,GsmNb)
+                                end
+                            else
+                                Gse.imported(GseUpdatePos)=0;
+                                Gse.analyzed(GseUpdatePos)=0;
+                            end
                         end
                     end
-                    close(Ftp)
                 end
                 cd(K.dir.geoMetadata)
                 eval(sprintf('save %s Gsm Gse Gds Contributor',FileName))
@@ -237,6 +345,8 @@ end
     case 'do RMA analysis'
 %% DO RMA ANALYSIS            
 [ChipRank,ChipPos,Type,ProbeSetNb,Gpl,CompName,Chromosomes,Success] =select_chip();
+% if ChangeFlag==1 => uses GSM.supplementaryFile toe eventually change the GSM file name
+ChangeFlag=1;
 if Success==0
     h=warndlg('RMA analysis canceled');
     waitfor(h)
@@ -249,146 +359,211 @@ else
     else
         cd(FileDir)
         load(FileName)
-        %GPL=regexp(FileName,'(?=.)^GPL\d+','match');
-        %GPL=GPL{1};
-        %load data
         cd(K.dir.geoExperiments)
         if ~exist(Gpl,'dir')
             h=warndlg(sprintf('%s does not exist in %s',Gpl,K.dir.geoExperiments));
             waitfor(h)
         else
+            JadeFlag=questdlg('Do you want to make analysis on Jade','','no','yes','yes');
+            if isequal(JadeFlag,'yes')
+                JadeFlag=1;
+                QFid=fopen(sprintf('%s.pbs',Gpl),'w');
+                fprintf(QFid,'#PBS -S /bin/bash\n');
+                fprintf(QFid,'#PBS -N %s\n',Gpl);
+                fprintf(QFid,'#PBS -e %s.mclerr\n',Gpl);
+                fprintf(QFid,'#PBS -o %s.mcllog\n',Gpl);
+                fprintf(QFid,'#PBS -l walltime=2:00:00\n');
+                fprintf(QFid,'#PBS -l select=1:ncpus=8:mpiprocs=9\n');
+                fprintf(QFid,'module unload intel\n');
+                fprintf(QFid,'module load intel/11.1.072\n');
+                fprintf(QFid,'module load numpy/1.5.1\n');
+                fprintf(QFid,'module load scipy/0.8.0\n');
+                fprintf(QFid,'module load pserie/9.3.26\n');
+                fprintf(QFid,'export MPI_DSM_DISTRIBUTE=ON\n');
+                fprintf(QFid,'cd /scratch/cinbell/data/experiments/geo/%s\n',Gpl);
+                fprintf(QFid,'mpiexec pserie_load_balanced < %s.sh\n',Gpl);
+                fclose(QFid);
+                ShFid=fopen(sprintf('%s.sh',Gpl),'w');
+            else
+                JadeFlag=0;
+            end
             UpdateFlag=questdlg('Do you want to overwrite existing analysis','','no','yes','no');
             if isequal(UpdateFlag,'yes')
                 UpdateFlag=1;
                 GsePos=find(Gse.imported);
             else
                 UpdateFlag=0;
-                GsePos=find(Gse.imported&Gse.analyzed==0);
+                GsePos=find(Gse.imported==1 & Gse.analyzed==0);
+            end
+            %eliminate doublons
+            GsePos=sort(GsePos);
+            [temp,KeepIndex,temp]=unique(Gse.gseRank(GsePos));
+            GsePos=GsePos(KeepIndex);
+            %eliminate Gse without supplementary data
+            ClearPos=[];
+            for GseL=1:length(GsePos)                
+                if isempty(Gse.supplementaryFile{GsePos(GseL)})
+                    ClearPos(end+1,1)=GseL;
+                end
+            end
+            if ~isempty(ClearPos)
+                GsePos(ClearPos)=[];
             end
             cd(Gpl);
             GplDir=cd;
-            ListRank=0;
-            %process each GSE individually, but no more than 60 GSM at the same time
-            for RoundL=1:3
-                switch RoundL
-                    case 1
-                        Limit1=1;
-                        Limit2=20;
-                        GseNb=3;
-                    case 2
-                        Limit1=20;
-                        Limit2=30;
-                        GseNb=2;
-                    case 3
-                        Limit1=30;
-                        Limit2=[];
-                        GseNb=1;
-                end
-                %create list of Gse to be processed in the current round
-                GseList=[];
+            if JadeFlag
+                DataDir=sprintf('/scratch/cinbell/data/experiments/geo/%s',Gpl);
+            else
+                DataDir=GplDir;
+            end
+            %create list of Gse to be processed in the current round
+            if ~isempty(GsePos)
+                MaxGsmNb=inputdlg('max nb of GSM','',1,{'400'});
+                MaxGsmNb=str2num(MaxGsmNb{1});
+                Processed=0;
                 for GseL=1:length(GsePos)
-                    cd(GplDir)
                     %create a directory and decompress files
-                    GSE=Gse.gse{GsePos(GseL)};
-                    GseRank=Gse.gseRank(GsePos(GseL));
-                    TarFile=sprintf('%s_RAW.tar',GSE);
-                    if ~exist(TarFile,'file')
-                        h=warndlg(sprintf('%s does not exist in %s',TarFile,Gpl));
-                        waitfor(h)
-                        Gse.imported(GsePos(GseL))=0;
-                    else
-                        GsmPos=find(Gsm.gseRank==GseRank);
-                        switch RoundL
-                            case {1,2}
-                                length(GsmPos)
-                                if length(GsmPos)>=Limit1&length(GsmPos)<Limit2
-                                    GseList=[GseList;GsePos(GseL)];
-                                end
-                            case 3
-                                if length(GsmPos)>=Limit1
-                                    GseList=[GseList;GsePos(GseL)];
-                                end
-                        end
-                    end
-                end
-                if ~isempty(GseList)
-                    if length(GseList)>GseNb
-                        ListNb=ceil(length(GseList)/GseNb);
-                    else
-                        %GseNb=length(GseList);
-                        ListNb=1;
-                    end
-                    for ListL=1:ListNb
-                        ListRank=ListRank+1;
-                        %create R script
+                    CurrGsePos=GsePos(GseL);                    
+                    GSE=Gse.gse{CurrGsePos};                    
+                    CurrGse=GSE;
+                    GseRank=Gse.gseRank(CurrGsePos);
+                    GseUpdatePos=find(Gse.gseRank==GseRank);
+                    %                     TarFile=sprintf('%s_RAW.tar',GSE);
+                    %                     if ~exist(TarFile,'file')
+                    %                         %h=warndlg(sprintf('%s does not exist in %s',TarFile,Gpl));
+                    %                         %waitfor(h)
+                    %                         fprintf('%s does not exist in %s\n',TarFile,Gpl);
+                    %                         Gse.imported(GsePos(GseL))=0;
+                    %                     else
+                    %create R script                    
+                    CurrGseRank=GseRank;
+                    DoIt=1;
+                    if JadeFlag==0
                         cd(GplDir)
-                        fid=fopen(sprintf('%s_%u.r',Gpl,ListRank),'w');
-                        fprintf(fid,'library(R.utils)\n');
-                        fprintf(fid,'library(affy)\n');
-                        if ListL==ListNb
-                            EndL=length(GseList);
-                        else
-                            EndL=ListL*GseNb;
-                        end
-                        for GseL=(ListL-1)*GseNb+1:EndL
-                            %create directory
-                            CurrGse=Gse.gse{GseList(GseL)};
-                            CurrGseRank=Gse.gseRank(GseList(GseL));
-                            DoIt=1;
-                            cd(GplDir)
-                            if ~exist(CurrGse,'dir')
-                                mkdir('./',CurrGse);
-                            else
-                                cd(CurrGse)
-                                if exist(sprintf('%s_rma.txt',CurrGse),'file')
-                                    DoIt=0;
-                                    Gse.analyzed(GsePos(GseL),1)=1;
-                                end
+                        if exist(CurrGse,'dir')
+                            cd(CurrGse)
+                            if exist(sprintf('%s_rma.txt',CurrGse),'file')
+                                DoIt=0;
+                                Gse.analyzed(GseUpdatePos,1)=1;
                             end
-                            if DoIt
-                                GsmPos=find(Gsm.gseRank==CurrGseRank);
+                        end
+                    end
+                    GsmPos=find(Gsm.gseRank==CurrGseRank);
+%                     if isfield(Gse,'trueGsmNb')
+%                         GsmNb=Gse.trueGsmNb(CurrGsePos);
+%                     else
+                        GsmNb=length(GsmPos);
+%                     end
+                    OutGsmNb=Gse.outGplGsmNb(CurrGsePos);                                                        
+                    if GsmNb>0 & GsmNb<MaxGsmNb
+                        Processed=Processed+1;
+                        if OutGsmNb<50
+                            GseFlag=1;
+                        else
+                            GseFlag=0;
+                        end                                        
+                        cd(GplDir)
+                        fid=fopen(sprintf('%s_%u.r',Gpl,GseRank),'w');
+                        fprintf('%s_%u.r\n',Gpl,GseRank);
+                        if JadeFlag
+                            fprintf(ShFid,'/home/cinbell/mywork/R-2.12.2/bin/R CMD BATCH ./%s_%u.r\n',Gpl,GseRank);
+                        end
+                        fprintf(fid,'library(affy)\n');
 
-                                %untar GSM files
-                                fprintf(fid,'setwd("%s")\n',GplDir);
-                                fprintf(fid,'system("tar -xf %s_RAW.tar --directory=./%s")\n',CurrGse,CurrGse);
-                                fprintf(fid,'setwd("./%s")\n',CurrGse);
-                                %rename files with standardized form
-                                %GSMxxxx.CEL;gz
-                                fprintf(fid,'try(system("rename ''s/gsm/GSM/'' gsm*"),silent=TRUE)\n');
-                                fprintf(fid,'try(system("rename ''s/cel/CEL/'' *cel*"),silent=TRUE)\n');
-                                %sometimes GSM have something between the number and .CEL.gz
-                                fprintf(fid,'try(system("rename ''s/_.+CEL/\\\\.CEL/'' *CEL*"),silent=TRUE)\n');
-                                %eventually remove unwanted GSM files
-                                for GsmL=1:length(GsmPos)
+                        %untar GSM files
+                        fprintf(fid,'setwd("%s")\n',DataDir);
+                        if GseFlag
+                            fprintf(fid,'try(system("mkdir %s"),silent=TRUE)\n',CurrGse);
+                            fprintf(fid,'system("tar -xf %s_RAW.tar --directory=./%s")\n',CurrGse,CurrGse);
+                        end
+                        fprintf(fid,'setwd("./%s")\n',CurrGse);
+                        %rename files with standardized form GSMxxxx.CEL.gz
+                        if JadeFlag
+                            fprintf(fid,'try(system("/home/cinbell/prename ''s/gsm/GSM/'' gsm*"),silent=TRUE)\n');                        
+                            fprintf(fid,'try(system("/home/cinbell/prename ''s/cel/CEL/'' *cel*"),silent=TRUE)\n');
+                            %sometimes GSM have something between the number and .CEL.gz
+                            fprintf(fid,'try(system("/home/cinbell/prename ''s/_.+CEL/\\\\.CEL/'' *CEL*"),silent=TRUE)\n');
+                        else
+                        fprintf(fid,'try(system("rename ''s/gsm/GSM/'' gsm*"),silent=TRUE)\n');                        
+                        fprintf(fid,'try(system("rename ''s/cel/CEL/'' *cel*"),silent=TRUE)\n');
+                        %sometimes GSM have something between the number and .CEL.gz
+                        fprintf(fid,'try(system("rename ''s/_.+CEL/\\\\.CEL/'' *CEL*"),silent=TRUE)\n');
+                        end
+                        %eventually remove unwanted GSM files
+                        for GsmL=1:length(GsmPos)
+                            SupplFile=Gsm.supplementaryFile{GsmPos(GsmL)};
+                            if ~isempty(findstr('CEL',SupplFile))
+                                GsmFileName=regexp(SupplFile,'(?<=n/GSM\d+/).+(?=CEL)','match');
+                                GsmFileName=[GsmFileName{1},'CEL.gz'];
+                            else                                
+                                GsmFileName=regexp(SupplFile,'(?<=n/GSM\d+/).+(?=cel)','match');
+                                try
+                                    GsmFileName=[GsmFileName{1},'cel.gz'];
+                                catch
+                                    GsmFileName='';
+                                end
+                            end                            
+                            if ~isempty(GsmFileName)
+                                if ChangeFlag
+                                    if ~isempty(findstr('suppl/',GsmFileName))
+                                        GsmFileName=regexp(GsmFileName,'(?<=suppl/).+','match');
+                                        GsmFileName=GsmFileName{1};
+                                    end
                                     if ~isequal(Gsm.gpl{GsmPos(GsmL)},Gpl)
-                                        fprintf(fid,'unlink("%s.CEL.gz")\n',Gsm.gsm{GsmPos(GsmL)});
+                                        fprintf(fid,'unlink("%s")\n',GsmFileName);
                                     else
                                         %gunzip files
-                                        fprintf(fid,'system("gunzip %s.CEL.gz")\n',Gsm.gsm{GsmPos(GsmL)});
+                                        fprintf(fid,'system("gunzip %s")\n',GsmFileName);
+                                        GsmFileName=regexp(GsmFileName,'.+(?=.gz)','match');
+                                        GsmFileName=GsmFileName{1};
+                                        if ~isequal(GsmFileName,sprintf('GSM%u.CEL',Gsm.gsmRank(GsmPos(GsmL))))
+                                            fprintf(fid,'system("mv %s GSM%u.CEL")\n',GsmFileName,Gsm.gsmRank(GsmPos(GsmL)));
+                                        end
+                                    end
+                                else
+                                    if ~isequal(Gsm.gpl{GsmPos(GsmL)},Gpl)
+                                        fprintf(fid,'unlink("GSM%u.CEL.gz")\n',Gsm.gsmRank(GsmPos(GsmL)));
+                                    else
+                                        fprintf(fid,'system("gunzip GSM%u.CEL.gz")\n',Gsm.gsmRank(GsmPos(GsmL)));
                                     end
                                 end
-                                %clear all other gz files
-                                fprintf(fid,'unlink("*.gz")\n');
-
-                                %load cel files
-                                fprintf(fid,'data=try(ReadAffy(),silent=TRUE)\n');
-                                fprintf(fid,'result=try(rma(data),silent=TRUE)\n');
-                                fprintf(fid,'try(write.table(assayData(result)$exprs,file="%s_rma.txt",col.names=sampleNames(phenoData(result)),row.names=featureNames(featureData(result)),sep="\\t",na="NaN",dec=".",quote=FALSE),silent=TRUE)\n',CurrGse);
-                                fprintf(fid,'try(unlink("*.CEL"),silent=TRUE)\n');
-                                fprintf(fid,'try(unlink("*.cel"),silent=TRUE)\n');
-                                fprintf(fid,'try(remove(data,result),silent=TRUE)\n');
                             end
                         end
+                        %clear all other gz files
+                        fprintf(fid,'unlink("*.gz")\n');
+
+                        %load cel files
+                        fprintf(fid,'data=ReadAffy()\n');
+                        fprintf(fid,'result=rma(data)\n');
+                        fprintf(fid,'write.table(assayData(result)$exprs,file="%s_rma.txt",col.names=sampleNames(phenoData(result)),row.names=featureNames(featureData(result)),sep="\\t",na="NaN",dec=".",quote=FALSE)\n',CurrGse);
+                        fprintf(fid,'try(unlink("*.CEL"),silent=TRUE)\n');
+                        fprintf(fid,'try(unlink("*.cel"),silent=TRUE)\n');
+                        fprintf(fid,'try(remove(data,result),silent=TRUE)\n');
+                        %                                 if JadeFlag
+                        %                                     %write result file
+                        %                                     fprintf(fid,'try(system("mkdir /store/cinbell/data/experiments/geo/%s/%s"),silent=TRUE)\n',Gpl,CurrGse);
+                        %                                     fprintf(fid,'try(system("mv * /store/cinbell/data/experiments/geo/%s/%s"),silent=TRUE)\n',Gpl,CurrGse);
+                        %                                 end
+                        fprintf(fid,'quit("no")\n');
                         fclose(fid);
-                    end
-                end
+                    else
+                        fprintf('GSE%u %u GsmPos %u TrueGsmNb %u GsmNb \n',GseRank,length(GsmPos),Gse.trueGsmNb(CurrGsePos),Gse.gsmNb(CurrGsePos))
+                    end                    
+                end %for GseL
+            end %if ~isempty(GsePos)
+            if JadeFlag
+                fclose(ShFid);
             end
-        end
+        end %if ~exist(Gpl,'dir')
+    end %if isnumeric(FileName)
+    if JadeFlag==0
         cd(FileDir)
         cd(K.dir.geoMetadata)
         eval(sprintf('save %s Gsm Gse Gds Contributor',FileName))
     end
-end
+    fprintf('%u GSE processed\n',Processed)
+end %if Success==0
+
 
     case 'create new network'
 %% CREATE NEW NETWORK
@@ -802,4 +977,5 @@ if ~isempty(SpeciesSel)
         GPL=Gpls(GplSel);
     end    
 end
+pwd
 Species=Species{SpeciesSel};

@@ -9,15 +9,17 @@ load Comp
 %     end
 % end
 
-Fdr=load_data('Fdr_02.float32le',P.dir.data,P.chip.currProbeSetNb,P.chip.currProbeSetNb,'single','ieee-le',1:P.chip.currProbeSetNb,COMPS);
-ZVar=load_data('ZVar_02.float32le',P.dir.data,P.chip.currProbeSetNb,P.chip.currProbeSetNb,'single','ieee-le',1:P.chip.currProbeSetNb,COMPS);
-Sensitivity=load_data('Sensitivity_02.float32le',P.dir.data,P.chip.currProbeSetNb,P.chip.currProbeSetNb,'single','ieee-le',1:P.chip.currProbeSetNb,COMPS);
-FC=load_data('Fc_02.float32le',P.dir.data,P.chip.currProbeSetNb,P.chip.currProbeSetNb,'single','ieee-le',1:P.chip.currProbeSetNb,COMPS);
-load TotalVar_02
+Fdr=load_data('Fdr_01.float32le',P.dir.data,P.chip.currProbeSetNb,P.chip.currProbeSetNb,'single','ieee-le',1:P.chip.currProbeSetNb,COMPS);
+ZVar=load_data('ZVar_01.float32le',P.dir.data,P.chip.currProbeSetNb,P.chip.currProbeSetNb,'single','ieee-le',1:P.chip.currProbeSetNb,COMPS);
+Sensitivity=load_data('Sensitivity_01.float32le',P.dir.data,P.chip.currProbeSetNb,P.chip.currProbeSetNb,'single','ieee-le',1:P.chip.currProbeSetNb,COMPS);
+FC=load_data('Fc_01.float32le',P.dir.data,P.chip.currProbeSetNb,P.chip.currProbeSetNb,'single','ieee-le',1:P.chip.currProbeSetNb,COMPS);
+load TotalVar_01
 TotalVar.inc=TotalVar.inc(COMPS);
 TotalVar.dec=TotalVar.dec(COMPS);
 cd(P.dir.results)
-fid=fopen(sprintf('aorteHP_%s_results_%s.txt',lower(TYPE),date),'w');
+%fid=fopen(sprintf('aorteHP_%s_results_%s.txt',lower(TYPE),date),'w');
+fid=fopen(sprintf('DRG_crush_results_%s.txt',date),'w');
+
 CompNames=M{1}.compName(COMPS);
 
 Header='comparisons:';

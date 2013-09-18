@@ -1,0 +1,15 @@
+%===========================%
+% FUNCTION NET_TRANSLATENTS %
+%===========================%
+
+% NET_TRANSLATENTS recover original probesets ranks of NTS clusters found in composit chip
+% (merge of different chip model belonging to the same species or to different species)
+
+%INPUT PARAMETERS
+% 1    ChipRank: chip rank
+% 2     NtsFile: file containing NetsTensor results
+% 3  TargetFile: file describing the merging process used to construct the chip (with rank
+%                equal to ChipRank) from the first chip indicated in TargetFile
+% 4     FromTsn: the first NtsFile used if the process is repeated across several chip with
+%                successive mergin schemes ( human + mouse and then + rat for exemple)
+% 5    InfoFlag: recover gene names and gene ids if equal to one

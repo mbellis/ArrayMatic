@@ -2,7 +2,7 @@ function trs_prepcomp(Action)
 global F P M
 Action
 switch Action
-    case 'groups'
+    case {'groups','duplicate'}
         %load M
         cd(P.dir.data)
         if exist('Comp.mat','file')
@@ -14,17 +14,23 @@ switch Action
             %select comparisons to be made
             h=figure;
             F.h.prepcomp=h;
-            set(h,'name','SELECT COMPARISONS TO BE MADE')
+            switch Action
+                case 'group'
+                    set(h,'name','SELECT COMPARISONS TO BE MADE')
+                case 'duplicate'
+                    set(h,'name','SELECT TWO GROUPS TO MAKE A DUPLICATE')
+                    P.tmp.gco=[];
+            end
             if P.flag.testAlgo
                 Labels={};
                 for GrpL=1:length(P.grp.name)
                     EndPos=regexp(P.grp.name{GrpL},['_',P.point.algo{1},'$'],'start');
                     if ~isempty(EndPos)
-                        Labels{end+1}=P.grp.name{GrpL}(1:EndPos-1);
+                        Labels{end+1}=strrep(P.grp.name{GrpL}(1:EndPos-1),'_',' ');
                     end
                 end
             else
-                Labels=P.grp.name;
+                Labels=strrep(P.grp.name,'_',' ');
             end
             P.tmp.labels=Labels;
             GrpNb=length(Labels);
@@ -48,20 +54,53 @@ switch Action
                 for GrpL2=1:GrpNb
                     if GrpL1~=GrpL2
                         p=plot(GrpL1,GrpL2,'ko','markersize',10);
-                        set(p,'ButtonDownFcn','trs_prepcomp(''select comp'')');
+                        switch Action
+                            case 'group'
+                                set(p,'ButtonDownFcn','trs_prepcomp(''select comp'')');
+                            case 'duplicate'
+                                set(p,'ButtonDownFcn','trs_prepcomp(''select dup'')');                                
+                        end
                         set(p,'markerfacecolor',[0,0,0]);
                     end
                 end
             end
             set(a,'box','on')
             %place OK button
-            uicontrol('style','pushbutton','string','Ok','position',[20 20 60 20 ],'CallBack','trs_prepcomp(''ok'')')
-            uicontrol('style','pushbutton','string','Cancel','position',[100 20 60 20 ],'CallBack','trs_prepcomp(''cancel'')')
-
-
+            switch Action
+                case 'group'
+                    uicontrol('style','pushbutton','string','Ok','position',[20 20 60 20 ],'CallBack','trs_prepcomp(''ok'')')                               
+                    uicontrol('style','pushbutton','string','Cancel','position',[100 20 60 20 ],'CallBack','trs_prepcomp(''cancel'')')
+                case 'duplicate'
+                    uicontrol('style','pushbutton','string','Ok','position',[20 20 60 20 ],'CallBack','trs_prepcomp(''ok_dup'')')
+                    uicontrol('style','pushbutton','string','Cancel','position',[100 20 60 20 ],'CallBack','trs_prepcomp(''cancel_dup'')')
+            end
         else
             h=warndlg('first do *** TRANSCRIPTOME/TRANSCRIPTOME ANALYSIS/make groups of points ***');
             waitfor(h)
+        end
+        
+    case 'select dup'
+        FirstGrpRank=get(gco,'YData');
+        SndGrpRank=get(gco,'XData');
+        if isequal(get(gco,'color'),[0,0,0])
+            set(gco,'color',[1,0,0])
+            set(gco,'markerfacecolor',[1,0,0]);
+            if ~isempty(P.tmp.gco)
+                set(P.tmp.gco,'color',[0,0,0])
+                set(P.tmp.gco,'markerfacecolor',[0,0,0]);
+            end
+            P.tmp.gco=gco;
+            if P.flag.testAlgo
+                FirstGrpPos=strmatch(sprintf('%s_%s',P.tmp.labels{FirstGrpRank},P.point.algo{1}),P.grp.name,'exact');
+                SndGrpPos=strmatch(sprintf('%s_%s',P.tmp.labels{SndGrpRank},P.point.algo{1}),P.grp.name,'exact');
+            else
+                FirstGrpPos=FirstGrpRank;
+                SndGrpPos=SndGrpRank;
+            end            
+        elseif isequal(get(gco,'color'),[1,0,0])
+            set(gco,'color',[0,0,0])
+            set(gco,'markerfacecolor',[0,0,0]);
+            P.tmp.gco=[];
         end
    
     case 'select comp'
@@ -199,6 +238,18 @@ switch Action
 
     case 'cancel'
         M=[];
+        delete(F.h.prepcomp)
+        F.h=rmfield(F.h,'prepcomp');
+        
+    case 'ok_dup'
+        if ~isempty(P.tmp.gco)
+            P.tmp.firstGrpRank=get(P.tmp.gco,'YData');
+            P.tmp.sndGrpRank=get(P.tmp.gco,'XData');
+        end
+        delete(F.h.prepcomp)
+        F.h=rmfield(F.h,'prepcomp');
+        
+    case 'cancel_dup'
         delete(F.h.prepcomp)
         F.h=rmfield(F.h,'prepcomp');
 end

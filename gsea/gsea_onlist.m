@@ -43,6 +43,7 @@ else
 end
 rand('twister',RandSeed)
 
+
 [ModelRank,NetRank,NetPos]=select_net('unique',P.chip.chipRank);
 if length(K.net{ModelRank}.biolRank{NetPos})==2
     BiolRank{1}=K.net{ModelRank}.biolRank{NetPos}{1};
@@ -52,6 +53,7 @@ else
     waitfor(h)
     error('process canceled')
 end
+
 BiolIndex=find(P.net.biolIndex);
 BiolPos=cell(1,2);
 for GrpL=1:2

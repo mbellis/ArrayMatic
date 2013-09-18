@@ -28,7 +28,6 @@ CvLimit=0;
 
 
 while Continue==0
-
     %INDICATE THE DISTANCE TYPE AND HOW ARE SELECTED THE POINTS OR THE TOP LIST
     if isequal(DataType,'points')|isequal(DataType,'biological conditions')
         if isequal(DataType,'points')
@@ -323,6 +322,7 @@ if ~isequal(SelType,'point')
 
         elseif isequal(SelType,'cv')
             SelBindex=P.chip.cv>=CvLimit;
+            break
         elseif isequal(SelType,'zvar')
             ZVar=load_data(sprintf('ZVar_%02u.float32le',ResRank),P.dir.data,P.chip.currProbeSetNb,TotalItemNb,'single','ieee-le',1:P.chip.currProbeSetNb,CurrItem);
             [IncIndex,DecIndex]=topindexes(ZVar,TopSize,'max',1);
@@ -333,93 +333,90 @@ if ~isequal(SelType,'point')
             Tree.incIndex{ItemL}=IncIndex;
             Tree.decIndex{ItemL}=DecIndex;
         end
+    end
 
-        % SelIndex used for recover zvar, pv, signal or rank
-        if ~isequal(DistType,'overlap')
-            if ~isempty(PsIndex)
-                SelBindex=SelBindex&KeepBindex;
+    % SelIndex used for recover zvar, pv, signal or rank
+    if ~isequal(DistType,'overlap')
+        if ~isempty(PsIndex)
+            SelBindex=SelBindex&KeepBindex;
+        end
+        SelIndex=find(SelBindex);
+        if length(SelIndex)<2
+            errordlg('SelIndex must have at least two elements')
+        end
+        T{TRank}.psIndex=SelIndex;
+    end
+
+    % Recover Ranks
+    if ~isequal(DistType,'overlap')
+        if isequal(DataType,'points')
+            Rank=[];
+            for ItemL=1:ItemNb
+                CurrItem=ItemIndex(ItemL);
+                if P.flag.loadData
+                    CurrRank=load_data('DataRanks.float32le',P.dir.data,P.chip.currProbeSetNb,P.point.nb,'single','ieee-le',1:P.chip.currProbeSetNb,CurrItem);
+                    CurrRank=CurrRank(SelIndex);
+                else
+                    CurrRank=DataRanks(SelIndex,CurrItem);
+                end
+                Rank=[Rank,CurrRank];
             end
-            SelIndex=find(SelBindex);
-            if length(SelIndex)<2
-                errordlg('SelIndex must have at least two elements')
+
+            % eliminates probe sets which are not measured in at least one point (based on Rank==-1,or -2)
+            ClearPos=[];
+            for LineL=1:size(Rank,1);
+                if ~isempty(find(Rank(LineL,:)<0))
+                    ClearPos=[ClearPos;LineL];
+                end
             end
-            T{TRank}.psIndex=SelIndex;
+            if ~isempty(ClearPos)
+                %h=warndlg(sprintf('%u genes to be deleted (absent on some point) out of a total of %u',length(ClearPos),size(Rank,2)));
+                %waitfor(h);
+                Rank(ClearPos,:)=[];
+            end
+
+            if isequal(TreeType,'rank')
+                Values=Rank;
+                Rank=[];
+            end
+
+
+            if isequal(TreeType,'log2(signal)')
+                try
+                    Values=log2(interp1(P.chip.refRank,P.chip.refSignal,Rank));
+                catch
+                    Values=log2(interp1(K.chip.ref.rank,K.chip.ref.signal,Rank));
+                end
+                if ~isempty(find(isnan(Values)))
+                    h=warndlg(sprintf('%u NaN values in Signal of chip %s!',length(find(isnan(Signal))),F.list.array));
+                    waitfor(h)
+                    h=errordlg('Process canceled');
+                    waitfor(h)
+                end
+            end
         end
 
-
-
-        % Recover Ranks
-        if ~isequal(DistType,'overlap')
-            if isequal(DataType,'points')
-                Rank=[];
-                for ItemL=1:ItemNb
+        if isequal(TreeType,'zvar')|isequal(TreeType,'pv')
+            ItemNb=length(ItemIndex);
+            for ItemL=1:ItemNb
+                if isequal(DataType,'points')
                     CurrItem=ItemIndex(ItemL);
-                    if P.flag.loadData
-                        CurrRank=load_data('DataRanks.float32le',P.dir.data,P.chip.currProbeSetNb,P.point.nb,'single','ieee-le',1:P.chip.currProbeSetNb,CurrItem);
-                        CurrRank=CurrRank(SelIndex);
+                elseif isequal(DataType,'biological conditions')
+                    if isequal(P.par.analType,'network')
+                        CurrItem=ItemL;
                     else
-                        CurrRank=DataRanks(SelIndex,CurrItem);
-                    end
-                    Rank=[Rank,CurrRank];
-                end
-
-                % eliminates probe sets which are not measured in at least one point (based on Rank==-1,or -2)
-                ClearPos=[];
-                for LineL=1:size(Rank,1);
-                    if ~isempty(find(Rank(LineL,:)<0))
-                        ClearPos=[ClearPos;LineL];
-                    end
-                end
-                if ~isempty(ClearPos)
-                    %h=warndlg(sprintf('%u genes to be deleted (absent on some point) out of a total of %u',length(ClearPos),size(Rank,2)));
-                    %waitfor(h);
-                    Rank(ClearPos,:)=[];
-                end
-
-                if isequal(TreeType,'rank')
-                    Values=Rank;
-                    Rank=[];
-                end
-
-
-                if isequal(TreeType,'log2(signal)')
-                    try
-                        Values=log2(interp1(P.chip.refRank,P.chip.refSignal,Rank));
-                    catch
-                        Values=log2(interp1(K.chip.ref.rank,K.chip.ref.signal,Rank));
-                    end
-                    if ~isempty(find(isnan(Values)))
-                        h=warndlg(sprintf('%u NaN values in Signal of chip %s!',length(find(isnan(Signal))),F.list.array));
-                        waitfor(h)
-                        h=errordlg('Process canceled');
-                        waitfor(h)
-                    end
-                end
-            end
-
-
-            if isequal(TreeType,'zvar')|isequal(TreeType,'pv')
-                ItemNb=length(ItemIndex);
-                for ItemL=1:ItemNb
-                    if isequal(DataType,'points')
                         CurrItem=ItemIndex(ItemL);
-                    elseif isequal(DataType,'biological conditions')
-                        if isequal(P.par.analType,'network')
-                            CurrItem=ItemL;
-                        else
-                            CurrItem=ItemIndex(ItemL);
-                        end
                     end
-                    if isequal(TreeType,'zvar')
-                        CurrVal=load_data(sprintf('ZVar_%02u.float32le',ResRank),P.dir.data,P.chip.currProbeSetNb,ItemNb,'single','ieee-le',1:P.chip.currProbeSetNb,CurrItem);
-                    else
-                        CurrVal=load_data(sprintf('Pv_%02u.float32le',ResRank),P.dir.data,P.chip.currProbeSetNb,ItemNb,'single','ieee-le',1:P.chip.currProbeSetNb,CurrItem);
-                    end
-                    CurrVal=CurrVal(SelIndex);
-                    Values=[Values,CurrVal];
                 end
-                Values(ClearPos,:)=[];
+                if isequal(TreeType,'zvar')
+                    CurrVal=load_data(sprintf('ZVar_%02u.float32le',ResRank),P.dir.data,P.chip.currProbeSetNb,ItemNb,'single','ieee-le',1:P.chip.currProbeSetNb,CurrItem);
+                else
+                    CurrVal=load_data(sprintf('Pv_%02u.float32le',ResRank),P.dir.data,P.chip.currProbeSetNb,ItemNb,'single','ieee-le',1:P.chip.currProbeSetNb,CurrItem);
+                end
+                CurrVal=CurrVal(SelIndex);
+                Values=[Values,CurrVal];
             end
+            Values(ClearPos,:)=[];
         end
     end
 end

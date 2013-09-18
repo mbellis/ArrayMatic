@@ -1,3 +1,5 @@
+%not used
+
 cd('/home/mbellis/sosma/data/cacn/')
 GoBranch={'bp','mf','cc'};
 

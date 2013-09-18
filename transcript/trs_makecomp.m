@@ -42,12 +42,11 @@ switch CompType
 
     case 'user groups'
         if length(MakeIndex)>0
-            
+
             SNb=0;
             t=0;
             tic
             for MakeL=1:length(MakeIndex)
-                SNb=SNb+1;
                 %         waitbar(0,w,sprintf('Calculating Calibration Sets for the %uth comparison among %u',MakeL,length(MakeIndex)))
                 %fill default comparison scheme
                 Grp={};
@@ -55,6 +54,38 @@ switch CompType
                 Grp{2}=M{CompRank}.sndPointRanks{MakeIndex(MakeL)};
                 GrpNb(1)=length(Grp{1});
                 GrpNb(2)=length(Grp{2});
+                if GrpNb(1)==1&GrpNb(2)==1
+                    SelectDupFlag=1;
+                    if isfield(M{CompRank},'duplicate')
+                        try
+                            if ~isempty(M{CompRank}.duplicate(MakeIndex(MakeL)))
+                                SelectDupFlag=0;
+                            end
+                        catch
+                        end
+                    end
+                    if SelectDupFlag
+                        h=warndlg(sprintf('%s and %s have \nonly one point !',P.grp.name{M{CompRank}.firstGrpRank(MakeIndex(MakeL))},...
+                            P.grp.name{M{CompRank}.sndGrpRank(MakeIndex(MakeL))}));
+                        waitfor(h)
+                        trs_prepcomp('duplicate')
+                        h=warndlg(sprintf('click OK once you have selected\n a couple of points\nto be used as duplicate'));
+                        waitfor(h)
+                        HL=P.grp.pointIndex{P.tmp.firstGrpRank}(1);
+                        BL=P.grp.pointIndex{P.tmp.sndGrpRank}(1);
+                        SameDuplicate=questdlg(sprintf('do you want to use this duplicate\nfor all comparison \nwith one point'),'','yes','non','yes');
+                        if isequal(SameDuplicate,'yes')
+                            for MakeL1=1:length(MakeIndex)
+                                if length(M{CompRank}.firstPointRanks{MakeIndex(MakeL1)})==1&length(M{CompRank}.sndPointRanks{MakeIndex(MakeL1)})==1
+                                    M{CompRank}.duplicate{MakeIndex(MakeL1),1}=sort([HL,BL]);
+                                end
+                            end
+                        else
+                            M{CompRank}.duplicate{MakeIndex(MakeL),1}=sort([HL,BL]);
+                        end
+                    end
+                end
+                SNb=SNb+1;
                 [MinNb,MinGrp]=min(GrpNb);
                 MaxNb=max(GrpNb);
                 if MinGrp==1
@@ -142,38 +173,51 @@ switch CompType
                 for GrpL=1:2
                     for RoundL=1:MaxNb-MinNb+1
                         for SetL=1:MinNb
-                            if MinGrp==GrpL
-                                %all MinNb in MinGrp are used, with random order
-                                if SetL<MinNb
-                                    CalibRanks=sort([Grp{GrpL}(MinOrder(SetL)),Grp{GrpL}(MinOrder(SetL+1))]);
-                                else
-                                    CalibRanks=sort([Grp{GrpL}(MinOrder(SetL)),Grp{GrpL}(MinOrder(1))]);
+                            CalibFlag=1;
+                            if isfield(M{CompRank},'duplicate')
+                                try
+                                    if ~isempty(M{CompRank}.duplicate{MakeIndex(MakeL)})
+                                        CalibRanks=M{CompRank}.duplicate{MakeIndex(MakeL)};
+                                        CalibFlag=0;
+                                    end
+                                catch
                                 end
-                            else
-                                %MinNb in MaxGrp in random order starting at RoundL are used
-                                if SetL+RoundL-1<MaxNb
-                                    CalibRanks=sort([Grp{GrpL}(MaxOrder(SetL+RoundL-1)),Grp{GrpL}(MaxOrder(SetL+RoundL))]);
+                            end
+                            if CalibFlag
+                                if MinGrp==GrpL
+                                    %all MinNb in MinGrp are used, with random order
+                                    if SetL<MinNb
+                                        CalibRanks=sort([Grp{GrpL}(MinOrder(SetL)),Grp{GrpL}(MinOrder(SetL+1))]);
+                                    else
+                                        CalibRanks=sort([Grp{GrpL}(MinOrder(SetL)),Grp{GrpL}(MinOrder(1))]);
+                                    end
+
                                 else
-                                    CalibRanks=sort([Grp{GrpL}(MaxOrder(SetL+RoundL-1)),Grp{GrpL}(MaxOrder(RoundL))]);
+                                    %MinNb in MaxGrp in random order starting at RoundL are used
+                                    if SetL+RoundL-1<MaxNb
+                                        CalibRanks=sort([Grp{GrpL}(MaxOrder(SetL+RoundL-1)),Grp{GrpL}(MaxOrder(SetL+RoundL))]);
+                                    else
+                                        CalibRanks=sort([Grp{GrpL}(MaxOrder(SetL+RoundL-1)),Grp{GrpL}(MaxOrder(RoundL))]);
+                                    end
                                 end
                             end
                             %do calibration if necessary
                             DoS=1;
 
-                            
-                                if length(S)>=3
-                                    if ~isempty(S{3})
-                                        if isfield(S{3},'testSurf')
-                                            Pos=find(S{3}.position(:,1)==CalibRanks(1)&S{3}.position(:,2)==CalibRanks(2));
-                                            if ~isempty(Pos)
-                                                if ~isempty(S{3}.testSurf(Pos))
-                                                    DoS=0;
-                                                end                                                
+
+                            if length(S)>=3
+                                if ~isempty(S{3})
+                                    if isfield(S{3},'testSurf')
+                                        Pos=find(S{3}.position(:,1)==CalibRanks(1)&S{3}.position(:,2)==CalibRanks(2));
+                                        if ~isempty(Pos)
+                                            if ~isempty(S{3}.testSurf(Pos))
+                                                DoS=0;
                                             end
                                         end
                                     end
                                 end
-                            
+                            end
+
 
                             if DoS
                                 if P.flag.loadData==0
@@ -186,7 +230,6 @@ switch CompType
                                 else
                                     BL=load_data('DataRanks.float32le',P.dir.data,P.chip.currProbeSetNb,P.point.nb,'single','ieee-le',1:P.chip.currProbeSetNb,CalibRanks(2));
                                 end
-
                                 SaveCalibSet=1;
                                 [RankGrid,Grid,ZVarGrid,ZVar]=noise_distribution(HL,BL,RankThreshold,CalibRanks(1),CalibRanks(2),ClearIndex,NormType,AnalyseType,CalibType,SizerFittingDegree,DisplayFlag);
                                 fill_s(NormType,CalibType,ClearIndexFlag,CalibRanks,Grid,ZVar,ZVarGrid,ResRank,SaveFlag)
@@ -194,6 +237,7 @@ switch CompType
                         end
                     end
                 end
+
                 if SNb==100
                     t=t+toc;
                     cd(P.dir.data)
@@ -204,7 +248,7 @@ switch CompType
                 end
             end
             if SNb>1
-                cd(P.dir.data)                
+                cd(P.dir.data)
                 eval(sprintf('save CalibSet_%02u S',ResRank))
             end
             cd(P.dir.data)
@@ -262,8 +306,7 @@ switch CompType
                 end
                 SNb=0;
                 sprintf('%u biol cond processed, %u min elapsed: I evaluate that the process will end in around %u min',MakeL,round(t/60),round(t*(length(P.biol.pairs)-MakeL)/(MakeL*60)))
-                tic
-                
+                tic                
             end
         end
         if SNb>1&SaveIt
@@ -280,13 +323,14 @@ switch CompType
             %load existing comparison
             ResNb=0;
             if isfield(M{CompRank},'column')
-                for ResL=1:length(M{CompRank})
+                for ResL=1:length(M{CompRank}.compName)
                     if M{CompRank}.made(ResL)
                         ResNb=max(ResNb,M{CompRank}.column(ResL));
                     end
                 end
             end
             if P.flag.loadData==0
+                LoadDataFlag=1;
                 if ResNb==0
                     ZVar=[];
                     Fdr=[];
@@ -296,13 +340,15 @@ switch CompType
                 else
                     [ZVar,Fdr,Sensitivity,Pv,FC,TotalVar]=loadsave_comp('load',ResRank,0,P.dir.data,1,1,1,1,1,P.chip.currProbeSetNb,ResNb,0);
                 end
+            else
+                LoadDataFlag=0;
             end
             %rdam parameters
             CalibType='idem';
             NormType='quantile';
             AnalyseType='transcriptome';
             %DataRanks are filled here if P.flag.loadData=1, so do not load data again in rdam;
-            LoadDataFlag=0;
+            
             SingleCalibPointFlag=0;
             SingleCalibCurveFlag=0;
             CalibUpdateSFlag=0;
@@ -330,16 +376,38 @@ switch CompType
                     Signal{GrpL}(Signal{GrpL}<=0)=0.01;
                 end
                 CurrFC=Signal{1}./Signal{2};
-
+                UseCalibFlag=0;
+                if isfield(M{CompRank},'duplicate')
+                    try
+                        if ~isempty(M{CompRank}.duplicate{MakeIndex(MakeL)})
+                            CalibRanks=M{CompRank}.duplicate{MakeIndex(MakeL)};
+                            UseCalibFlag=1;
+                            Pos=find(S{3}.position(:,1)==CalibRanks(1)&S{3}.position(:,2)==CalibRanks(2));
+                            CurrZVal=S{3}.zval{Pos};
+                            CurrZVarCdf=S{3}.cdf{Pos};
+                            CurrMinZVar=S{3}.minZVar(Pos);
+                            CurrMaxZVar=S{3}.maxZVar(Pos);
+                        end
+                    catch
+                    end
+                end
                 CompScheme=M{CompRank}.compScheme{MakeIndex(MakeL)};
                 if P.flag.loadData==0
                     TGRankList=Grp{1};
-                    CGRankList=Grp{2};
-                    eval(sprintf('[CurrZVar,CurrPv,CurrPpv,CurrFdr,CurrSensitivity,CurrTotalVar]=rdam(CompScheme,TGRankList,CGRankList,%u,[0,0],''%s'',[],''%s'',''%s'',%u,%u,%u,%u,%u,%u,%u,%u,%u);',...
-                        LoadDataFlag,CalibType,NormType,AnalyseType,SizerFittingDegree,SingleCalibPointFlag,...
-                        SingleCalibCurveFlag,CalibUpdateSFlag,CalibSaveFlag,DisplayFlag,ComparisonFlag,...
-                        ResRank,CalibSchemeFlag));
-
+                    CGRankList=Grp{2};      
+                    if UseCalibFlag
+                        SingleCalibCurveFlag=1;
+                        eval(sprintf('[CurrZVar,CurrPv,CurrPpv,CurrFdr,CurrSensitivity,CurrTotalVar]=rdam(CompScheme,TGRankList,CGRankList,%u,[0,0],''%s'',[],''%s'',''%s'',%u,%u,%u,%u,%u,%u,%u,%u,%u,CurrZVal,CurrZVarCdf,CurrMinZVar,CurrMaxZVar);',...
+                            LoadDataFlag,CalibType,NormType,AnalyseType,SizerFittingDegree,SingleCalibPointFlag,...
+                            SingleCalibCurveFlag,CalibUpdateSFlag,CalibSaveFlag,DisplayFlag,ComparisonFlag,...
+                            ResRank,CalibSchemeFlag));
+                    else
+                        SingleCalibCurveFlag=0;
+                        eval(sprintf('[CurrZVar,CurrPv,CurrPpv,CurrFdr,CurrSensitivity,CurrTotalVar]=rdam(CompScheme,TGRankList,CGRankList,%u,[0,0],''%s'',[],''%s'',''%s'',%u,%u,%u,%u,%u,%u,%u,%u,%u);',...
+                            LoadDataFlag,CalibType,NormType,AnalyseType,SizerFittingDegree,SingleCalibPointFlag,...
+                            SingleCalibCurveFlag,CalibUpdateSFlag,CalibSaveFlag,DisplayFlag,ComparisonFlag,...
+                            ResRank,CalibSchemeFlag));
+                    end
                 else
                     %DataRanks is a global variable and is filled here only with
                     %used data ...
@@ -357,10 +425,19 @@ switch CompType
                     CGRankList4S=Grp{2};
                     CalibSchemeFlag=2;
                     MakeL
-                    eval(sprintf('[CurrZVar,CurrPv,CurrPpv,CurrFdr,CurrSensitivity,CurrTotalVar]=rdam(CompScheme,TGRankList,CGRankList,%u,[0,0],''%s'',[],''%s'',''%s'',%u,%u,%u,%u,%u,%u,%u,%u,%u,TGRankList4S,CGRankList4S);',...
-                        LoadDataFlag,CalibType,NormType,AnalyseType,SizerFittingDegree,SingleCalibPointFlag,...
-                        SingleCalibCurveFlag,CalibUpdateSFlag,CalibSaveFlag,DisplayFlag,ComparisonFlag,...
-                        ResRank,CalibSchemeFlag));
+                    if UseCalibFlag
+                        SingleCalibCurveFlag=1;
+                        eval(sprintf('[CurrZVar,CurrPv,CurrPpv,CurrFdr,CurrSensitivity,CurrTotalVar]=rdam(CompScheme,TGRankList,CGRankList,%u,[0,0],''%s'',[],''%s'',''%s'',%u,%u,%u,%u,%u,%u,%u,%u,%u,CurrZVal,CurrZVarCdf,CurrMinZVar,CurrMaxZVar);',...
+                            LoadDataFlag,CalibType,NormType,AnalyseType,SizerFittingDegree,SingleCalibPointFlag,...
+                            SingleCalibCurveFlag,CalibUpdateSFlag,CalibSaveFlag,DisplayFlag,ComparisonFlag,...
+                            ResRank,CalibSchemeFlag));
+                    else
+                        SingleCalibCurveFlag=0;
+                        eval(sprintf('[CurrZVar,CurrPv,CurrPpv,CurrFdr,CurrSensitivity,CurrTotalVar]=rdam(CompScheme,TGRankList,CGRankList,%u,[0,0],''%s'',[],''%s'',''%s'',%u,%u,%u,%u,%u,%u,%u,%u,%u,TGRankList4S,CGRankList4S);',...
+                            LoadDataFlag,CalibType,NormType,AnalyseType,SizerFittingDegree,SingleCalibPointFlag,...
+                            SingleCalibCurveFlag,CalibUpdateSFlag,CalibSaveFlag,DisplayFlag,ComparisonFlag,...
+                            ResRank,CalibSchemeFlag));
+                    end
 
                 end
                 if ~isempty(CurrZVar)
